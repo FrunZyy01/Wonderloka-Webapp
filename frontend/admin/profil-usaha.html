@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wonderloka - Profil Usaha</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f0f9ff;
+            color: #1e293b;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        .navbar {
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #0369a1;
+        }
+        .nav-brand i { font-size: 26px; }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 8px;
+        }
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #64748b;
+            transition: all 0.3s;
+        }
+        .nav-menu a:hover, .nav-menu a.active {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+        .nav-menu a i { font-size: 16px; }
+        .nav-actions { display: flex; align-items: center; gap: 16px; }
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 28px;
+            color: #64748b;
+            transition: color 0.3s;
+        }
+        .profile-btn:hover { color: #0369a1; }
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 24px;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+            min-width: 200px;
+            overflow: hidden;
+            z-index: 200;
+        }
+        .profile-dropdown.active { display: block; }
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            font-size: 14px;
+            color: #334155;
+            transition: background 0.2s;
+        }
+        .profile-dropdown a:hover { background: #f0f9ff; }
+        .profile-dropdown a i { color: #0369a1; width: 20px; }
+        .profile-dropdown .logout-item { color: #ef4444; }
+        .profile-dropdown .logout-item i { color: #ef4444; }
+        .mobile-toggle { display: none; font-size: 24px; color: #64748b; cursor: pointer; }
+
+        .page-hero {
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            padding: 40px 24px;
+            color: #fff;
+        }
+        .hero-content { max-width: 1400px; margin: 0 auto; }
+        .hero-content h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+        .hero-content p { font-size: 16px; opacity: 0.9; }
+
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Profile Layout */
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 32px;
+        }
+
+        /* Card Styles */
+        .profile-card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .profile-card h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .profile-card h2 i {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #f0f9ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0369a1;
+            font-size: 18px;
+        }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+        .form-group label .required { color: #ef4444; }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s;
+            background: #f8fafc;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 4px rgba(14,165,233,0.1);
+            background: #fff;
+        }
+        .form-group textarea { min-height: 120px; resize: vertical; }
+        .form-group input[type="time"] {
+            cursor: pointer;
+        }
+
+        /* Toggle Switch */
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: #e2e8f0;
+            border-radius: 30px;
+            transition: 0.3s;
+        }
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background: #fff;
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .toggle-switch input:checked + .toggle-slider { background: #22c55e; }
+        .toggle-switch input:checked + .toggle-slider:before { transform: translateX(26px); }
+        .toggle-label { font-size: 14px; font-weight: 500; color: #64748b; }
+        .toggle-label.active { color: #16a34a; }
+
+        /* Buttons */
+        .btn-simpan {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(14,165,233,0.3);
+        }
+        .btn-simpan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14,165,233,0.4);
+        }
+
+        /* Image Upload */
+        .image-upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            background: #f8fafc;
+        }
+        .image-upload-area:hover {
+            border-color: #0ea5e9;
+            background: #f0f9ff;
+        }
+        .image-upload-area i {
+            font-size: 48px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+        .image-upload-area h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 4px;
+        }
+        .image-upload-area p {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .image-upload-area input { display: none; }
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            margin-top: 12px;
+        }
+        .preview-container {
+            position: relative;
+            display: inline-block;
+        }
+        .preview-container img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 12px;
+            display: block;
+        }
+        .preview-remove {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Verification Status */
+        .verification-box {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .verification-box i {
+            font-size: 48px;
+            color: #0369a1;
+            margin-bottom: 12px;
+        }
+        .verification-box h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+        .verification-box p {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 16px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .status-badge.pending { background: #fef3c7; color: #d97706; }
+        .status-badge.terverifikasi { background: #dcfce7; color: #16a34a; }
+        .status-badge.ditolak { background: #fee2e2; color: #ef4444; }
+        .btn-verifikasi {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #0369a1;
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 12px;
+        }
+        .btn-verifikasi:hover { background: #0284c7; }
+        .btn-verifikasi:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        /* Success/Error Messages */
+        .alert {
+            padding: 14px 20px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .alert.success {
+            background: #dcfce7;
+            color: #16a34a;
+            border: 1px solid #bbf7d0;
+            display: block;
+        }
+        .alert.error {
+            background: #fee2e2;
+            color: #ef4444;
+            border: 1px solid #fecaca;
+            display: block;
+        }
+
+        /* Owner Info Card */
+        .owner-info {
+            background: #fff;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+        .owner-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+            color: #fff;
+        }
+        .owner-info h3 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+        .owner-info p { font-size: 14px; color: #64748b; margin-bottom: 16px; }
+        .owner-meta {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            font-size: 13px;
+            color: #64748b;
+        }
+        .owner-meta span { display: flex; align-items: center; gap: 6px; }
+        .owner-meta i { color: #0369a1; }
+
+        .footer {
+            text-align: center;
+            padding: 24px;
+            font-size: 14px;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            margin-top: 32px;
+        }
+
+        @media (max-width: 1024px) {
+            .profile-layout { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-menu { display: none; }
+            .mobile-toggle { display: block; }
+            .form-grid { grid-template-columns: 1fr; }
+            .page-hero h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-globe-asia"></i>
+                Wonderloka
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                <li><a href="kelola-destinasi.html"><i class="fas fa-map-location-dot"></i> Layanan</a></li>
+                <li><a href="kelola-pesanan.html"><i class="fas fa-receipt"></i> Pesanan</a></li>
+                <li><a href="mis-dashboard.html"><i class="fas fa-chart-line"></i> Grafik MIS</a></li>
+                <li><a href="profil-usaha.html" class="active"><i class="fas fa-store"></i> Profil Usaha</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="profile-btn" id="profileBtn">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="profil-usaha.html"><i class="fas fa-store"></i> Profil Usaha</a>
+                    <a href="index.html"><i class="fas fa-home"></i> Dashboard</a>
+                    <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                </div>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-store"></i> Profil Usaha</h1>
+            <p>Kelola informasi usaha Anda agar lebih mudah ditemukan wisatawan.</p>
+        </div>
+    </section>
+
+    <div class="main-content">
+
+        <div id="alertSuccess" class="alert success"><i class="fas fa-check-circle"></i> <span></span></div>
+        <div id="alertError" class="alert error"><i class="fas fa-exclamation-circle"></i> <span></span></div>
+
+        <div class="profile-layout">
+
+            <!-- LEFT: Forms -->
+            <div class="profile-left">
+
+                <!-- Verification Status -->
+                <div class="verification-box" id="verificationBox">
+                    <i class="fas fa-shield-halved"></i>
+                    <h3>Status Verifikasi Usaha</h3>
+                    <p>Daftarkan usaha Anda untuk mendapat verifikasi resmi dari Wonderloka.</p>
+                    <span class="status-badge pending" id="statusBadge">Pending</span>
+                    <br>
+                    <button class="btn-verifikasi" id="btnAjukanVerif">
+                        <i class="fas fa-paper-plane"></i> Ajukan Verifikasi
+                    </button>
+                </div>
+
+                <!-- Informasi Usaha -->
+                <div class="profile-card">
+                    <h2><i class="fas fa-building"></i> Informasi Usaha</h2>
+                    <form id="profileForm">
+                        <div class="form-grid">
+                            <div class="form-group full">
+                                <label for="nama_usaha">Nama Usaha <span class="required">*</span></label>
+                                <input type="text" id="nama_usaha" placeholder="Contoh: Bukit Pengilon Camp" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="kategori_usaha">Kategori Usaha</label>
+                                <select id="kategori_usaha">
+                                    <option value="">Pilih Kategori</option>
+                                    <option value="Alam">Alam</option>
+                                    <option value="Budaya">Budaya</option>
+                                    <option value="Kuliner">Kuliner</option>
+                                    <option value="Penginapan">Penginapan</option>
+                                    <option value="Tour">Tour</option>
+                                    <option value="Campground">Campground</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="no_wa">Nomor WhatsApp</label>
+                                <input type="tel" id="no_wa" placeholder="+6281234567890" />
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="usaha@email.com" readonly />
+                            </div>
+                            <div class="form-group full">
+                                <label for="deskripsi_usaha">Deskripsi Usaha</label>
+                                <textarea id="deskripsi_usaha" placeholder="Jelaskan tentang usaha Anda..."></textarea>
+                            </div>
+                            <div class="form-group full">
+                                <label for="lokasi_usaha">Lokasi Usaha</label>
+                                <input type="text" id="lokasi_usaha" placeholder="Contoh: Jl. Raya Prambanan No. 123, Yogyakarta" />
+                            </div>
+                            <div class="form-group full">
+                                <label for="link_gmaps">Link Google Maps</label>
+                                <input type="url" id="link_gmaps" placeholder="https://maps.google.com/..." />
+                            </div>
+                            <div class="form-group">
+                                <label for="jam_buka">Jam Buka</label>
+                                <input type="time" id="jam_buka" />
+                            </div>
+                            <div class="form-group">
+                                <label for="jam_tutup">Jam Tutup</label>
+                                <input type="time" id="jam_tutup" />
+                            </div>
+                            <div class="form-group full">
+                                <label>Status Usaha</label>
+                                <div class="toggle-group">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="status_usaha" checked />
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="toggle-label" id="statusLabel">Buka</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Foto & Banner -->
+                <div class="profile-card">
+                    <h2><i class="fas fa-images"></i> Foto & Banner</h2>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Foto Usaha</label>
+                            <div class="image-upload-area" id="fotoArea">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <h4>Klik untuk upload</h4>
+                                <p>atau drag & drop file<br>JPG, PNG (max 2MB)</p>
+                                <input type="url" id="foto_usaha" placeholder="atau masukkan URL gambar" />
+                            </div>
+                            <div class="preview-container" id="fotoPreviewContainer" style="display:none;">
+                                <img src="" alt="Preview" id="fotoPreview" class="image-preview" />
+                                <button type="button" class="preview-remove" onclick="removePreview('foto')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Banner Usaha</label>
+                            <div class="image-upload-area" id="bannerArea">
+                                <i class="fas fa-image"></i>
+                                <h4>Klik untuk upload</h4>
+                                <p>atau drag & drop file<br>JPG, PNG (max 2MB)</p>
+                                <input type="url" id="banner_usaha" placeholder="atau masukkan URL gambar" />
+                            </div>
+                            <div class="preview-container" id="bannerPreviewContainer" style="display:none;">
+                                <img src="" alt="Preview" id="bannerPreview" class="image-preview" />
+                                <button type="button" class="preview-remove" onclick="removePreview('banner')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tombol Simpan -->
+                <button type="submit" class="btn-simpan" form="profileForm" id="btnSimpan">
+                    <i class="fas fa-save"></i> Simpan Perubahan
+                </button>
+            </div>
+
+            <!-- RIGHT: Owner Info -->
+            <div class="profile-right">
+                <div class="owner-info">
+                    <div class="owner-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3 id="ownerName">Nama Pemilik</h3>
+                    <p id="ownerEmail">email@email.com</p>
+                    <div class="owner-meta">
+                        <span><i class="fas fa-id-card"></i> <span id="ownerRole">Pengusaha</span></span>
+                        <span><i class="fas fa-calendar"></i> Bergabung <span id="ownerDate">-</span></span>
+                    </div>
+                </div>
+
+                <div class="profile-card" style="margin-top:24px;">
+                    <h2><i class="fas fa-info-circle"></i> Tips Profil</h2>
+                    <ul style="padding-left:20px;font-size:14px;color:#64748b;line-height:2;">
+                        <li>Gunakan foto berkualitas tinggi</li>
+                        <li>Cantumkan jam operasional yang jelas</li>
+                        <li>Deskripsikan usaha Anda secara detail</li>
+                        <li>Tambahkan link Google Maps yang akurat</li>
+                        <li>Ajukan verifikasi untuk kredibilitas</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Wonderloka. All rights reserved.</p>
+    </footer>
+
+    <script src="../assets/js/script-api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+
+            // Auth check
+            function checkAuth() {
+                const user = getUser();
+                if (!user || user.role !== 'pengusaha') {
+                    clearAuth();
+                    window.location.href = '../halaman-login-user.html';
+                }
+                return user;
+            }
+            const currentUser = checkAuth();
+
+            // UI Elements
+            const profileBtn = document.getElementById('profileBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            profileBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('active');
+            });
+            document.addEventListener('click', function(e) {
+                if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                    profileDropdown.classList.remove('active');
+                }
+            });
+
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Yakin ingin keluar?')) {
+                    clearAuth();
+                    window.location.href = '../halaman-login-user.html';
+                }
+            });
+
+            // Status toggle
+            const statusToggle = document.getElementById('status_usaha');
+            const statusLabel = document.getElementById('statusLabel');
+            statusToggle.addEventListener('change', function() {
+                statusLabel.textContent = this.checked ? 'Buka' : 'Tutup';
+                statusLabel.className = this.checked ? 'toggle-label active' : 'toggle-label';
+            });
+
+            // Show alert
+            function showAlert(type, message) {
+                const alert = document.getElementById(type === 'success' ? 'alertSuccess' : 'alertError');
+                alert.querySelector('span').textContent = message;
+                alert.style.display = 'block';
+                setTimeout(() => { alert.style.display = 'none'; }, 5000);
+            }
+
+            // Image URL input
+            document.getElementById('foto_usaha').addEventListener('change', function() {
+                const url = this.value.trim();
+                if (url) {
+                    document.getElementById('fotoPreview').src = url;
+                    document.getElementById('fotoPreviewContainer').style.display = 'block';
+                }
+            });
+
+            document.getElementById('banner_usaha').addEventListener('change', function() {
+                const url = this.value.trim();
+                if (url) {
+                    document.getElementById('bannerPreview').src = url;
+                    document.getElementById('bannerPreviewContainer').style.display = 'block';
+                }
+            });
+
+            window.removePreview = function(type) {
+                if (type === 'foto') {
+                    document.getElementById('foto_usaha').value = '';
+                    document.getElementById('fotoPreviewContainer').style.display = 'none';
+                } else {
+                    document.getElementById('banner_usaha').value = '';
+                    document.getElementById('bannerPreviewContainer').style.display = 'none';
+                }
+            };
+
+            // Load profile
+            async function loadProfile() {
+                try {
+                    const data = await apiFetch('/admin/business-profile');
+
+                    // Fill form
+                    document.getElementById('nama_usaha').value = data.nama_usaha || '';
+                    document.getElementById('kategori_usaha').value = data.kategori_usaha || '';
+                    document.getElementById('no_wa').value = data.no_wa || '';
+                    document.getElementById('email').value = data.email || '';
+                    document.getElementById('deskripsi_usaha').value = data.deskripsi_usaha || '';
+                    document.getElementById('lokasi_usaha').value = data.link_gmaps ? '' : '';
+                    document.getElementById('link_gmaps').value = data.link_gmaps || '';
+                    document.getElementById('jam_buka').value = data.jam_buka ? data.jam_buka.substring(0, 5) : '';
+                    document.getElementById('jam_tutup').value = data.jam_tutup ? data.jam_tutup.substring(0, 5) : '';
+                    document.getElementById('status_usaha').checked = data.status_usaha !== 'tutup';
+                    statusLabel.textContent = data.status_usaha === 'tutup' ? 'Tutup' : 'Buka';
+                    statusLabel.className = data.status_usaha === 'tutup' ? 'toggle-label' : 'toggle-label active';
+
+                    // Photo preview
+                    if (data.foto_usaha) {
+                        document.getElementById('foto_usaha').value = data.foto_usaha;
+                        document.getElementById('fotoPreview').src = data.foto_usaha;
+                        document.getElementById('fotoPreviewContainer').style.display = 'block';
+                    }
+                    if (data.banner_usaha) {
+                        document.getElementById('banner_usaha').value = data.banner_usaha;
+                        document.getElementById('bannerPreview').src = data.banner_usaha;
+                        document.getElementById('bannerPreviewContainer').style.display = 'block';
+                    }
+
+                    // Owner info
+                    document.getElementById('ownerName').textContent = data.nama_lengkap || 'Pemilik';
+                    document.getElementById('ownerEmail').textContent = data.email || '-';
+                    document.getElementById('ownerRole').textContent = data.role === 'pengusaha' ? 'Pengusaha' : 'Wisatawan';
+                    if (data.created_at) {
+                        document.getElementById('ownerDate').textContent = new Date(data.created_at).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' });
+                    }
+
+                    // Verification status
+                    const badge = document.getElementById('statusBadge');
+                    const verifBtn = document.getElementById('btnAjukanVerif');
+                    badge.textContent = data.status_verifikasi || 'pending';
+                    badge.className = 'status-badge ' + (data.status_verifikasi || 'pending');
+                    if (data.status_verifikasi === 'terverifikasi') {
+                        verifBtn.disabled = true;
+                        verifBtn.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Terverifikasi';
+                    } else if (data.status_verifikasi === 'pending') {
+                        verifBtn.disabled = true;
+                        verifBtn.innerHTML = '<i class="fas fa-clock"></i> Menunggu Verifikasi';
+                    }
+
+                } catch (err) {
+                    console.error('Gagal load profile:', err);
+                }
+            }
+
+            // Save profile
+            const profileForm = document.getElementById('profileForm');
+            const btnSimpan = document.getElementById('btnSimpan');
+
+            btnSimpan.addEventListener('click', async function(e) {
+                e.preventDefault();
+                btnSimpan.disabled = true;
+                btnSimpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
+
+                const payload = {
+                    nama_usaha: document.getElementById('nama_usaha').value.trim(),
+                    kategori_usaha: document.getElementById('kategori_usaha').value,
+                    deskripsi_usaha: document.getElementById('deskripsi_usaha').value.trim(),
+                    foto_usaha: document.getElementById('foto_usaha').value.trim(),
+                    banner_usaha: document.getElementById('banner_usaha').value.trim(),
+                    link_gmaps: document.getElementById('link_gmaps').value.trim(),
+                    jam_buka: document.getElementById('jam_buka').value || null,
+                    jam_tutup: document.getElementById('jam_tutup').value || null,
+                    status_usaha: document.getElementById('status_usaha').checked ? 'buka' : 'tutup'
+                };
+
+                try {
+                    await apiFetch('/admin/business-profile', {
+                        method: 'PUT',
+                        body: JSON.stringify(payload)
+                    });
+                    showAlert('success', '✅ Profil usaha berhasil disimpan!');
+                } catch (err) {
+                    showAlert('error', '⚠️ Gagal menyimpan: ' + err.message);
+                }
+
+                btnSimpan.disabled = false;
+                btnSimpan.innerHTML = '<i class="fas fa-save"></i> Simpan Perubahan';
+            });
+
+            // Ajukan verifikasi
+            document.getElementById('btnAjukanVerif').addEventListener('click', async function() {
+                if (!confirm('Ajukan verifikasi usaha sekarang?')) return;
+                try {
+                    await apiFetch('/admin/business-profile/verification', { method: 'POST' });
+                    showAlert('success', '✅ Pengajuan verifikasi berhasil dikirim!');
+                    loadProfile();
+                } catch (err) {
+                    showAlert('error', '⚠️ ' + err.message);
+                }
+            });
+
+            // Init
+            loadProfile();
+        });
+    </script>
+</body>
+</html>

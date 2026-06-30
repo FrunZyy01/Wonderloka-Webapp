@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wonderloka - Kelola Pesanan</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #e3f2fd;
+            color: #1a1a1a;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+        .nav-brand i { font-size: 28px; }
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .nav-menu a {
+            color: #555;
+            transition: color 0.3s;
+            padding: 6px 0;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #0d47a1;
+            border-bottom-color: #0d47a1;
+        }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+        }
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 28px;
+            color: #555;
+            transition: color 0.3s;
+            padding: 4px;
+        }
+        .profile-btn:hover { color: #0d47a1; }
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(13, 71, 161, 0.12);
+            min-width: 180px;
+            overflow: hidden;
+            z-index: 200;
+        }
+        .profile-dropdown.active { display: block; }
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #333;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .profile-dropdown a:last-child { border-bottom: none; }
+        .profile-dropdown a:hover { background: #e3f2fd; }
+        .profile-dropdown a i { width: 20px; color: #0d47a1; }
+        .profile-dropdown .logout-item { color: #d32f2f; }
+        .profile-dropdown .logout-item i { color: #d32f2f; }
+        .nav-toggle {
+            display: none;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .page-hero {
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+            padding: 40px 20px;
+            text-align: center;
+            color: #fff;
+        }
+        .page-hero h1 { font-size: 32px; font-weight: 700; }
+        .page-hero p { font-size: 16px; opacity: 0.9; margin-top: 6px; }
+
+        .table-section {
+            max-width: 1200px;
+            margin: 32px auto 60px;
+            padding: 0 20px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .section-header h2 { font-size: 22px; font-weight: 700; color: #1a1a1a; }
+
+        .table-wrapper {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(13, 71, 161, 0.06);
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        th {
+            background: #e3f2fd;
+            color: #0d47a1;
+            text-align: left;
+            padding: 14px 16px;
+            font-weight: 600;
+        }
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #333;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        .status-badge.menunggu { background: #fff3e0; color: #e65100; }
+        .status-badge.dikonfirmasi { background: #bbdefb; color: #0d47a1; }
+        .status-badge.selesai { background: #c8e6c9; color: #2e7d32; }
+        .status-badge.dibatalkan { background: #ffcdd2; color: #c62828; }
+
+        .btn-action {
+            border: none;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+            margin: 2px;
+        }
+        .btn-konfirmasi { background: #bbdefb; color: #0d47a1; }
+        .btn-konfirmasi:hover { background: #0d47a1; color: #fff; }
+        .btn-selesai { background: #c8e6c9; color: #2e7d32; }
+        .btn-selesai:hover { background: #2e7d32; color: #fff; }
+        .btn-batal { background: #ffcdd2; color: #c62828; }
+        .btn-batal:hover { background: #c62828; color: #fff; }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: #777; }
+        .empty-state i { font-size: 48px; color: #bbdefb; margin-bottom: 12px; }
+
+        .footer {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 14px;
+            color: #777;
+            border-top: 1px solid #bbdefb;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                background: #fff;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                padding: 20px 24px;
+                gap: 16px;
+                box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
+            }
+            .nav-menu.active { display: flex; }
+            .nav-toggle { display: block; }
+            .page-hero h1 { font-size: 26px; }
+        }
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-globe-asia"></i>
+                <span>Wonderloka Admin</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="kelola-destinasi.html">Kelola Destinasi</a></li>
+                <li><a href="kelola-pesanan.html" class="active">Kelola Pesanan</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="profile-btn" id="profileBtn" aria-label="Profile">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#"><i class="fas fa-user"></i> Profil Saya</a>
+                    <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                </div>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <h1>Kelola Pesanan</h1>
+        <p>Lihat dan perbarui status pemesanan destinasi.</p>
+    </section>
+
+    <section class="table-section">
+        <div class="section-header">
+            <h2>Daftar Pesanan</h2>
+        </div>
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>User</th>
+                        <th>Destinasi</th>
+                        <th>Tanggal</th>
+                        <th>Tiket</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="pesananBody"></tbody>
+            </table>
+        </div>
+        <div id="emptyState" class="empty-state" style="display:none;">
+            <i class="fas fa-inbox"></i>
+            <h3>Belum ada pesanan</h3>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Wonderloka. All rights reserved.</p>
+    </footer>
+
+    <script src="../assets/js/script-api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            function checkAuth() {
+                const user = getUser();
+                if (!user || user.role !== 'pengusaha') {
+                    clearAuth();
+                    window.location.href = '../halaman-login-user.html';
+                }
+            }
+            checkAuth();
+
+            const profileBtn = document.getElementById('profileBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            if (profileBtn && profileDropdown) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileDropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                        profileDropdown.classList.remove('active');
+                    }
+                });
+            }
+
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                });
+            }
+
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clearAuth();
+                    window.location.href = '../halaman-login-user.html';
+                });
+            }
+
+            const tbody = document.getElementById('pesananBody');
+            const emptyState = document.getElementById('emptyState');
+
+            async function loadPesanan() {
+                try {
+                    const data = await apiFetch('/admin/bookings');
+                    if (data.length === 0) {
+                        tbody.innerHTML = '';
+                        emptyState.style.display = 'block';
+                        return;
+                    }
+                    emptyState.style.display = 'none';
+                    let html = '';
+                    data.forEach((b, i) => {
+                        const statusLabel = b.status.charAt(0).toUpperCase() + b.status.slice(1);
+                        const tanggal = b.tgl_kunjungan ? b.tgl_kunjungan.split('T')[0] : '-';
+                        const canConfirm = b.status === 'menunggu';
+                        const canComplete = b.status === 'dikonfirmasi';
+                        const canCancel = b.status === 'menunggu' || b.status === 'dikonfirmasi';
+                        html += `
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td>${b.nama_lengkap || b.email || '-'}</td>
+                                <td>${b.destinasi || '-'}</td>
+                                <td>${tanggal}</td>
+                                <td>${b.jumlah_tiket || 0}</td>
+                                <td>Rp ${Number(b.total_harga || 0).toLocaleString('id-ID')}</td>
+                                <td><span class="status-badge ${b.status}">${statusLabel}</span></td>
+                                <td>
+                                    ${canConfirm ? `<button class="btn-action btn-konfirmasi" data-id="${b.id_booking}" data-status="dikonfirmasi">Konfirmasi</button>` : ''}
+                                    ${canComplete ? `<button class="btn-action btn-selesai" data-id="${b.id_booking}" data-status="selesai">Selesai</button>` : ''}
+                                    ${canCancel ? `<button class="btn-action btn-batal" data-id="${b.id_booking}" data-status="dibatalkan">Batalkan</button>` : ''}
+                                    ${!canConfirm && !canComplete && !canCancel ? '-' : ''}
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    tbody.innerHTML = html;
+
+                    tbody.querySelectorAll('.btn-action').forEach(btn => {
+                        btn.addEventListener('click', async function() {
+                            const id = this.dataset.id;
+                            const status = this.dataset.status;
+                            const label = status.charAt(0).toUpperCase() + status.slice(1);
+                            if (!confirm('Ubah status pesanan ini menjadi "' + label + '"?')) return;
+
+                            const originalText = this.textContent;
+                            this.disabled = true;
+                            this.textContent = 'Memproses...';
+
+                            try {
+                                await apiFetch('/admin/bookings/' + id + '/status', {
+                                    method: 'PUT',
+                                    body: JSON.stringify({ status })
+                                });
+                                alert('Status berhasil diubah ke "' + label + '".');
+                                loadPesanan();
+                            } catch (err) {
+                                alert('Gagal: ' + err.message);
+                                this.disabled = false;
+                                this.textContent = originalText;
+                            }
+                        });
+                    });
+                } catch (err) {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#c62828;">Gagal memuat: ' + err.message + '</td></tr>';
+                }
+            }
+
+            loadPesanan();
+        });
+    </script>
+
+</body>
+</html>

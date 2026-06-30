@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wonderloka - Login & Registrasi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+        /* ---------- RESET & GLOBAL ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #e3f2fd;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(13, 71, 161, 0.15);
+            display: flex;
+            flex-direction: row;
+            max-width: 1100px;
+            width: 100%;
+            overflow: hidden;
+            height: 680px;
+        }
+
+        /* ---------- KIRI: GAMBAR ---------- */
+        .login-image {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #fff;
+            height: 100%;
+        }
+
+        .login-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ---------- KANAN: FORM ---------- */
+        .login-form {
+            flex: 1;
+            padding: 40px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: #ffffff;
+            height: 100%;
+            position: relative;
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            flex: 1;
+        }
+
+        .form-toggle {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+
+        .form-toggle button {
+            background: none;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            color: #9e9e9e;
+            cursor: pointer;
+            padding-bottom: 8px;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-toggle button.active {
+            color: #0d47a1;
+            border-bottom-color: #0d47a1;
+        }
+
+        .form-toggle button:hover {
+            color: #0a3d8a;
+        }
+
+        .form-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .form-subtitle {
+            font-size: 14px;
+            color: #757575;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            background-color: #fafafa;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #1565c0;
+            box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.15);
+            background-color: #ffffff;
+        }
+
+        .input-group input::placeholder {
+            color: #bdbdbd;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 48px;
+        }
+
+        .password-wrapper .toggle-password {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9e9e9e;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 4px;
+        }
+
+        .password-wrapper .toggle-password:hover {
+            color: #1565c0;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row .input-group {
+            flex: 1;
+            margin-bottom: 15px;
+        }
+
+        .role-selector {
+            display: flex;
+            gap: 12px;
+            margin-top: 4px;
+        }
+
+        .role-selector .role-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: #fafafa;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .role-selector .role-btn i {
+            font-size: 16px;
+        }
+
+        .role-selector .role-btn.active {
+            border-color: #0d47a1;
+            background: #bbdefb;
+            color: #0d47a1;
+        }
+
+        .role-selector .role-btn:hover {
+            border-color: #0d47a1;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 4px 0 20px 0;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .form-options label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #0d47a1;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            font-size: 14px;
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .forgot-link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background-color: #0d47a1;
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 6px 20px rgba(13, 71, 161, 0.25);
+        }
+
+        .btn-login:hover {
+            background-color: #0a3d8a;
+            transform: translateY(-2px);
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 14px;
+            color: #757575;
+        }
+
+        .register-link a {
+            color: #1565c0;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .form-feedback {
+            margin-top: 16px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .form-feedback.error {
+            display: block;
+            background-color: #ffebee;
+            color: #c62828;
+            border-left: 4px solid #c62828;
+        }
+
+        .form-feedback.success {
+            display: block;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            border-left: 4px solid #0d47a1;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+                border-radius: 24px;
+                max-width: 440px;
+                height: auto;
+            }
+
+            .login-image {
+                height: 200px;
+                width: 100%;
+                order: 1;
+            }
+
+            .login-image img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+            }
+
+            .login-form {
+                padding: 28px 20px;
+                order: 2;
+                height: auto;
+            }
+
+            .form-toggle button {
+                font-size: 16px;
+            }
+            .form-title {
+                font-size: 22px;
+            }
+            .role-selector {
+                flex-direction: column;
+            }
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-form {
+                padding: 20px 16px;
+            }
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+
+        <!-- KIRI: GAMBAR -->
+        <div class="login-image">
+            <img src="wonderloka.jpeg" alt="Wonderloka" />
+        </div>
+
+        <!-- KANAN: FORM -->
+        <div class="login-form">
+
+            <div class="form-toggle">
+                <button id="tabLogin" class="active">Masuk</button>
+                <button id="tabRegister">Buat Akun</button>
+            </div>
+
+            <!-- LOGIN -->
+            <div id="loginSection" class="form-section">
+                <h1 class="form-title">Selamat Datang Kembali</h1>
+                <p class="form-subtitle">Silakan masukkan detail akun Anda untuk melanjutkan.</p>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="nama@gmail.com" required />
+                    </div>
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="password" placeholder="Password" required />
+                            <button type="button" class="toggle-password" id="togglePassword">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-options">
+                        <label><input type="checkbox" id="rememberMe" /> Ingin saya</label>
+                        <a href="#" class="forgot-link">lupa sandi?</a>
+                    </div>
+                    <button type="submit" class="btn-login">Masuk</button>
+                </form>
+
+                <div class="register-link" id="registerLink">
+                    Belum punya akun? <a href="#" id="switchToRegister">Buat Akun</a>
+                </div>
+            </div>
+
+            <!-- REGISTER -->
+            <div id="registerSection" class="form-section hidden">
+                <h1 class="form-title">Buat Akun Baru</h1>
+                <p class="form-subtitle">Halo! Silakan isi data anda untuk membuat akun anda.</p>
+
+                <form id="registerForm">
+                    <div class="input-group">
+                        <label>Daftar Sebagai</label>
+                        <div class="role-selector">
+                            <button type="button" class="role-btn active" data-role="wisatawan">
+                                <i class="fas fa-user"></i> Wisatawan
+                            </button>
+                            <button type="button" class="role-btn" data-role="pengusaha">
+                                <i class="fas fa-store"></i> Pengusaha Lokal
+                            </button>
+                        </div>
+                        <input type="hidden" id="roleInput" value="wisatawan" />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="regName">Nama Lengkap</label>
+                            <input type="text" id="regName" placeholder="Nama Lengkap" required />
+                        </div>
+                        <div class="input-group">
+                            <label for="regWhatsapp">Nomor WhatsApp</label>
+                            <input type="tel" id="regWhatsapp" placeholder="+62********" required />
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="regEmail">Email</label>
+                        <input type="email" id="regEmail" placeholder="nama@gmail.com" required />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="input-group">
+                            <label for="regPassword">Kata sandi</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="regPassword" placeholder="Kata sandi" required />
+                                <button type="button" class="toggle-password" id="toggleRegPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label for="regConfirmPassword">Konfirmasi kata sandi</label>
+                            <div class="password-wrapper">
+                                <input type="password" id="regConfirmPassword" placeholder="Konfirmasi kata sandi" required />
+                                <button type="button" class="toggle-password" id="toggleRegConfirmPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label><input type="checkbox" id="regRemember" /> Ingat saya</label>
+                    </div>
+
+                    <button type="submit" class="btn-login" style="background-color:#1565c0;">Daftar</button>
+                </form>
+
+                <div class="register-link" id="loginLink">
+                    Sudah Punya Akun? <a href="#" id="switchToLogin">Masuk di Sini</a>
+                </div>
+            </div>
+
+            <div id="feedback" class="form-feedback"></div>
+        </div>
+    </div>
+
+    <script src="script-api.js"></script>
+    <script src="script-login.js"></script>
+</body>
+</html>

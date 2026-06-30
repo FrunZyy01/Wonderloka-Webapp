@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wonderloka - Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+
+    <style>
+        /* ---------- RESET ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #e3f2fd;
+            color: #1a1a1a;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ---------- NAVBAR ---------- */
+        .navbar {
+            background: #ffffff;
+            box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+
+        .nav-brand i {
+            font-size: 28px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .nav-menu a {
+            color: #555;
+            transition: color 0.3s;
+            padding: 6px 0;
+            border-bottom: 3px solid transparent;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #0d47a1;
+            border-bottom-color: #0d47a1;
+        }
+
+        /* ---------- PROFILE DROPDOWN ---------- */
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            position: relative;
+        }
+
+        .profile-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 28px;
+            color: #555;
+            transition: color 0.3s;
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-btn:hover {
+            color: #0d47a1;
+        }
+
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(13, 71, 161, 0.12);
+            min-width: 180px;
+            overflow: hidden;
+            z-index: 200;
+        }
+
+        .profile-dropdown.active {
+            display: block;
+        }
+
+        .profile-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            font-size: 14px;
+            color: #333;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .profile-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .profile-dropdown a:hover {
+            background: #e3f2fd;
+        }
+
+        .profile-dropdown a i {
+            width: 20px;
+            color: #0d47a1;
+        }
+
+        .profile-dropdown .logout-item {
+            color: #d32f2f;
+        }
+        .profile-dropdown .logout-item i {
+            color: #d32f2f;
+        }
+
+        .nav-toggle {
+            display: none;
+            font-size: 24px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* ---------- HERO ---------- */
+        .hero {
+            position: relative;
+            background-image: url('../assets/images/wonderloka.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 460px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(13, 71, 161, 0.55);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 32px;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 12px;
+            max-width: 650px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 60px;
+            padding: 6px 6px 6px 24px;
+            box-shadow: 0 8px 30px rgba(13, 71, 161, 0.15);
+        }
+
+        .search-box input {
+            flex: 1;
+            border: none;
+            padding: 14px 0;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            outline: none;
+            background: transparent;
+        }
+
+        .search-box input::placeholder {
+            color: #aaa;
+        }
+
+        .btn-search {
+            background: #0d47a1;
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-search:hover {
+            background: #0a3d8a;
+        }
+
+        /* ---------- PROMO ---------- */
+        .promo {
+            max-width: 1200px;
+            margin: -30px auto 0;
+            padding: 0 20px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .promo-card {
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+            border-radius: 20px;
+            padding: 32px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(13, 71, 161, 0.25);
+        }
+
+        .promo-text h2 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .promo-text p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+
+        .promo-icon {
+            font-size: 52px;
+            opacity: 0.7;
+        }
+
+        /* ---------- DESTINASI ---------- */
+        .destinasi {
+            max-width: 1200px;
+            margin: 48px auto 0;
+            padding: 0 20px 60px;
+        }
+
+        .section-header {
+            margin-bottom: 32px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .section-header p {
+            font-size: 16px;
+            color: #555;
+            margin-top: 4px;
+        }
+
+        .destinasi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 24px;
+        }
+
+        .destinasi-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(13, 71, 161, 0.06);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .destinasi-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(13, 71, 161, 0.12);
+        }
+
+        .card-image {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-rating {
+            position: absolute;
+            bottom: 10px;
+            left: 12px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            font-size: 13px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .card-body {
+            padding: 16px 18px 20px;
+        }
+
+        .card-body h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .card-body .location {
+            font-size: 14px;
+            color: #777;
+            margin: 4px 0 12px;
+        }
+
+        .card-body .location i {
+            color: #0d47a1;
+            margin-right: 4px;
+        }
+
+        .btn-detail {
+            display: inline-block;
+            background: #bbdefb;
+            color: #0d47a1;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 6px 20px;
+            border-radius: 30px;
+            transition: background 0.3s;
+        }
+
+        .btn-detail:hover {
+            background: #0d47a1;
+            color: #fff;
+        }
+
+        .btn-favorit {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 16px;
+            color: #bbb;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            z-index: 2;
+        }
+
+        .btn-favorit:hover {
+            transform: scale(1.1);
+            color: #e53935;
+        }
+
+        .btn-favorit.active {
+            color: #e53935;
+            background: #ffebee;
+        }
+
+        .btn-favorit:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ---------- FOOTER ---------- */
+        .footer {
+            text-align: center;
+            padding: 24px 20px;
+            font-size: 14px;
+            color: #777;
+            border-top: 1px solid #bbdefb;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 992px) {
+            .destinasi-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                background: #fff;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                padding: 20px 24px;
+                gap: 16px;
+                box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-actions {
+                display: flex;
+            }
+
+            .hero {
+                min-height: 350px;
+                padding: 40px 16px;
+            }
+            .hero h1 {
+                font-size: 28px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+
+            .search-box {
+                flex-direction: column;
+                border-radius: 30px;
+                padding: 16px;
+                background: #fff;
+            }
+            .search-box input {
+                padding: 12px 0;
+                text-align: center;
+            }
+            .btn-search {
+                justify-content: center;
+                border-radius: 30px;
+                padding: 14px;
+            }
+
+            .promo-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 28px 24px;
+            }
+            .promo-text h2 {
+                font-size: 22px;
+            }
+            .promo-icon {
+                margin-top: 16px;
+                font-size: 40px;
+            }
+
+            .destinasi-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .destinasi-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ========== NAVBAR ========== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-globe-asia"></i>
+                <span>Wonderloka</span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="dashboard.html" class="active">Beranda</a></li>
+                <li><a href="pesanan-saya.html">Pesanan saya</a></li>
+                <li><a href="favorit.html">Favorit</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="profile-btn" id="profileBtn" aria-label="Profile">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#"><i class="fas fa-user"></i> Profil Saya</a>
+                    <a href="pesanan-saya.html"><i class="fas fa-history"></i> Riwayat Pesanan</a>
+                    <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                </div>
+            </div>
+            <div class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ========== HERO ========== -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Temukan Hidden Gems Liburanmu Selanjutnya!</h1>
+            <p>
+                Temukan ribuan destinasi menakjubkan dengan penawaran terbaik
+                eksklusif untuk Anda.
+            </p>
+            <div class="search-box">
+                <input
+                    type="text"
+                    placeholder="Ketik: Tempat camping di atas bukit yang udaranya sejuk dan masih sepi"
+                />
+                <button class="btn-search">
+                    <i class="fas fa-search"></i> Temukan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== PROMO ========== -->
+    <section class="promo">
+        <div class="promo-card">
+            <div class="promo-text">
+                <h2>Diskon Spesial Liburan Musim Panas!</h2>
+                <p>Dapatkan potongan hingga 30% untuk pemesanan resor di Bali dan Lombok.</p>
+            </div>
+            <div class="promo-icon">
+                <i class="fas fa-sun"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== DESTINASI ========== -->
+    <section class="destinasi">
+        <div class="section-header">
+            <h2>Destinasi Pilihan Terpopuler</h2>
+            <p>Eksplorasi tempat-tempat yang paling banyak diminati minggu ini.</p>
+        </div>
+
+        <div class="destinasi-grid" id="destinasiGrid">
+        </div>
+    </section>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer">
+        <p>&copy; 2026 Wonderloka. All rights reserved.</p>
+    </footer>
+
+    <!-- ========== JAVASCRIPT ========== -->
+    <script src="../assets/js/script-api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auth guard - redirect if not logged in
+            if (!isLoggedIn()) {
+                window.location.href = '../halaman-login-user.html';
+                return;
+            }
+
+            // Profile dropdown
+            const profileBtn = document.getElementById('profileBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            if (profileBtn && profileDropdown) {
+                profileBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profileDropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                        profileDropdown.classList.remove('active');
+                    }
+                });
+            }
+
+            // Mobile nav toggle
+            const navToggle = document.getElementById('navToggle');
+            const navMenu = document.getElementById('navMenu');
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                });
+            }
+
+            // Logout
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    clearAuth();
+                    window.location.href = '../halaman-login-user.html';
+                });
+            }
+
+            // Search
+            const searchBtn = document.querySelector('.btn-search');
+            const searchInput = document.querySelector('.search-box input');
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        const grid = document.getElementById('destinasiGrid');
+                        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Mencari...</p>';
+                        try {
+                            // Simpan search log
+                            try {
+                                await fetch('/api/destinations/search-logs', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + (getToken() || '') },
+                                    body: JSON.stringify({ keyword: query })
+                                });
+                            } catch (_) {}
+
+                            const data = await apiFetch('/destinations?search=' + encodeURIComponent(query));
+                            renderDestinasi(data);
+                        } catch (err) {
+                            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">' + err.message + '</p>';
+                        }
+                    } else {
+                        alert('Silakan ketik destinasi yang ingin dicari.');
+                    }
+                });
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') searchBtn.click();
+                });
+            }
+
+            // Nav menu links
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#') {
+                        e.preventDefault();
+                        alert('Navigasi ke: ' + this.textContent.trim());
+                        if (navMenu) navMenu.classList.remove('active');
+                    }
+                });
+            });
+
+            // Render destinasi dari API
+            const grid = document.getElementById('destinasiGrid');
+            let favoritSet = new Set();
+
+            async function loadFavoritSet() {
+                if (!isLoggedIn()) return;
+                try {
+                    const data = await apiFetch('/favorites');
+                    favoritSet = new Set(data.map(f => f.id_destinasi));
+                } catch (_) {}
+            }
+
+            async function loadDestinasi() {
+                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Memuat destinasi...</p>';
+                try {
+                    const data = await apiFetch('/destinations');
+                    await loadFavoritSet();
+                    renderDestinasi(data);
+                } catch (err) {
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">Gagal memuat: ' + err.message + '</p>';
+                }
+            }
+
+            function renderDestinasi(data) {
+                if (data.length === 0) {
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Destinasi tidak ditemukan.</p>';
+                    return;
+                }
+                let html = '';
+                data.forEach(d => {
+                    const isFav = favoritSet.has(d.id_destinasi);
+                    html += `
+                        <div class="destinasi-card">
+                            <div class="card-image">
+                                <img src="${d.gambar}" alt="${d.nama}" />
+                                <span class="card-rating">⭐ ${d.rating}</span>
+                                <button class="btn-favorit ${isFav ? 'active' : ''}" data-id="${d.id_destinasi}" title="${isFav ? 'Hapus dari favorit' : 'Tambah ke favorit'}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <h3>${d.nama}</h3>
+                                <p class="location"><i class="fas fa-map-marker-alt"></i> ${d.lokasi}</p>
+                                <a href="detail-destinasi.html?id=${d.id_destinasi}" class="btn-detail">Detail</a>
+                            </div>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+
+                grid.querySelectorAll('.btn-favorit').forEach(btn => {
+                    btn.addEventListener('click', async function(e) {
+                        e.preventDefault();
+                        if (!isLoggedIn()) {
+                            if (confirm('Anda harus login terlebih dahulu. Ke halaman login?')) {
+                                window.location.href = '../halaman-login-user.html';
+                            }
+                            return;
+                        }
+                        const id = parseInt(this.dataset.id);
+                        const isActive = this.classList.contains('active');
+                        this.disabled = true;
+                        try {
+                            if (isActive) {
+                                const favs = await apiFetch('/favorites');
+                                const fav = favs.find(f => f.id_destinasi === id);
+                                if (fav) await apiFetch('/favorites/' + fav.id_favorit, { method: 'DELETE' });
+                                this.classList.remove('active');
+                                this.title = 'Tambah ke favorit';
+                            } else {
+                                await apiFetch('/favorites', { method: 'POST', body: JSON.stringify({ id_destinasi: id }) });
+                                this.classList.add('active');
+                                this.title = 'Hapus dari favorit';
+                            }
+                        } catch (err) {
+                            alert('⚠️ ' + err.message);
+                        }
+                        this.disabled = false;
+                    });
+                });
+            }
+
+            loadDestinasi();
+        });
+    </script>
+
+</body>
+</html>

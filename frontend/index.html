@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wonderloka - Temukan Hidden Gems Indonesia</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226,232,240,0.8);
+            transition: all 0.3s ease;
+        }
+        .navbar.scrolled {
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .nav-brand i {
+            font-size: 26px;
+            color: #0369a1;
+            -webkit-text-fill-color: #0369a1;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+        .nav-links a {
+            font-size: 15px;
+            font-weight: 500;
+            color: #64748b;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: #0369a1; }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .btn-nav-outline {
+            padding: 10px 24px;
+            border: 2px solid #0ea5e9;
+            border-radius: 50px;
+            color: #0369a1;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .btn-nav-outline:hover {
+            background: #0ea5e9;
+            color: #fff;
+        }
+        .btn-nav-primary {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(14,165,233,0.3);
+        }
+        .btn-nav-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(14,165,233,0.4);
+        }
+        .mobile-toggle {
+            display: none;
+            font-size: 24px;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+        }
+        .hero-bg-shapes {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .hero-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .hero-shape:nth-child(1) {
+            width: 600px; height: 600px;
+            top: -200px; right: -100px;
+        }
+        .hero-shape:nth-child(2) {
+            width: 400px; height: 400px;
+            bottom: -100px; left: -100px;
+        }
+        .hero-shape:nth-child(3) {
+            width: 200px; height: 200px;
+            top: 30%; left: 20%;
+            background: rgba(14,165,233,0.15);
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 24px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .hero-badge i { color: #fbbf24; }
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 64px);
+            font-weight: 800;
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 30px rgba(0,0,0,0.2);
+        }
+        .hero h1 span {
+            background: linear-gradient(135deg, #7dd3fc, #f0f9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero p {
+            font-size: clamp(16px, 2.5vw, 20px);
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 48px;
+        }
+        .btn-hero-primary {
+            padding: 16px 36px;
+            background: #fff;
+            color: #0369a1;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-hero-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+        }
+        .btn-hero-secondary {
+            padding: 16px 36px;
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(8px);
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-hero-secondary:hover {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.5);
+        }
+        .hero-search {
+            background: #fff;
+            border-radius: 60px;
+            padding: 8px 8px 8px 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        .hero-search i {
+            color: #0ea5e9;
+            font-size: 20px;
+        }
+        .hero-search input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+            color: #1e293b;
+            background: transparent;
+        }
+        .hero-search input::placeholder { color: #94a3b8; }
+        .btn-search-hero {
+            padding: 14px 32px;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-search-hero:hover {
+            box-shadow: 0 8px 25px rgba(14,165,233,0.4);
+        }
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 48px;
+            flex-wrap: wrap;
+        }
+        .hero-stat { text-align: center; color: #fff; }
+        .hero-stat h3 { font-size: 28px; font-weight: 800; }
+        .hero-stat p { font-size: 14px; opacity: 0.8; }
+
+        /* ===== CATEGORIES ===== */
+        .categories {
+            max-width: 1280px;
+            margin: -60px auto 0;
+            padding: 0 24px;
+            position: relative;
+            z-index: 3;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .category-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 40px rgba(14,165,233,0.15);
+            border-color: #0ea5e9;
+        }
+        .category-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 28px;
+        }
+        .category-icon.alam { background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #16a34a; }
+        .category-icon.budaya { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #d97706; }
+        .category-icon.kuliner { background: linear-gradient(135deg, #fce7f3, #fbcfe8); color: #db2777; }
+        .category-icon.penginapan { background: linear-gradient(135deg, #e0e7ff, #c7d2fe); color: #4f46e5; }
+        .category-card h3 { font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 4px; }
+        .category-card p { font-size: 13px; color: #94a3b8; }
+
+        /* ===== SECTION STYLES ===== */
+        .section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .section-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #0369a1;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .section-header h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 12px;
+        }
+        .section-header p {
+            font-size: 16px;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== POPULAR DESTINATIONS ===== */
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        .destination-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: all 0.3s;
+        }
+        .destination-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(14,165,233,0.15);
+        }
+        .dest-image {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+        .dest-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .destination-card:hover .dest-image img { transform: scale(1.08); }
+        .dest-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #0369a1;
+        }
+        .dest-rating {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            color: #fbbf24;
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .dest-body { padding: 20px; }
+        .dest-body h3 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 6px; }
+        .dest-location {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dest-location i { color: #0ea5e9; }
+        .dest-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dest-price { font-size: 14px; color: #64748b; }
+        .dest-price strong { font-size: 18px; color: #0369a1; font-weight: 700; }
+        .btn-dest {
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            color: #fff;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        .btn-dest:hover {
+            box-shadow: 0 4px 15px rgba(14,165,233,0.3);
+        }
+
+        /* ===== WHY CHOOSE ===== */
+        .why-section {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border-radius: 32px;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        .why-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .why-icon {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            color: #0369a1;
+        }
+        .why-card h3 { font-size: 18px; font-weight: 700; color: #0f172a; margin-bottom: 8px; }
+        .why-card p { font-size: 14px; color: #64748b; line-height: 1.6; }
+
+        /* ===== HOST SECTION ===== */
+        .host-section {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 80px 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        .host-content h2 {
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+        .host-content p {
+            font-size: 16px;
+            color: #64748b;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+        .host-benefits {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+        .host-benefit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 15px;
+            color: #334155;
+        }
+        .host-benefit i {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #dcfce7;
+            color: #16a34a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .btn-host {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: linear-gradient(135deg, #0369a1, #0ea5e9);
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 8px 30px rgba(14,165,233,0.3);
+        }
+        .btn-host:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(14,165,233,0.4);
+        }
+        .host-image {
+            position: relative;
+        }
+        .host-image img {
+            width: 100%;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+        .host-float-card {
+            position: absolute;
+            background: #fff;
+            border-radius: 16px;
+            padding: 16px 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .host-float-card.card-1 {
+            bottom: 20px;
+            left: -20px;
+        }
+        .host-float-card.card-2 {
+            top: 20px;
+            right: -20px;
+        }
+        .float-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .float-icon.blue { background: #dbeafe; color: #0369a1; }
+        .float-icon.green { background: #dcfce7; color: #16a34a; }
+        .float-text h4 { font-size: 14px; font-weight: 700; color: #0f172a; }
+        .float-text p { font-size: 12px; color: #64748b; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 60px 24px 24px;
+        }
+        .footer-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 16px;
+        }
+        .footer-brand i { color: #0ea5e9; }
+        .footer-desc {
+            font-size: 14px;
+            line-height: 1.7;
+            max-width: 300px;
+        }
+        .footer-col h4 {
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        .footer-col a {
+            display: block;
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+        .footer-col a:hover { color: #0ea5e9; }
+        .footer-bottom {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-top: 24px;
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            transition: all 0.3s;
+        }
+        .footer-social a:hover {
+            background: #0ea5e9;
+            color: #fff;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .category-grid { grid-template-columns: repeat(2, 1fr); }
+            .why-grid { grid-template-columns: 1fr 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links, .nav-actions { display: none; }
+            .mobile-toggle { display: block; }
+            .hero-stats { gap: 24px; }
+            .hero-cta { flex-direction: column; align-items: center; }
+            .category-grid { grid-template-columns: 1fr 1fr; }
+            .why-grid { grid-template-columns: 1fr; }
+            .host-section {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .host-image { order: -1; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .mobile-menu {
+                display: none;
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background: #fff;
+                padding: 24px;
+                box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+                z-index: 999;
+            }
+            .mobile-menu.active { display: block; }
+            .mobile-menu a {
+                display: block;
+                padding: 14px 0;
+                font-size: 16px;
+                font-weight: 500;
+                color: #334155;
+                border-bottom: 1px solid #f1f5f9;
+            }
+            .mobile-menu .btn-mobile-primary {
+                display: block;
+                margin-top: 16px;
+                padding: 14px;
+                background: linear-gradient(135deg, #0369a1, #0ea5e9);
+                color: #fff;
+                text-align: center;
+                border-radius: 12px;
+                font-weight: 600;
+            }
+        }
+        @media (max-width: 480px) {
+            .hero-search {
+                flex-direction: column;
+                border-radius: 24px;
+                padding: 20px;
+            }
+            .hero-search input { width: 100%; text-align: center; }
+            .btn-search-hero { width: 100%; justify-content: center; }
+            .category-grid { grid-template-columns: 1fr; }
+            .hero-stats { flex-direction: column; gap: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-brand">
+                <i class="fas fa-globe-asia"></i>
+                Wonderloka
+            </a>
+            <div class="nav-links">
+                <a href="#destinations">Destinasi</a>
+                <a href="#categories">Kategori</a>
+                <a href="#why-us">Tentang</a>
+                <a href="#host">Jadi Host</a>
+            </div>
+            <div class="nav-actions">
+                <a href="halaman-login-user.html" class="btn-nav-outline">Masuk</a>
+                <a href="halaman-login-user.html" class="btn-nav-primary">Daftar</a>
+            </div>
+            <div class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#destinations">Destinasi</a>
+            <a href="#categories">Kategori</a>
+            <a href="#why-us">Tentang</a>
+            <a href="#host">Jadi Host</a>
+            <a href="halaman-login-user.html" class="btn-mobile-primary">Masuk / Daftar</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg-shapes">
+            <div class="hero-shape"></div>
+            <div class="hero-shape"></div>
+            <div class="hero-shape"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <i class="fas fa-sparkles"></i>
+                Platform Hidden Gems Indonesia
+            </div>
+            <h1>Temukan <span>Hidden Gems</span> Terbaik di Indonesia</h1>
+            <p>Jelajahi destinasi wisata tersembunyi yang belum banyak disentuh. Dari bukit sunrise hingga pantai eksotis, semua ada di Wonderloka.</p>
+
+            <div class="hero-cta">
+                <a href="#destinations" class="btn-hero-primary">
+                    <i class="fas fa-compass"></i>
+                    Jelajahi Destinasi
+                </a>
+                <a href="halaman-login-user.html" class="btn-hero-secondary" id="btnJadiHost">
+                    <i class="fas fa-store"></i>
+                    Daftar Sebagai Pengelola
+                </a>
+            </div>
+
+            <div class="hero-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="heroSearchInput" placeholder="Cari destinasi, lokasi, atau pengalaman..." />
+                <button class="btn-search-hero" id="heroSearchBtn">Cari</button>
+            </div>
+
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <h3 id="statDestinasi">0</h3>
+                    <p>Destinasi</p>
+                </div>
+                <div class="hero-stat">
+                    <h3 id="statPengunjung">0</h3>
+                    <p>Wisatawan</p>
+                </div>
+                <div class="hero-stat">
+                    <h3>4.8</h3>
+                    <p>Rating</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="categories" id="categories">
+        <div class="category-grid">
+            <div class="category-card" data-kategori="Alam">
+                <div class="category-icon alam"><i class="fas fa-mountain-sun"></i></div>
+                <h3>Alam</h3>
+                <p>Pantai, Gunung, Air Terjun</p>
+            </div>
+            <div class="category-card" data-kategori="Budaya">
+                <div class="category-icon budaya"><i class="fas fa-landmark"></i></div>
+                <h3>Budaya</h3>
+                <p>Candi, Museum, Tradisi</p>
+            </div>
+            <div class="category-card" data-kategori="Kuliner">
+                <div class="category-icon kuliner"><i class="fas fa-utensils"></i></div>
+                <h3>Kuliner</h3>
+                <p>Makanan Khas, Street Food</p>
+            </div>
+            <div class="category-card" data-kategori="Penginapan">
+                <div class="category-icon penginapan"><i class="fas fa-hotel"></i></div>
+                <h3>Penginapan & Tour</h3>
+                <p>Villa, Homestay, Trip</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- POPULAR DESTINATIONS -->
+    <section class="section" id="destinations">
+        <div class="section-header">
+            <span class="section-tag">Populer</span>
+            <h2>Destinasi Yang lagi Trending</h2>
+            <p>Temukan destinasi yang sedang populer dan banyak dipilih wisatawan.</p>
+        </div>
+        <div class="destinations-grid" id="destinationsGrid">
+            <!-- Loaded via JS -->
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section class="section">
+        <div class="why-section" id="why-us">
+            <div class="section-header">
+                <span class="section-tag">Keunggulan</span>
+                <h2>Kenapa Pilih Wonderloka?</h2>
+                <p>Platform terpercaya untuk menemukan hidden gems Indonesia.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-map-pin"></i></div>
+                    <h3>Destinasi Autentik</h3>
+                    <p>Temukan tempat-tempat tersembunyi yang belum ternoda tourist trap. Pengalaman asli Indonesia!</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-hand-holding-heart"></i></div>
+                    <h3>Dukung Usaha Lokal</h3>
+                    <p>Setiap booking mendukung pengusaha lokal dan komunitas wisata Indonesia.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-shield-halved"></i></div>
+                    <h3>Booking Aman</h3>
+                    <p>Sistem booking yang transparan dengan dukungan customer service 24/7.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-wallet"></i></div>
+                    <h3>Harga Transparan</h3>
+                    <p>Tanpa biaya tersembunyi. Harga yang Anda lihat adalah harga yang Anda bayar.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-mobile-screen-button"></i></div>
+                    <h3>Mudah di Mobile</h3>
+                    <p>Akses Wonderloka kapan saja dengan tampilan mobile yang responsif.</p>
+                </div>
+                <div class="why-card">
+                    <div class="why-icon"><i class="fas fa-star"></i></div>
+                    <h3>Ulasan Terpercaya</h3>
+                    <p>Baca ulasan nyata dari wisatawan yang sudah pernah berkunjung.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOST SECTION -->
+    <section class="host-section" id="host">
+        <div class="host-content">
+            <span class="section-tag">Bergabung</span>
+            <h2>Jadi Pengusaha Lokal di Wonderloka</h2>
+            <p>Tingkatkan visibilitas usaha wisata Anda dan jangkau lebih banyak wisatawan. Bergabung bersama ratusan pengusaha lokal yang sudah sukses di Wonderloka.</p>
+            <div class="host-benefits">
+                <div class="host-benefit">
+                    <i class="fas fa-check"></i>
+                    <span>Dashboard pengelolaan usaha lengkap</span>
+                </div>
+                <div class="host-benefit">
+                    <i class="fas fa-check"></i>
+                    <span>Analisis bisnis dan grafik penjualan</span>
+                </div>
+                <div class="host-benefit">
+                    <i class="fas fa-check"></i>
+                    <span>Kelola pesanan dan bookings</span>
+                </div>
+                <div class="host-benefit">
+                    <i class="fas fa-check"></i>
+                    <span>Pendaftaran gratis tanpa biaya tersembunyi</span>
+                </div>
+            </div>
+            <a href="halaman-login-user.html" class="btn-host" id="btnDaftarHost">
+                <i class="fas fa-rocket"></i>
+                Daftar Sekarang
+            </a>
+        </div>
+        <div class="host-image">
+            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&h=500&fit=crop" alt="Host Wonderloka" />
+            <div class="host-float-card card-1">
+                <div class="float-icon blue"><i class="fas fa-chart-line"></i></div>
+                <div class="float-text">
+                    <h4>+50% Penjualan</h4>
+                    <p>Setelah bergabung</p>
+                </div>
+            </div>
+            <div class="host-float-card card-2">
+                <div class="float-icon green"><i class="fas fa-users"></i></div>
+                <div class="float-text">
+                    <h4>500+ Host</h4>
+                    <p>Di seluruh Indonesia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div>
+                <div class="footer-brand">
+                    <i class="fas fa-globe-asia"></i>
+                    Wonderloka
+                </div>
+                <p class="footer-desc">
+                    Platform wisata untuk menemukan hidden gems Indonesia. Jelajahi, booking, dan dukung usaha lokal.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigasi</h4>
+                <a href="#">Beranda</a>
+                <a href="#destinations">Destinasi</a>
+                <a href="#categories">Kategori</a>
+                <a href="#host">Jadi Host</a>
+            </div>
+            <div class="footer-col">
+                <h4>Kategori</h4>
+                <a href="#">Alam</a>
+                <a href="#">Budaya</a>
+                <a href="#">Kuliner</a>
+                <a href="#">Penginapan</a>
+            </div>
+            <div class="footer-col">
+                <h4>Bantuan</h4>
+                <a href="#">FAQ</a>
+                <a href="#">Syarat & Ketentuan</a>
+                <a href="#">Kebijakan Privasi</a>
+                <a href="#">Hubungi Kami</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+            <p>&copy; 2026 Wonderloka. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="assets/js/script-api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // ===== NAVBAR SCROLL EFFECT =====
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // ===== MOBILE MENU =====
+            const mobileToggle = document.getElementById('mobileToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
+            if (mobileToggle && mobileMenu) {
+                mobileToggle.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('active');
+                });
+            }
+
+            // ===== ANIMATED COUNTERS =====
+            function animateCounter(el, target) {
+                let current = 0;
+                const increment = Math.ceil(target / 50);
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    el.textContent = current.toLocaleString('id-ID');
+                }, 30);
+            }
+
+            // ===== LOAD DESTINATIONS =====
+            async function loadDestinations() {
+                const grid = document.getElementById('destinationsGrid');
+                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">Memuat destinasi...</p>';
+
+                try {
+                    const data = await apiFetch('/destinations');
+                    renderDestinations(data.slice(0, 9)); // Show first 9
+
+                    // Update stats
+                    animateCounter(document.getElementById('statDestinasi'), data.length);
+                    animateCounter(document.getElementById('statPengunjung'), Math.floor(Math.random() * 5000) + 1000);
+                } catch (err) {
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#ef4444;">Gagal memuat destinasi.</p>';
+                }
+            }
+
+            function renderDestinations(data) {
+                const grid = document.getElementById('destinationsGrid');
+                if (!data.length) {
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">Belum ada destinasi.</p>';
+                    return;
+                }
+
+                let html = '';
+                data.forEach(d => {
+                    const isLoggedIn = localStorage.getItem('wonderloka_token');
+                    const detailUrl = isLoggedIn
+                        ? 'wisatawan/detail-destinasi.html?id=' + d.id_destinasi
+                        : 'halaman-login-user.html';
+
+                    html += `
+                        <div class="destination-card">
+                            <div class="dest-image">
+                                <img src="${d.gambar || 'https://via.placeholder.com/400x250'}" alt="${d.nama}" />
+                                <span class="dest-badge">${d.kategori}</span>
+                                <span class="dest-rating"><i class="fas fa-star"></i> ${d.rating || '4.5'}</span>
+                            </div>
+                            <div class="dest-body">
+                                <h3>${d.nama}</h3>
+                                <p class="dest-location"><i class="fas fa-map-marker-alt"></i> ${d.lokasi || 'Indonesia'}</p>
+                                <div class="dest-footer">
+                                    <div class="dest-price">
+                                        ${d.harga > 0 ? `Mulai <strong>Rp ${Number(d.harga).toLocaleString('id-ID')}</strong>` : '<strong>Gratis</strong>'}
+                                    </div>
+                                    <a href="${detailUrl}" class="btn-dest">Detail</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+            }
+
+            // ===== SEARCH =====
+            const heroSearchBtn = document.getElementById('heroSearchBtn');
+            const heroSearchInput = document.getElementById('heroSearchInput');
+
+            if (heroSearchBtn && heroSearchInput) {
+                async function doSearch() {
+                    const query = heroSearchInput.value.trim();
+                    if (!query) {
+                        alert('Silakan ketik destinasi yang ingin dicari.');
+                        return;
+                    }
+
+                    // Simpan search log
+                    try {
+                        await fetch('/api/destinations/search-logs', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ keyword: query })
+                        });
+                    } catch (_) {}
+
+                    // Cek login
+                    if (isLoggedIn()) {
+                        window.location.href = 'wisatawan/dashboard.html?search=' + encodeURIComponent(query);
+                    } else {
+                        if (confirm('Silakan login terlebih dahulu untuk hasil pencarian lengkap. Ke halaman login?')) {
+                            window.location.href = 'halaman-login-user.html';
+                        }
+                    }
+                }
+
+                heroSearchBtn.addEventListener('click', doSearch);
+                heroSearchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') doSearch();
+                });
+            }
+
+            // ===== CATEGORY FILTER =====
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const kategori = this.dataset.kategori;
+                    if (isLoggedIn()) {
+                        window.location.href = 'wisatawan/dashboard.html?kategori=' + encodeURIComponent(kategori);
+                    } else {
+                        if (confirm('Silakan login untuk melihat destinasi kategori ' + kategori + '. Ke halaman login?')) {
+                            window.location.href = 'halaman-login-user.html';
+                        }
+                    }
+                });
+            });
+
+            // ===== HOST BUTTONS =====
+            document.querySelectorAll('#btnJadiHost, #btnDaftarHost').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // Redirect akan jalan natural
+                });
+            });
+
+            // ===== SMOOTH SCROLL =====
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href === '#') return;
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        mobileMenu.classList.remove('active');
+                    }
+                });
+            });
+
+            // ===== INIT =====
+            loadDestinations();
+        });
+    </script>
+</body>
+</html>
