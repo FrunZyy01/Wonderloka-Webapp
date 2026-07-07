@@ -392,6 +392,45 @@
             margin: 0;
         }
 
+        /* Ticket Counter */
+        .ticket-counter {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .ticket-counter input {
+            width: 80px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 12px;
+        }
+        .counter-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid #0d47a1;
+            background: #fff;
+            color: #0d47a1;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .counter-btn:hover {
+            background: #0d47a1;
+            color: #fff;
+        }
+        .counter-btn:active {
+            transform: scale(0.95);
+        }
+        .counter-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
         .order-card .total-section {
             display: flex;
             justify-content: space-between;
@@ -597,7 +636,15 @@
 
             <div class="form-group">
                 <label for="jumlah">Jumlah Tiket / Orang</label>
-                <input type="number" id="jumlah" value="1" min="1" max="20" />
+                <div class="ticket-counter">
+                    <button type="button" class="counter-btn minus" id="btnMinus" aria-label="Kurangi">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" id="jumlah" value="1" min="1" max="20" readonly />
+                    <button type="button" class="counter-btn plus" id="btnPlus" aria-label="Tambah">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
             </div>
 
             <hr class="divider" />
@@ -622,11 +669,40 @@
     <script src="../assets/js/script-api.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Auth guard - redirect if not logged in
-            if (!isLoggedIn()) {
-                window.location.href = '../halaman-login-user.html';
-                return;
+            // ===== AUTH CHECK =====
+            // Proteksi: Hanya wisatawan yang boleh akses
+            function checkAuth() {
+                const user = getUser();
+                if (!user) {
+                    window.location.href = '../halaman-login-user.html';
+                    return null;
+                }
+
+                // Admin tidak boleh akses halaman wisatawan
+                if (user.role === 'admin') {
+                    window.location.href = '../superadmin/verifikasi-pengelola.html';
+                    return null;
+                }
+
+                // Pengusaha tidak boleh akses halaman wisatawan
+                if (user.role === 'pengusaha') {
+                    if (user.status_verifikasi === 'terverifikasi') {
+                        window.location.href = '../admin/index.html';
+                    } else {
+                        window.location.href = '../status-verifikasi.html';
+                    }
+                    return null;
+                }
+
+                if (user.role !== 'wisatawan') {
+                    window.location.href = '../halaman-login-user.html';
+                    return null;
+                }
+
+                return user;
             }
+            const currentUser = checkAuth();
+            if (!currentUser) return;
 
             // Profile dropdown
             const profileBtn = document.getElementById('profileBtn');
@@ -670,6 +746,8 @@
             const totalAmount = document.getElementById('totalAmount');
             const hargaSpan = document.getElementById('destinasiHarga');
             const btnPayment = document.getElementById('btnPayment');
+            const btnMinus = document.getElementById('btnMinus');
+            const btnPlus = document.getElementById('btnPlus');
             const bookingFeedback = document.getElementById('bookingFeedback');
             let hargaPerPax = 0;
 
@@ -707,13 +785,30 @@
                 totalAmount.textContent = 'Rp ' + total.toLocaleString('id-ID');
             }
 
-            if (jumlahInput) {
-                jumlahInput.addEventListener('input', updateTotal);
+            // Ticket counter buttons
+            if (btnMinus) {
+                btnMinus.addEventListener('click', function() {
+                    let current = parseInt(jumlahInput.value) || 1;
+                    if (current > 1) {
+                        jumlahInput.value = current - 1;
+                        updateTotal();
+                    }
+                });
             }
 
-            // Submit booking
+            if (btnPlus) {
+                btnPlus.addEventListener('click', function() {
+                    let current = parseInt(jumlahInput.value) || 1;
+                    if (current < 20) {
+                        jumlahInput.value = current + 1;
+                        updateTotal();
+                    }
+                });
+            }
+
+            // Submit booking - redirect ke halaman pembayaran
             if (btnPayment) {
-                btnPayment.addEventListener('click', async function() {
+                btnPayment.addEventListener('click', function() {
                     const tanggal = document.getElementById('tanggal').value;
                     const jumlah = parseInt(jumlahInput.value) || 1;
 
@@ -730,29 +825,22 @@
                         return;
                     }
 
-                    btnPayment.disabled = true;
-                    btnPayment.textContent = 'Memproses...';
-                    bookingFeedback.textContent = '';
+                    // Simpan data booking sementara ke sessionStorage
+                    const bookingData = {
+                        id_destinasi: parseInt(destinasiId),
+                        nama_destinasi: document.getElementById('destinasiTitle').textContent,
+                        lokasi: document.getElementById('destinasiLocation').textContent.replace('📍 ', ''),
+                        gambar: document.getElementById('destinasiImage').src,
+                        harga_per_tiket: hargaPerPax,
+                        tgl_kunjungan: tanggal,
+                        jumlah_tiket: jumlah,
+                        total_harga: jumlah * hargaPerPax
+                    };
 
-                    try {
-                        const data = await apiFetch('/bookings', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                id_destinasi: parseInt(destinasiId),
-                                tgl_kunjungan: tanggal,
-                                jumlah_tiket: jumlah
-                            })
-                        });
+                    sessionStorage.setItem('pending_booking', JSON.stringify(bookingData));
 
-                        bookingFeedback.style.color = '#2e7d32';
-                        bookingFeedback.textContent = '✅ Booking berhasil! (ID: ' + data.booking.id_booking + ')';
-                        btnPayment.textContent = '✓ Berhasil Dipesan';
-                    } catch (err) {
-                        bookingFeedback.style.color = '#c62828';
-                        bookingFeedback.textContent = '⚠️ ' + err.message;
-                        btnPayment.disabled = false;
-                        btnPayment.textContent = 'Lanjut ke Pembayaran';
-                    }
+                    // Redirect ke halaman pembayaran
+                    window.location.href = 'pembayaran.html';
                 });
             }
 

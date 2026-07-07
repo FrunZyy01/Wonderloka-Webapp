@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wonderloka - Kelola Pesanan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #e3f2fd; color: #1a1a1a; }
+        a { text-decoration: none; color: inherit; }
+        .navbar { background: #fff; box-shadow: 0 2px 12px rgba(13,71,161,.08); padding: 0 20px; position: sticky; top: 0; z-index: 100; }
+        .nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 70px; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; font-size: 22px; font-weight: 700; color: #0d47a1; }
+        .nav-menu { display: flex; list-style: none; gap: 32px; font-weight: 500; font-size: 15px; }
+        .nav-menu a { color: #555; transition: color .3s; padding: 6px 0; border-bottom: 3px solid transparent; }
+        .nav-menu a:hover, .nav-menu a.active { color: #0d47a1; border-bottom-color: #0d47a1; }
+        .nav-actions { display: flex; align-items: center; gap: 16px; position: relative; }
+        .profile-btn { background: none; border: none; cursor: pointer; font-size: 28px; color: #555; }
+        .profile-dropdown { display: none; position: absolute; top: 50px; right: 0; background: #fff; border-radius: 12px; box-shadow: 0 8px 30px rgba(13,71,161,.12); min-width: 180px; overflow: hidden; z-index: 200; }
+        .profile-dropdown.active { display: block; }
+        .profile-dropdown a { display: flex; align-items: center; gap: 12px; padding: 12px 20px; font-size: 14px; color: #333; border-bottom: 1px solid #f0f0f0; }
+        .profile-dropdown a:hover { background: #e3f2fd; }
+        .profile-dropdown .logout-item { color: #d32f2f; }
+        .page-hero { background: linear-gradient(135deg, #0d47a1, #1565c0); padding: 40px 20px; text-align: center; color: #fff; }
+        .page-hero h1 { font-size: 32px; font-weight: 700; }
+        .table-section { max-width: 1200px; margin: 32px auto 60px; padding: 0 20px; }
+        .table-wrapper { background: #fff; border-radius: 16px; box-shadow: 0 4px 16px rgba(13,71,161,.06); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th { background: #e3f2fd; color: #0d47a1; text-align: left; padding: 14px 16px; font-weight: 600; }
+        td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; color: #333; }
+        tr:last-child td { border-bottom: none; }
+        .status-badge { display: inline-block; padding: 4px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; }
+        .status-badge.menunggu { background: #fff3e0; color: #e65100; }
+        .status-badge.dikonfirmasi { background: #bbdefb; color: #0d47a1; }
+        .status-badge.selesai { background: #c8e6c9; color: #2e7d32; }
+        .status-badge.dibatalkan { background: #ffcdd2; color: #c62828; }
+        .btn-action { border: none; padding: 5px 12px; border-radius: 30px; font-family: 'Poppins', sans-serif; font-weight: 500; font-size: 12px; cursor: pointer; margin: 2px; }
+        .btn-konfirmasi { background: #bbdefb; color: #0d47a1; }
+        .btn-selesai { background: #c8e6c9; color: #2e7d32; }
+        .btn-batal { background: #ffcdd2; color: #c62828; }
+        .footer { text-align: center; padding: 24px; font-size: 14px; color: #777; border-top: 1px solid #bbdefb; }
+        @media (max-width: 768px) { .nav-menu { display: none; } }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand"><i class="fas fa-globe-asia"></i> Wonderloka</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Dashboard</a></li>
+                <li><a href="kelola-destinasi.html">Destinasi</a></li>
+                <li><a href="kelola-pesanan.html" class="active">Pesanan</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="profile-btn" id="profileBtn"><i class="fas fa-user-circle"></i></button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <section class="page-hero"><h1>Kelola Pesanan</h1></section>
+    <section class="table-section">
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>No</th><th>User</th><th>Destinasi</th><th>Tanggal</th><th>Tiket</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody id="pesananBody"></tbody>
+            </table>
+        </div>
+    </section>
+    <footer class="footer"><p>&copy; 2026 Wonderloka.</p></footer>
+    <script src="../assets/js/script-api.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const user = getUser();
+        if (!user || user.role !== 'pengusaha') { clearAuth(); window.location.href = '../halaman-login-user.html'; return; }
+        document.getElementById('profileBtn').onclick = function(e) { e.stopPropagation(); document.getElementById('profileDropdown').classList.toggle('active'); };
+        document.addEventListener('click', function(e) { if (!document.getElementById('profileBtn').contains(e.target)) document.getElementById('profileDropdown').classList.remove('active'); });
+        document.getElementById('logoutBtn').onclick = function(e) { e.preventDefault(); if (confirm('Yakin keluar?')) { clearAuth(); window.location.href = '../halaman-login-user.html'; } };
+        const tbody = document.getElementById('pesananBody');
+        async function loadPesanan() {
+            try {
+                const data = await apiFetch('/pengelola/bookings');
+                if (!data.length) { tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#94a3b8;">Belum ada pesanan</td></tr>'; return; }
+                let html = '';
+                data.forEach(function(b, i) {
+                    var tgl = b.tgl_kunjungan ? b.tgl_kunjungan.split('T')[0] : '-';
+                    var canConfirm = b.status === 'menunggu';
+                    var canComplete = b.status === 'dikonfirmasi';
+                    html += '<tr><td>' + (i+1) + '</td><td>' + (b.nama_lengkap || b.email || '-') + '</td><td>' + (b.destinasi || '-') + '</td><td>' + tgl + '</td><td>' + (b.jumlah_tiket || 0) + '</td><td>Rp ' + Number(b.total_harga || 0).toLocaleString('id-ID') + '</td><td><span class="status-badge ' + b.status + '">' + b.status + '</span></td><td>' +
+                        (canConfirm ? '<button class="btn-action btn-konfirmasi" data-id="' + b.id_booking + '" data-status="dikonfirmasi">Konfirmasi</button>' : '') +
+                        (canComplete ? '<button class="btn-action btn-selesai" data-id="' + b.id_booking + '" data-status="selesai">Selesai</button>' : '') +
+                        ((canConfirm || canComplete) ? '<button class="btn-action btn-batal" data-id="' + b.id_booking + '" data-status="dibatalkan">Batal</button>' : '-') +
+                        '</td></tr>';
+                });
+                tbody.innerHTML = html;
+                tbody.querySelectorAll('.btn-action').forEach(function(btn) {
+                    btn.onclick = async function() {
+                        var id = this.dataset.id, status = this.dataset.status;
+                        if (!confirm('Ubah status menjadi "' + status + '"?')) return;
+                        this.disabled = true;
+                        try {
+                            await apiFetch('/pengelola/bookings/' + id + '/status', { method: 'PUT', body: JSON.stringify({ status: status }) });
+                            loadPesanan();
+                        } catch (err) { alert(err.message); this.disabled = false; }
+                    };
+                });
+            } catch (err) { tbody.innerHTML = '<tr><td colspan="8" style="color:red;">Gagal memuat</td></tr>'; }
+        }
+        loadPesanan();
+    });
+    </script>
+</body>
+</html>

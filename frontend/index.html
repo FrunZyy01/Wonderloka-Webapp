@@ -1081,7 +1081,7 @@
                         return;
                     }
 
-                    // Simpan search log
+                    // Simpan search log (tanpa redirect ke login)
                     try {
                         await fetch('/api/destinations/search-logs', {
                             method: 'POST',
@@ -1090,13 +1090,22 @@
                         });
                     } catch (_) {}
 
-                    // Cek login
-                    if (isLoggedIn()) {
-                        window.location.href = 'wisatawan/dashboard.html?search=' + encodeURIComponent(query);
-                    } else {
-                        if (confirm('Silakan login terlebih dahulu untuk hasil pencarian lengkap. Ke halaman login?')) {
-                            window.location.href = 'halaman-login-user.html';
+                    // Tampilkan hasil pencarian di section destinasi
+                    const grid = document.getElementById('destinationsGrid');
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">Mencari "' + query + '"...</p>';
+
+                    // Scroll ke section destinasi
+                    document.getElementById('destinations').scrollIntoView({ behavior: 'smooth' });
+
+                    try {
+                        const data = await apiFetch('/destinations?search=' + encodeURIComponent(query));
+                        if (data.length === 0) {
+                            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">Tidak ada destinasi untuk "' + query + '".</p>';
+                        } else {
+                            renderDestinations(data);
                         }
+                    } catch (err) {
+                        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#ef4444;">Gagal mencari: ' + err.message + '</p>';
                     }
                 }
 
@@ -1106,19 +1115,76 @@
                 });
             }
 
-            // ===== CATEGORY FILTER =====
+            // ===== CATEGORY FILTER (juga tanpa redirect login) =====
             document.querySelectorAll('.category-card').forEach(card => {
                 card.addEventListener('click', function() {
                     const kategori = this.dataset.kategori;
-                    if (isLoggedIn()) {
-                        window.location.href = 'wisatawan/dashboard.html?kategori=' + encodeURIComponent(kategori);
-                    } else {
-                        if (confirm('Silakan login untuk melihat destinasi kategori ' + kategori + '. Ke halaman login?')) {
-                            window.location.href = 'halaman-login-user.html';
-                        }
-                    }
+                    const grid = document.getElementById('destinationsGrid');
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">Memuat kategori ' + kategori + '...</p>';
+
+                    // Scroll ke section destinasi
+                    document.getElementById('destinations').scrollIntoView({ behavior: 'smooth' });
+
+                    apiFetch('/destinations?kategori=' + encodeURIComponent(kategori))
+                        .then(data => {
+                            if (data.length === 0) {
+                                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">Tidak ada destinasi untuk kategori ' + kategori + '.</p>';
+                            } else {
+                                renderDestinations(data);
+                            }
+                        })
+                        .catch(err => {
+                            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#ef4444;">Gagal memuat.</p>';
+                        });
                 });
             });
+
+            // Fungsi renderDestinations - diperbarui agar tombol Detail redirect ke login jika belum login
+            function renderDestinations(data) {
+                const grid = document.getElementById('destinationsGrid');
+                if (!data.length) {
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;padding:40px;color:#64748b;">Belum ada destinasi.</p>';
+                    return;
+                }
+
+                let html = '';
+                data.forEach(d => {
+                    // Check login untuk redirect - tombol Detail tetap ke login jika belum login
+                    const detailUrl = 'halaman-login-user.html'; // Default ke login
+
+                    html += `
+                        <div class="destination-card">
+                            <div class="dest-image">
+                                <img src="${d.gambar || 'https://via.placeholder.com/400x250'}" alt="${d.nama}" />
+                                <span class="dest-badge">${d.kategori}</span>
+                                <span class="dest-rating"><i class="fas fa-star"></i> ${d.rating || '4.5'}</span>
+                            </div>
+                            <div class="dest-body">
+                                <h3>${d.nama}</h3>
+                                <p class="dest-location"><i class="fas fa-map-marker-alt"></i> ${d.lokasi || 'Indonesia'}</p>
+                                <div class="dest-footer">
+                                    <div class="dest-price">
+                                        ${d.harga > 0 ? `Mulai <strong>Rp ${Number(d.harga).toLocaleString('id-ID')}</strong>` : '<strong>Gratis</strong>'}
+                                    </div>
+                                    <a href="${detailUrl}" class="btn-dest">Detail</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                grid.innerHTML = html;
+
+                // Tambah event listener untuk redirect ke detail jika sudah login
+                grid.querySelectorAll('.destination-card .btn-dest').forEach((btn, index) => {
+                    btn.addEventListener('click', function(e) {
+                        if (isLoggedIn()) {
+                            e.preventDefault();
+                            window.location.href = 'wisatawan/detail-destinasi.html?id=' + data[index].id_destinasi;
+                        }
+                        // Jika belum login, biarkan redirect ke halaman-login-user.html
+                    });
+                });
+            }
 
             // ===== HOST BUTTONS =====
             document.querySelectorAll('#btnJadiHost, #btnDaftarHost').forEach(btn => {

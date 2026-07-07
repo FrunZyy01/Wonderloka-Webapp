@@ -6,17 +6,44 @@ const router = express.Router();
 
 router.use(authenticate);
 
+// ============================================================
+// VALIDASI HELPER - Cek id_user sebelum query
+// ============================================================
+function validateUserId(req, res) {
+    const id_user = req.user.id_user;
+    if (!id_user) {
+        res.status(401).json({ message: 'Sesi login bermasalah. Silakan login ulang.' });
+        return null;
+    }
+    return id_user;
+}
+
+// ============================================================
+// POST /api/bookings
+// Buat booking baru
+// ============================================================
 router.post('/', async (req, res) => {
     try {
         const { id_destinasi, tgl_kunjungan, jumlah_tiket } = req.body;
-        const id_user = req.user.id_user;
+        const id_user = validateUserId(req, res);
+        if (!id_user) return;
 
-        if (!id_destinasi || !tgl_kunjungan) {
-            return res.status(400).json({ message: 'Destinasi dan tanggal kunjungan wajib diisi.' });
+        // Validasi input
+        if (!id_destinasi) {
+            return res.status(400).json({ message: 'Destinasi wajib dipilih.' });
+        }
+        if (!tgl_kunjungan) {
+            return res.status(400).json({ message: 'Tanggal kunjungan wajib diisi.' });
         }
 
+        const tiket = parseInt(jumlah_tiket) || 1;
+        if (tiket < 1) {
+            return res.status(400).json({ message: 'Jumlah tiket minimal 1.' });
+        }
+
+        // Cek destinasi ada
         const [destinasi] = await pool.query(
-            'SELECT id_destinasi, harga FROM destination WHERE id_destinasi = ?',
+            'SELECT id_destinasi, harga, nama FROM destination WHERE id_destinasi = ?',
             [id_destinasi]
         );
 
@@ -24,13 +51,15 @@ router.post('/', async (req, res) => {
             return res.status(404).json({ message: 'Destinasi tidak ditemukan.' });
         }
 
-        const tiket = parseInt(jumlah_tiket) || 1;
-        const total_harga = destinasi[0].harga * tiket;
+        const harga = parseInt(destinasi[0].harga) || 0;
+        const total_harga = harga * tiket;
 
         const [result] = await pool.query(
-            'INSERT INTO bookings (id_user, id_destinasi, tgl_kunjungan, jumlah_tiket, total_harga) VALUES (?, ?, ?, ?, ?)',
-            [id_user, id_destinasi, tgl_kunjungan, tiket, total_harga]
+            'INSERT INTO bookings (id_user, id_destinasi, tgl_kunjungan, jumlah_tiket, total_harga, status) VALUES (?, ?, ?, ?, ?, ?)',
+            [id_user, id_destinasi, tgl_kunjungan, tiket, total_harga, 'menunggu']
         );
+
+        console.log('✅ Booking dibuat:', { id_booking: result.insertId, id_user, id_destinasi, total_harga });
 
         res.status(201).json({
             message: 'Booking berhasil dibuat.',
@@ -38,6 +67,7 @@ router.post('/', async (req, res) => {
                 id_booking: result.insertId,
                 id_user,
                 id_destinasi,
+                nama_destinasi: destinasi[0].nama,
                 tgl_kunjungan,
                 jumlah_tiket: tiket,
                 total_harga,
@@ -45,36 +75,53 @@ router.post('/', async (req, res) => {
             }
         });
     } catch (err) {
-        console.error('Create booking error:', err);
+        console.error('❌ Create booking error:', err.code, err.message);
         res.status(500).json({ message: 'Terjadi kesalahan server.' });
     }
 });
 
+// ============================================================
+// GET /api/bookings
+// Ambil semua booking user
+// ============================================================
 router.get('/', async (req, res) => {
     try {
-        const id_user = req.user.id_user;
+        const id_user = validateUserId(req, res);
+        if (!id_user) return;
 
         const [rows] = await pool.query(
-            `SELECT b.*, d.nama AS destinasi, d.lokasi, d.gambar, d.harga
+            `SELECT b.id_booking, b.id_user, b.id_destinasi, b.tgl_kunjungan,
+                    b.jumlah_tiket, b.total_harga, b.status, b.created_at,
+                    COALESCE(d.nama, 'Destinasi') AS destinasi,
+                    COALESCE(d.lokasi, '-') AS lokasi,
+                    COALESCE(d.gambar, '') AS gambar,
+                    COALESCE(d.harga, 0) AS harga
              FROM bookings b
-             JOIN destination d ON b.id_destinasi = d.id_destinasi
+             LEFT JOIN destination d ON b.id_destinasi = d.id_destinasi
              WHERE b.id_user = ?
              ORDER BY b.created_at DESC`,
             [id_user]
         );
 
+        console.log('✅ Get bookings:', { id_user, count: rows.length });
         res.json(rows);
     } catch (err) {
-        console.error('Get bookings error:', err);
+        console.error('❌ Get bookings error:', err.code, err.message);
         res.status(500).json({ message: 'Terjadi kesalahan server.' });
     }
 });
 
+// ============================================================
+// PUT /api/bookings/:id/batal
+// Batalkan booking
+// ============================================================
 router.put('/:id/batal', async (req, res) => {
     try {
         const { id } = req.params;
-        const id_user = req.user.id_user;
+        const id_user = validateUserId(req, res);
+        if (!id_user) return;
 
+        // Cek booking ada dan milik user
         const [booking] = await pool.query(
             'SELECT id_booking, status FROM bookings WHERE id_booking = ? AND id_user = ?',
             [id, id_user]
@@ -93,9 +140,10 @@ router.put('/:id/batal', async (req, res) => {
             ['dibatalkan', id]
         );
 
+        console.log('✅ Booking dibatalkan:', { id_booking: id, id_user });
         res.json({ message: 'Booking berhasil dibatalkan.' });
     } catch (err) {
-        console.error('Cancel booking error:', err);
+        console.error('❌ Cancel booking error:', err.code, err.message);
         res.status(500).json({ message: 'Terjadi kesalahan server.' });
     }
 });

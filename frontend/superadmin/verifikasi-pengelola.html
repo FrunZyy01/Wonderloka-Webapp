@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Verifikasi Pengelola - Wonderloka Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .navbar-brand img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .navbar-brand h1 {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .admin-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .stat-card .value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .stat-card.pending .value { color: #ff9800; }
+        .stat-card.verified .value { color: #4caf50; }
+        .stat-card.rejected .value { color: #f44336; }
+
+        .stat-card i {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card.pending i { color: #ff9800; }
+        .stat-card.verified i { color: #4caf50; }
+        .stat-card.rejected i { color: #f44336; }
+
+        /* Table */
+        .table-container {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background: #f9fafb;
+            font-size: 13px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+        }
+
+        td {
+            font-size: 14px;
+            color: #333;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-badge.pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+
+        .status-badge.terverifikasi {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .status-badge.ditolak {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        /* Action Buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-action {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-approve {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .btn-approve:hover {
+            background: #c8e6c9;
+        }
+
+        .btn-reject {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .btn-reject:hover {
+            background: #ffcdd2;
+        }
+
+        .btn-view {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+
+        .btn-view:hover {
+            background: #bbdefb;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top-color: #667eea;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            font-size: 20px;
+            color: #333;
+        }
+
+        .modal-body p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-body textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .modal-body textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-submit {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .btn-submit:hover {
+            background: #5568d3;
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 2000;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            background: #4caf50;
+        }
+
+        .toast.error {
+            background: #f44336;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Access Denied */
+        .access-denied {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f5f7fa;
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .access-denied.show {
+            display: flex;
+        }
+
+        .access-denied i {
+            font-size: 64px;
+            color: #f44336;
+            margin-bottom: 20px;
+        }
+
+        .access-denied h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .access-denied p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Access Denied Overlay -->
+    <div class="access-denied" id="accessDenied">
+        <i class="fas fa-ban"></i>
+        <h2>Akses Ditolak</h2>
+        <p>Halaman ini hanya untuk Admin Platform Wonderloka.</p>
+        <button class="btn btn-primary" onclick="window.location.href='../halaman-login-user.html'">
+            Kembali ke Login
+        </button>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <a href="#" class="navbar-brand">
+            <img src="../wonderloka.jpeg" alt="Wonderloka" onerror="this.style.display='none'" />
+            <h1>Wonderloka Admin</h1>
+        </a>
+        <div class="navbar-right">
+            <div class="admin-badge">
+                <i class="fas fa-user-shield"></i>
+                <span id="adminName">Admin</span>
+            </div>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+            <h2><i class="fas fa-user-check"></i> Verifikasi Pengelola Usaha</h2>
+            <p>Kelola dan verifikasi pendaftaran pengusaha wisata baru</p>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card pending">
+                <i class="fas fa-clock"></i>
+                <h3>Menunggu Verifikasi</h3>
+                <div class="value" id="statPending">0</div>
+            </div>
+            <div class="stat-card verified">
+                <i class="fas fa-check-circle"></i>
+                <h3>Terverifikasi</h3>
+                <div class="value" id="statVerified">0</div>
+            </div>
+            <div class="stat-card rejected">
+                <i class="fas fa-times-circle"></i>
+                <h3>Ditolak</h3>
+                <div class="value" id="statRejected">0</div>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Daftar Pendaftaran Pengusaha</h3>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Lengkap</th>
+                            <th>Email</th>
+                            <th>No. WhatsApp</th>
+                            <th>Nama Usaha</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <tr>
+                            <td colspan="7">
+                                <div class="loading">
+                                    <div class="spinner"></div>
+                                    <p>Memuat data...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Reject Modal -->
+    <div class="modal" id="rejectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-times-circle"></i> Tolak Pendaftaran</h3>
+            </div>
+            <div class="modal-body">
+                <p>Berikan alasan penolakan kepada pengusaha ini:</p>
+                <textarea id="rejectReason" placeholder="Contoh: Nama usaha sejenis sudah terdaftar atau data usaha belum lengkap."></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeRejectModal()">Batal</button>
+                <button class="btn btn-danger" onclick="confirmReject()">
+                    <i class="fas fa-times"></i> Tolak
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../script-api.js"></script>
+    <script>
+        let pendingData = [];
+        let selectedPengusahaId = null;
+
+        // Check access
+        document.addEventListener('DOMContentLoaded', function() {
+            const user = getUser();
+
+            if (!user) {
+                window.location.href = '../halaman-login-user.html';
+                return;
+            }
+
+            if (user.role !== 'admin') {
+                document.getElementById('accessDenied').classList.add('show');
+                return;
+            }
+
+            // Set admin name
+            document.getElementById('adminName').textContent = user.nama_lengkap || user.email;
+
+            // Load data
+            loadPengusahaList();
+        });
+
+        async function loadPengusahaList() {
+            const tableBody = document.getElementById('tableBody');
+
+            try {
+                const data = await apiFetch('/admin/verifikasi');
+                pendingData = data.pengusaha || [];
+
+                // Update stats
+                document.getElementById('statPending').textContent = pendingData.filter(p => p.status_verifikasi === 'pending').length;
+                document.getElementById('statVerified').textContent = pendingData.filter(p => p.status_verifikasi === 'terverifikasi').length;
+                document.getElementById('statRejected').textContent = pendingData.filter(p => p.status_verifikasi === 'ditolak').length;
+
+                if (pendingData.length === 0) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="fas fa-inbox"></i>
+                                    <h3>Belum Ada Pendaftaran</h3>
+                                    <p>Saat ini belum ada pengusaha yang mendaftar.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                tableBody.innerHTML = pendingData.map((p, index) => `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${escapeHtml(p.nama_lengkap)}</td>
+                        <td>${escapeHtml(p.email)}</td>
+                        <td>${escapeHtml(p.no_wa || '-')}</td>
+                        <td>${escapeHtml(p.nama_usaha || '-')}</td>
+                        <td>
+                            <span class="status-badge ${p.status_verifikasi}">
+                                <i class="fas fa-${getStatusIcon(p.status_verifikasi)}"></i>
+                                ${getStatusLabel(p.status_verifikasi)}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-btns">
+                                ${p.status_verifikasi === 'pending' ? `
+                                    <button class="btn-action btn-approve" onclick="approve(${p.id_user})">
+                                        <i class="fas fa-check"></i> Setuju
+                                    </button>
+                                    <button class="btn-action btn-reject" onclick="openRejectModal(${p.id_user})">
+                                        <i class="fas fa-times"></i> Tolak
+                                    </button>
+                                ` : `
+                                    <button class="btn-action btn-view" onclick="viewDetail(${p.id_user})">
+                                        <i class="fas fa-eye"></i> Detail
+                                    </button>
+                                `}
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+
+            } catch (err) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="7">
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <h3>Gagal Memuat Data</h3>
+                                <p>${err.message}</p>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        async function approve(userId) {
+            if (!confirm('Apakah Anda yakin ingin menyetujui pendaftaran ini?')) return;
+
+            try {
+                await apiFetch('/admin/verifikasi/' + userId + '/approve', {
+                    method: 'PUT'
+                });
+                showToast('Pendaftaran berhasil disetujui!', 'success');
+                loadPengusahaList();
+            } catch (err) {
+                showToast('Gagal menyetujui: ' + err.message, 'error');
+            }
+        }
+
+        function openRejectModal(userId) {
+            selectedPengusahaId = userId;
+            document.getElementById('rejectModal').classList.add('active');
+            document.getElementById('rejectReason').value = '';
+        }
+
+        function closeRejectModal() {
+            document.getElementById('rejectModal').classList.remove('active');
+            selectedPengusahaId = null;
+        }
+
+        async function confirmReject() {
+            const reason = document.getElementById('rejectReason').value.trim();
+
+            if (!reason) {
+                alert('Harap isi alasan penolakan!');
+                return;
+            }
+
+            try {
+                await apiFetch('/admin/verifikasi/' + selectedPengusahaId + '/reject', {
+                    method: 'PUT',
+                    body: JSON.stringify({ alasan: reason })
+                });
+                showToast('Pendaftaran berhasil ditolak!', 'success');
+                closeRejectModal();
+                loadPengusahaList();
+            } catch (err) {
+                showToast('Gagal menolak: ' + err.message, 'error');
+            }
+        }
+
+        function viewDetail(userId) {
+            const pengusaha = pendingData.find(p => p.id_user === userId);
+            if (!pengusaha) return;
+
+            alert(`Detail Pengusaha:\n\nNama: ${pengusaha.nama_lengkap}\nEmail: ${pengusaha.email}\nWhatsApp: ${pengusaha.no_wa || '-'}\nUsaha: ${pengusaha.nama_usaha || '-'}\nStatus: ${getStatusLabel(pengusaha.status_verifikasi)}\nAlasan: ${pengusaha.alasan_penolakan || '-'}`);
+        }
+
+        function logout() {
+            clearAuth();
+            window.location.href = '../halaman-login-user.html';
+        }
+
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = 'toast ' + type;
+            toast.innerHTML = '<i class="fas fa-' + (type === 'success' ? 'check-circle' : 'exclamation-circle') + '"></i> ' + message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function getStatusIcon(status) {
+            switch (status) {
+                case 'pending': return 'clock';
+                case 'terverifikasi': return 'check-circle';
+                case 'ditolak': return 'times-circle';
+                default: return 'question';
+            }
+        }
+
+        function getStatusLabel(status) {
+            switch (status) {
+                case 'pending': return 'Menunggu';
+                case 'terverifikasi': return 'Terverifikasi';
+                case 'ditolak': return 'Ditolak';
+                default: return status;
+            }
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '-';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

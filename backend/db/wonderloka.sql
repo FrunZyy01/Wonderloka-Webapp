@@ -1,10 +1,18 @@
 CREATE DATABASE IF NOT EXISTS wonderloka;
 USE wonderloka;
 
+-- Disable foreign key check untuk DROP TABLE yang aman
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS favorit;
+DROP TABLE IF EXISTS reviews;
+DROP TABLE IF EXISTS search_logs;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS destination;
 DROP TABLE IF EXISTS user;
+
+-- Re-enable foreign key check
+SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE user (
     id_user INT AUTO_INCREMENT PRIMARY KEY,

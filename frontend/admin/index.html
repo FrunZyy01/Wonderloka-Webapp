@@ -676,15 +676,38 @@
         document.addEventListener('DOMContentLoaded', async function() {
 
             // ===== AUTH CHECK =====
+            // Proteksi: Hanya pengusaha terverifikasi yang boleh akses
             function checkAuth() {
                 const user = getUser();
-                if (!user || user.role !== 'pengusaha') {
-                    clearAuth();
+                if (!user) {
                     window.location.href = '../halaman-login-user.html';
+                    return null;
                 }
+
+                // Admin tidak boleh akses halaman pengusaha
+                if (user.role === 'admin') {
+                    alert('Halaman ini tidak untuk Admin Platform.');
+                    window.location.href = '../superadmin/verifikasi-pengelola.html';
+                    return null;
+                }
+
+                // Wisatawan tidak boleh akses halaman pengusaha
+                if (user.role === 'wisatawan') {
+                    alert('Halaman ini tidak untuk Wisatawan.');
+                    window.location.href = '../wisatawan/dashboard.html';
+                    return null;
+                }
+
+                // Pengusaha harus terverifikasi
+                if (user.role === 'pengusaha' && user.status_verifikasi !== 'terverifikasi') {
+                    window.location.href = '../status-verifikasi.html';
+                    return null;
+                }
+
                 return user;
             }
             const currentUser = checkAuth();
+            if (!currentUser) return; // Stop execution if not authorized
 
             // ===== UI ELEMENTS =====
             const profileBtn = document.getElementById('profileBtn');

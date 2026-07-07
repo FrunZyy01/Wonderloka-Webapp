@@ -536,11 +536,40 @@
     <script src="../assets/js/script-api.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Auth guard - redirect if not logged in
-            if (!isLoggedIn()) {
-                window.location.href = '../halaman-login-user.html';
-                return;
+            // ===== AUTH CHECK =====
+            // Proteksi: Hanya wisatawan yang boleh akses
+            function checkAuth() {
+                const user = getUser();
+                if (!user) {
+                    window.location.href = '../halaman-login-user.html';
+                    return null;
+                }
+
+                // Admin tidak boleh akses halaman wisatawan
+                if (user.role === 'admin') {
+                    window.location.href = '../superadmin/verifikasi-pengelola.html';
+                    return null;
+                }
+
+                // Pengusaha tidak boleh akses halaman wisatawan
+                if (user.role === 'pengusaha') {
+                    if (user.status_verifikasi === 'terverifikasi') {
+                        window.location.href = '../admin/index.html';
+                    } else {
+                        window.location.href = '../status-verifikasi.html';
+                    }
+                    return null;
+                }
+
+                if (user.role !== 'wisatawan') {
+                    window.location.href = '../halaman-login-user.html';
+                    return null;
+                }
+
+                return user;
             }
+            const currentUser = checkAuth();
+            if (!currentUser) return;
 
             // ---------- PROFILE DROPDOWN ----------
             const profileBtn = document.getElementById('profileBtn');
@@ -580,6 +609,8 @@
             const container = document.getElementById('pesananContainer');
 
             function renderPesanan(data) {
+                const fallbackImg = '../assets/images/wonderloka.jpeg';
+
                 if (data.length === 0) {
                     container.innerHTML = `
                         <div class="empty-state">
@@ -597,15 +628,19 @@
                     const statusLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
                     const canCancel = p.status === 'menunggu' || p.status === 'dikonfirmasi';
                     const tanggal = p.tgl_kunjungan ? p.tgl_kunjungan.split('T')[0] : p.tanggal;
+                    const gambar = p.gambar || fallbackImg;
+                    const destinasi = p.destinasi || 'Destinasi';
+                    const lokasi = p.lokasi || '-';
+
                     html += `
                         <div class="pesanan-card" data-id="${p.id_booking}">
                             <div class="pesanan-thumb">
-                                <img src="${p.gambar || 'https://via.placeholder.com/200x150?text=Wisata'}" alt="${p.destinasi}" />
+                                <img src="${gambar}" alt="${destinasi}" onerror="this.onerror=null; this.src='${fallbackImg}';" />
                             </div>
                             <div class="pesanan-info">
-                                <h3>${p.destinasi}</h3>
+                                <h3>${destinasi}</h3>
                                 <div class="detail">
-                                    <i class="fas fa-map-marker-alt"></i> ${p.lokasi}
+                                    <i class="fas fa-map-marker-alt"></i> ${lokasi}
                                 </div>
                                 <div class="detail">
                                     <i class="fas fa-calendar-alt"></i> ${tanggal}
@@ -618,7 +653,7 @@
                                 <span class="status-badge ${p.status}">${statusLabel}</span>
                             </div>
                             <div class="pesanan-harga">
-                                Rp ${Number(p.total_harga).toLocaleString('id-ID')}
+                                Rp ${Number(p.total_harga || 0).toLocaleString('id-ID')}
                             </div>
                             <div class="pesanan-actions">
                                 <button class="btn-action btn-detail-pesanan" data-id="${p.id_booking}">

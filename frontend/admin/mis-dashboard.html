@@ -414,15 +414,37 @@
     <script>
         document.addEventListener('DOMContentLoaded', async function() {
 
-            // Auth check
+            // ===== AUTH CHECK =====
+            // Proteksi: Hanya pengusaha terverifikasi yang boleh akses
             function checkAuth() {
                 const user = getUser();
-                if (!user || user.role !== 'pengusaha') {
-                    clearAuth();
+                if (!user) {
                     window.location.href = '../halaman-login-user.html';
+                    return null;
                 }
+
+                // Admin tidak boleh akses halaman pengusaha
+                if (user.role === 'admin') {
+                    window.location.href = '../superadmin/verifikasi-pengelola.html';
+                    return null;
+                }
+
+                // Wisatawan tidak boleh akses halaman pengusaha
+                if (user.role === 'wisatawan') {
+                    window.location.href = '../halaman-login-user.html';
+                    return null;
+                }
+
+                // Pengusaha harus terverifikasi
+                if (user.role === 'pengusaha' && user.status_verifikasi !== 'terverifikasi') {
+                    window.location.href = '../status-verifikasi.html';
+                    return null;
+                }
+
+                return user;
             }
-            checkAuth();
+            const currentUser = checkAuth();
+            if (!currentUser) return;
 
             // Profile dropdown
             const profileBtn = document.getElementById('profileBtn');

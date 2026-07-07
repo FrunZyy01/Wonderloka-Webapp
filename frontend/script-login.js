@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    // ============================================================
+    // CONFIG
+    // ============================================================
+    const API_BASE = '/api';
+
+    // ============================================================
+    // ELEMENTS
+    // ============================================================
     const loginSection = document.getElementById('loginSection');
     const registerSection = document.getElementById('registerSection');
     const tabLogin = document.getElementById('tabLogin');
@@ -24,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const roleBtns = document.querySelectorAll('.role-btn');
     const roleInput = document.getElementById('roleInput');
 
+    // ============================================================
+    // UTILITY FUNCTIONS
+    // ============================================================
     function showLogin() {
         loginSection.classList.remove('hidden');
         registerSection.classList.add('hidden');
@@ -50,14 +61,89 @@ document.addEventListener('DOMContentLoaded', function() {
     function showFeedback(msg, type = 'error') {
         feedback.textContent = msg;
         feedback.className = 'form-feedback ' + type;
-        setTimeout(() => clearFeedback(), 5000);
+        setTimeout(() => clearFeedback(), 8000);
     }
 
     function isValidEmail(email) {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    // Role selector
+    // ============================================================
+    // LOCAL STORAGE FUNCTIONS
+    // ============================================================
+    function getToken() {
+        return localStorage.getItem('wonderloka_token');
+    }
+
+    function getUser() {
+        const data = localStorage.getItem('wonderloka_user');
+        return data ? JSON.parse(data) : null;
+    }
+
+    function setAuth(token, user) {
+        localStorage.setItem('wonderloka_token', token);
+        localStorage.setItem('wonderloka_user', JSON.stringify(user));
+        console.log('✅ Auth disimpan:', { token: token ? 'ada' : 'tidak ada', user });
+    }
+
+    function clearAuth() {
+        localStorage.removeItem('wonderloka_token');
+        localStorage.removeItem('wonderloka_user');
+        console.log('🗑️ Auth dibersihkan');
+    }
+
+    function isLoggedIn() {
+        return !!getToken();
+    }
+
+    // ============================================================
+    // API FETCH FUNCTION
+    // ============================================================
+    async function apiFetch(path, options = {}) {
+        const url = API_BASE + path;
+        const token = getToken();
+
+        console.log('📡 API Fetch:', {
+            url: url,
+            method: options.method || 'GET',
+            hasToken: !!token
+        });
+
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) {
+            headers['Authorization'] = 'Bearer ' + token;
+        }
+
+        try {
+            const res = await fetch(url, {
+                ...options,
+                headers: { ...headers, ...options.headers }
+            });
+
+            console.log('📥 Response status:', res.status);
+
+            // Parse JSON
+            const data = await res.json();
+            console.log('📥 Response data:', data);
+
+            // Handle error responses
+            if (!res.ok) {
+                throw new Error(data.message || 'Terjadi kesalahan (' + res.status + ')');
+            }
+
+            return data;
+        } catch (err) {
+            console.error('❌ API Error:', err.message);
+            if (err.message === 'Failed to fetch') {
+                throw new Error('Tidak dapat terhubung ke server. Pastikan server berjalan di port 5000.');
+            }
+            throw err;
+        }
+    }
+
+    // ============================================================
+    // ROLE SELECTOR
+    // ============================================================
     roleBtns.forEach(btn => {
         btn.addEventListener('click', function() {
             roleBtns.forEach(b => b.classList.remove('active'));
@@ -66,29 +152,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Toggle password
-    togglePassword.addEventListener('click', function() {
-        const type = passwordInput.type === 'password' ? 'text' : 'password';
-        passwordInput.type = type;
-        this.querySelector('i').classList.toggle('fa-eye');
-        this.querySelector('i').classList.toggle('fa-eye-slash');
-    });
+    // ============================================================
+    // TOGGLE PASSWORD
+    // ============================================================
+    if (togglePassword) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    }
 
-    toggleRegPassword.addEventListener('click', function() {
-        const type = regPassword.type === 'password' ? 'text' : 'password';
-        regPassword.type = type;
-        this.querySelector('i').classList.toggle('fa-eye');
-        this.querySelector('i').classList.toggle('fa-eye-slash');
-    });
+    if (toggleRegPassword) {
+        toggleRegPassword.addEventListener('click', function() {
+            const type = regPassword.type === 'password' ? 'text' : 'password';
+            regPassword.type = type;
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    }
 
-    toggleRegConfirm.addEventListener('click', function() {
-        const type = regConfirmPassword.type === 'password' ? 'text' : 'password';
-        regConfirmPassword.type = type;
-        this.querySelector('i').classList.toggle('fa-eye');
-        this.querySelector('i').classList.toggle('fa-eye-slash');
-    });
+    if (toggleRegConfirm) {
+        toggleRegConfirm.addEventListener('click', function() {
+            const type = regConfirmPassword.type === 'password' ? 'text' : 'password';
+            regConfirmPassword.type = type;
+            this.querySelector('i').classList.toggle('fa-eye');
+            this.querySelector('i').classList.toggle('fa-eye-slash');
+        });
+    }
 
-    // ---------- LUPA PASSWORD ----------
+    // ============================================================
+    // LUPA PASSWORD
+    // ============================================================
     const forgotLink = document.querySelector('.forgot-link');
     if (forgotLink) {
         forgotLink.addEventListener('click', async function(e) {
@@ -103,59 +199,83 @@ document.addEventListener('DOMContentLoaded', function() {
                     method: 'POST',
                     body: JSON.stringify({ email, newPassword: 'password123' })
                 });
-                showFeedback('✅ ' + result.message + ' Password: password123', 'success');
+                showFeedback('✅ Password berhasil direset. Password baru: password123', 'success');
             } catch (err) {
                 showFeedback('⚠️ ' + err.message, 'error');
             }
         });
     }
 
-    // ---------- FUNGSI REDIRECT BERDASARKAN ROLE ----------
-    function goToDashboard() {
+    // ============================================================
+    // REDIRECT FUNCTION
+    // ============================================================
+    async function goToDashboard() {
         const user = getUser();
-        const target = (user && user.role === 'pengusaha')
-            ? 'admin/index.html'
-            : 'wisatawan/dashboard.html';
+        console.log('🔄 Cek redirect untuk user:', user);
 
-        console.log('🔄 Mencoba redirect ke ' + target + '...');
+        let target = 'wisatawan/dashboard.html';
+        let message = 'Login berhasil! Mengalihkan ke Dashboard...';
 
-        try {
+        if (user && user.role === 'admin') {
+            target = 'superadmin/verifikasi-pengelola.html';
+            message = 'Login berhasil! Mengalihkan ke Dashboard Admin...';
+            console.log('🔄 Redirect ke admin dashboard');
+        } else if (user && user.role === 'pengusaha') {
+            if (user.status_verifikasi === 'terverifikasi') {
+                // Cek kelengkapan profil usaha
+                console.log('🔄 Cek kelengkapan profil usaha...');
+                try {
+                    const profileData = await apiFetch('/pengelola/profile-completion');
+                    if (profileData.complete) {
+                        target = 'pengelola/index.html';
+                        message = 'Login berhasil! Mengalihkan ke Dashboard Pengelola...';
+                        console.log('🔄 Redirect ke dashboard pengusaha (profil lengkap)');
+                    } else {
+                        target = 'pengelola/profil-usaha.html';
+                        message = 'Login berhasil! Mengalihkan ke Profil Usaha...';
+                        console.log('🔄 Redirect ke profil usaha (profil belum lengkap)');
+                        console.log('🔄 Missing fields:', profileData.missing_fields);
+                    }
+                } catch (err) {
+                    console.error('❌ Gagal cek profil:', err);
+                    // Default ke profil usaha jika gagal cek
+                    target = 'pengelola/profil-usaha.html';
+                    message = 'Login berhasil! Mengalihkan ke Profil Usaha...';
+                }
+            } else if (user.status_verifikasi === 'pending' || user.status_verifikasi === 'ditolak') {
+                target = 'status-verifikasi.html';
+                message = 'Login berhasil! Mengalihkan ke halaman status verifikasi...';
+                console.log('🔄 Redirect ke halaman verifikasi');
+            }
+        } else if (user && user.role === 'wisatawan') {
+            target = 'wisatawan/dashboard.html';
+            message = 'Login berhasil! Mengalihkan ke Dashboard...';
+            console.log('🔄 Redirect ke dashboard wisatawan');
+        }
+
+        console.log('🔄 Target redirect:', target);
+
+        // Tampilkan pesan sukses
+        showFeedback('✅ ' + message, 'success');
+
+        // Redirect setelah 1 detik
+        setTimeout(() => {
             window.location.href = target;
-            return;
-        } catch (e) {
-            console.error('❌ Redirect gagal:', e);
-        }
-
-        try {
-            window.location.replace(target);
-            return;
-        } catch (e) {
-            console.error('❌ Redirect replace gagal:', e);
-        }
-
-        try {
-            window.location.assign(target);
-            return;
-        } catch (e) {
-            console.error('❌ Redirect assign gagal:', e);
-        }
-
-        feedback.innerHTML = `
-            ✅ Login berhasil!
-            <a href="${target}" style="color:#00695c;font-weight:bold;text-decoration:underline;">
-                Klik di sini
-            </a>
-            untuk melanjutkan.
-        `;
-        feedback.className = 'form-feedback success';
+        }, 1000);
     }
 
-    // ---------- HANDLE LOGIN ----------
+    // ============================================================
+    // HANDLE LOGIN
+    // ============================================================
     loginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const email = emailInput.value.trim();
         const password = passwordInput.value.trim();
 
+        console.log('\n========== LOGIN SUBMIT ==========');
+        console.log('Email:', email);
+
+        // Validasi
         if (!email || !password) {
             showFeedback('⚠️ Harap isi email dan password!', 'error');
             return;
@@ -172,20 +292,35 @@ document.addEventListener('DOMContentLoaded', function() {
         showFeedback('🔄 Memproses login...', 'success');
 
         try {
+            // Panggil API login
+            console.log('📡 Memanggil /api/auth/login...');
             const data = await apiFetch('/auth/login', {
                 method: 'POST',
                 body: JSON.stringify({ email, password })
             });
 
-            setAuth(data.token, data.user);
-            showFeedback('✅ Login berhasil! Mengalihkan ke Dashboard...', 'success');
-            setTimeout(goToDashboard, 800);
+            console.log('✅ Login API response:', data);
+
+            // Simpan auth
+            if (data.token && data.user) {
+                setAuth(data.token, data.user);
+                console.log('✅ Auth berhasil disimpan');
+                goToDashboard();
+            } else {
+                console.error('❌ Response tidak punya token atau user:', data);
+                showFeedback('⚠️ Response server tidak valid.', 'error');
+            }
         } catch (err) {
+            console.error('❌ Login gagal:', err.message);
             showFeedback('⚠️ ' + err.message, 'error');
         }
+
+        console.log('========================================\n');
     });
 
-    // ---------- HANDLE REGISTER ----------
+    // ============================================================
+    // HANDLE REGISTER
+    // ============================================================
     registerForm.addEventListener('submit', async function(e) {
         e.preventDefault();
 
@@ -196,6 +331,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const confirm = regConfirmPassword.value.trim();
         const role = roleInput.value;
 
+        console.log('\n========== REGISTER SUBMIT ==========');
+        console.log('Email:', email);
+        console.log('Role:', role);
+
+        // Validasi
         if (!name || !email || !whatsapp || !password || !confirm) {
             showFeedback('⚠️ Semua field wajib diisi!', 'error');
             return;
@@ -228,15 +368,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
             });
 
-            setAuth(data.token, data.user);
-            showFeedback('✅ Pendaftaran berhasil! Mengalihkan ke Dashboard...', 'success');
-            setTimeout(goToDashboard, 800);
+            console.log('✅ Register API response:', data);
+
+            if (data.token && data.user) {
+                setAuth(data.token, data.user);
+
+                let message = '✅ Pendaftaran berhasil! ';
+                if (data.user.role === 'pengusaha') {
+                    message += 'Akun Anda menunggu verifikasi dari admin.';
+                    showFeedback(message, 'success');
+                    setTimeout(() => {
+                        clearAuth();
+                        window.location.href = 'halaman-login-user.html';
+                    }, 3000);
+                } else {
+                    message += 'Mengalihkan ke Dashboard...';
+                    showFeedback(message, 'success');
+                    setTimeout(goToDashboard, 1000);
+                }
+            }
         } catch (err) {
+            console.error('❌ Register gagal:', err.message);
             showFeedback('⚠️ ' + err.message, 'error');
         }
+
+        console.log('========================================\n');
     });
 
-    // Navigasi
+    // ============================================================
+    // NAVIGASI
+    // ============================================================
     tabLogin.addEventListener('click', showLogin);
     tabRegister.addEventListener('click', showRegister);
     switchToRegister.addEventListener('click', function(e) {
@@ -248,5 +409,10 @@ document.addEventListener('DOMContentLoaded', function() {
         showLogin();
     });
 
+    // Inisialisasi
     showLogin();
+
+    console.log('✅ Login page initialized');
+    console.log('📍 API Base:', API_BASE);
+    console.log('📍 Current URL:', window.location.href);
 });

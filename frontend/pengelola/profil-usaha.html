@@ -101,7 +101,6 @@
         .profile-dropdown a i { color: #0369a1; width: 20px; }
         .profile-dropdown .logout-item { color: #ef4444; }
         .profile-dropdown .logout-item i { color: #ef4444; }
-        .mobile-toggle { display: none; font-size: 24px; color: #64748b; cursor: pointer; }
 
         .page-hero {
             background: linear-gradient(135deg, #0369a1, #0ea5e9);
@@ -123,14 +122,12 @@
             margin-bottom: 24px;
         }
 
-        /* Profile Layout */
         .profile-layout {
             display: grid;
-            grid-template-columns: 1fr 400px;
+            grid-template-columns: 1fr 380px;
             gap: 32px;
         }
 
-        /* Card Styles */
         .profile-card {
             background: #fff;
             border-radius: 24px;
@@ -159,7 +156,6 @@
             font-size: 18px;
         }
 
-        /* Form Styles */
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -202,44 +198,6 @@
             cursor: pointer;
         }
 
-        /* Toggle Switch */
-        .toggle-group {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        .toggle-switch {
-            position: relative;
-            width: 56px;
-            height: 30px;
-        }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: #e2e8f0;
-            border-radius: 30px;
-            transition: 0.3s;
-        }
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 22px;
-            width: 22px;
-            left: 4px;
-            bottom: 4px;
-            background: #fff;
-            border-radius: 50%;
-            transition: 0.3s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .toggle-switch input:checked + .toggle-slider { background: #22c55e; }
-        .toggle-switch input:checked + .toggle-slider:before { transform: translateX(26px); }
-        .toggle-label { font-size: 14px; font-weight: 500; color: #64748b; }
-        .toggle-label.active { color: #16a34a; }
-
-        /* Buttons */
         .btn-simpan {
             display: inline-flex;
             align-items: center;
@@ -260,12 +218,16 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(14,165,233,0.4);
         }
+        .btn-simpan:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-        /* Image Upload */
         .image-upload-area {
             border: 2px dashed #e2e8f0;
             border-radius: 16px;
-            padding: 32px;
+            padding: 24px;
             text-align: center;
             transition: all 0.3s;
             cursor: pointer;
@@ -276,21 +238,26 @@
             background: #f0f9ff;
         }
         .image-upload-area i {
-            font-size: 48px;
+            font-size: 40px;
             color: #94a3b8;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
         .image-upload-area h4 {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
             color: #334155;
             margin-bottom: 4px;
         }
         .image-upload-area p {
-            font-size: 13px;
+            font-size: 12px;
             color: #94a3b8;
         }
-        .image-upload-area input { display: none; }
+        .image-upload-area small {
+            font-size: 11px;
+            color: #94a3b8;
+            display: block;
+            margin-top: 8px;
+        }
         .image-preview {
             max-width: 100%;
             max-height: 200px;
@@ -306,6 +273,7 @@
             max-height: 180px;
             border-radius: 12px;
             display: block;
+            border: 2px solid #e2e8f0;
         }
         .preview-remove {
             position: absolute;
@@ -324,60 +292,6 @@
             justify-content: center;
         }
 
-        /* Verification Status */
-        .verification-box {
-            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        .verification-box i {
-            font-size: 48px;
-            color: #0369a1;
-            margin-bottom: 12px;
-        }
-        .verification-box h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0f172a;
-            margin-bottom: 8px;
-        }
-        .verification-box p {
-            font-size: 14px;
-            color: #64748b;
-            margin-bottom: 16px;
-        }
-        .status-badge {
-            display: inline-block;
-            padding: 8px 20px;
-            border-radius: 50px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-        .status-badge.pending { background: #fef3c7; color: #d97706; }
-        .status-badge.terverifikasi { background: #dcfce7; color: #16a34a; }
-        .status-badge.ditolak { background: #fee2e2; color: #ef4444; }
-        .btn-verifikasi {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 24px;
-            background: #0369a1;
-            color: #fff;
-            border: none;
-            border-radius: 50px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 12px;
-        }
-        .btn-verifikasi:hover { background: #0284c7; }
-        .btn-verifikasi:disabled { background: #94a3b8; cursor: not-allowed; }
-
-        /* Success/Error Messages */
         .alert {
             padding: 14px 20px;
             border-radius: 12px;
@@ -405,7 +319,6 @@
             border: 1px solid #fecaca;
         }
 
-        /* Owner Info Card */
         .owner-info {
             background: #fff;
             border-radius: 24px;
@@ -446,6 +359,38 @@
             margin-top: 32px;
         }
 
+        .progress-section {
+            background: #fff;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            margin-bottom: 24px;
+        }
+        .progress-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 16px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e2e8f0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            border-radius: 6px;
+            transition: width 0.3s ease;
+        }
+        .progress-text {
+            font-size: 13px;
+            color: #64748b;
+        }
+
         @media (max-width: 1024px) {
             .profile-layout { grid-template-columns: 1fr; }
         }
@@ -466,11 +411,7 @@
                 Wonderloka
             </div>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="index.html"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
-                <li><a href="kelola-destinasi.html"><i class="fas fa-map-location-dot"></i> Layanan</a></li>
-                <li><a href="kelola-pesanan.html"><i class="fas fa-receipt"></i> Pesanan</a></li>
-                <li><a href="mis-dashboard.html"><i class="fas fa-chart-line"></i> Grafik MIS</a></li>
-                <li><a href="profil-usaha.html" class="active"><i class="fas fa-store"></i> Profil Usaha</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Dashboard</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="profile-btn" id="profileBtn">
@@ -482,16 +423,13 @@
                     <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
                 </div>
             </div>
-            <div class="mobile-toggle" id="mobileToggle">
-                <i class="fas fa-bars"></i>
-            </div>
         </div>
     </nav>
 
     <section class="page-hero">
         <div class="hero-content">
             <h1><i class="fas fa-store"></i> Profil Usaha</h1>
-            <p>Kelola informasi usaha Anda agar lebih mudah ditemukan wisatawan.</p>
+            <p>Lengkapi data usaha Anda untuk dapat mengelola destinasi.</p>
         </div>
     </section>
 
@@ -505,16 +443,13 @@
             <!-- LEFT: Forms -->
             <div class="profile-left">
 
-                <!-- Verification Status -->
-                <div class="verification-box" id="verificationBox">
-                    <i class="fas fa-shield-halved"></i>
-                    <h3>Status Verifikasi Usaha</h3>
-                    <p>Daftarkan usaha Anda untuk mendapat verifikasi resmi dari Wonderloka.</p>
-                    <span class="status-badge pending" id="statusBadge">Pending</span>
-                    <br>
-                    <button class="btn-verifikasi" id="btnAjukanVerif">
-                        <i class="fas fa-paper-plane"></i> Ajukan Verifikasi
-                    </button>
+                <!-- Progress -->
+                <div class="progress-section">
+                    <div class="progress-title"><i class="fas fa-chart-pie"></i> Kelengkapan Profil</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                    <p class="progress-text" id="progressText">Memuat...</p>
                 </div>
 
                 <!-- Informasi Usaha -->
@@ -527,8 +462,8 @@
                                 <input type="text" id="nama_usaha" placeholder="Contoh: Bukit Pengilon Camp" required />
                             </div>
                             <div class="form-group">
-                                <label for="kategori_usaha">Kategori Usaha</label>
-                                <select id="kategori_usaha">
+                                <label for="kategori_usaha">Kategori Usaha <span class="required">*</span></label>
+                                <select id="kategori_usaha" required>
                                     <option value="">Pilih Kategori</option>
                                     <option value="Alam">Alam</option>
                                     <option value="Budaya">Budaya</option>
@@ -542,39 +477,25 @@
                                 <label for="no_wa">Nomor WhatsApp</label>
                                 <input type="tel" id="no_wa" placeholder="+6281234567890" />
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" placeholder="usaha@email.com" readonly />
-                            </div>
                             <div class="form-group full">
                                 <label for="deskripsi_usaha">Deskripsi Usaha</label>
                                 <textarea id="deskripsi_usaha" placeholder="Jelaskan tentang usaha Anda..."></textarea>
                             </div>
                             <div class="form-group full">
-                                <label for="lokasi_usaha">Lokasi Usaha</label>
-                                <input type="text" id="lokasi_usaha" placeholder="Contoh: Jl. Raya Prambanan No. 123, Yogyakarta" />
+                                <label for="lokasi_usaha">Lokasi Usaha <span class="required">*</span></label>
+                                <input type="text" id="lokasi_usaha" placeholder="Contoh: Jl. Raya Prambanan No. 123, Yogyakarta" required />
                             </div>
                             <div class="form-group full">
-                                <label for="link_gmaps">Link Google Maps</label>
-                                <input type="url" id="link_gmaps" placeholder="https://maps.google.com/..." />
+                                <label for="link_gmaps">Link Google Maps <span class="required">*</span></label>
+                                <input type="url" id="link_gmaps" placeholder="https://maps.google.com/..." required />
                             </div>
                             <div class="form-group">
-                                <label for="jam_buka">Jam Buka</label>
-                                <input type="time" id="jam_buka" />
+                                <label for="jam_buka">Jam Buka <span class="required">*</span></label>
+                                <input type="time" id="jam_buka" required />
                             </div>
                             <div class="form-group">
-                                <label for="jam_tutup">Jam Tutup</label>
-                                <input type="time" id="jam_tutup" />
-                            </div>
-                            <div class="form-group full">
-                                <label>Status Usaha</label>
-                                <div class="toggle-group">
-                                    <label class="toggle-switch">
-                                        <input type="checkbox" id="status_usaha" checked />
-                                        <span class="toggle-slider"></span>
-                                    </label>
-                                    <span class="toggle-label" id="statusLabel">Buka</span>
-                                </div>
+                                <label for="jam_tutup">Jam Tutup <span class="required">*</span></label>
+                                <input type="time" id="jam_tutup" required />
                             </div>
                         </div>
                     </form>
@@ -582,34 +503,35 @@
 
                 <!-- Foto & Banner -->
                 <div class="profile-card">
-                    <h2><i class="fas fa-images"></i> Foto & Banner</h2>
+                    <h2><i class="fas fa-images"></i> Foto & Banner Usaha</h2>
+                    <p style="font-size:13px;color:#64748b;margin-bottom:16px;">Upload foto dan banner usaha Anda. Maksimal 5MB per file. Format: JPG, PNG, WEBP.</p>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label>Foto Usaha</label>
+                            <label>Foto Usaha <span class="required">*</span></label>
                             <div class="image-upload-area" id="fotoArea">
                                 <i class="fas fa-cloud-upload-alt"></i>
                                 <h4>Klik untuk upload</h4>
-                                <p>atau drag & drop file<br>JPG, PNG (max 2MB)</p>
-                                <input type="url" id="foto_usaha" placeholder="atau masukkan URL gambar" />
+                                <p>JPG, PNG, WEBP (max 5MB)</p>
+                                <input type="file" id="fotoFile" accept="image/jpeg,image/png,image/webp" style="display:none;" />
                             </div>
                             <div class="preview-container" id="fotoPreviewContainer" style="display:none;">
                                 <img src="" alt="Preview" id="fotoPreview" class="image-preview" />
-                                <button type="button" class="preview-remove" onclick="removePreview('foto')">
+                                <button type="button" class="preview-remove" id="fotoRemove">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label>Banner Usaha</label>
+                            <label>Banner Usaha <span class="required">*</span></label>
                             <div class="image-upload-area" id="bannerArea">
                                 <i class="fas fa-image"></i>
                                 <h4>Klik untuk upload</h4>
-                                <p>atau drag & drop file<br>JPG, PNG (max 2MB)</p>
-                                <input type="url" id="banner_usaha" placeholder="atau masukkan URL gambar" />
+                                <p>JPG, PNG, WEBP (max 5MB)</p>
+                                <input type="file" id="bannerFile" accept="image/jpeg,image/png,image/webp" style="display:none;" />
                             </div>
                             <div class="preview-container" id="bannerPreviewContainer" style="display:none;">
                                 <img src="" alt="Preview" id="bannerPreview" class="image-preview" />
-                                <button type="button" class="preview-remove" onclick="removePreview('banner')">
+                                <button type="button" class="preview-remove" id="bannerRemove">
                                     <i class="fas fa-times"></i>
                                 </button>
                             </div>
@@ -618,12 +540,12 @@
                 </div>
 
                 <!-- Tombol Simpan -->
-                <button type="submit" class="btn-simpan" form="profileForm" id="btnSimpan">
+                <button type="button" class="btn-simpan" id="btnSimpan">
                     <i class="fas fa-save"></i> Simpan Perubahan
                 </button>
             </div>
 
-            <!-- RIGHT: Owner Info -->
+            <!-- RIGHT: Owner Info & Tips -->
             <div class="profile-right">
                 <div class="owner-info">
                     <div class="owner-avatar">
@@ -638,13 +560,13 @@
                 </div>
 
                 <div class="profile-card" style="margin-top:24px;">
-                    <h2><i class="fas fa-info-circle"></i> Tips Profil</h2>
+                    <h2><i class="fas fa-lightbulb"></i> Tips Profil</h2>
                     <ul style="padding-left:20px;font-size:14px;color:#64748b;line-height:2;">
-                        <li>Gunakan foto berkualitas tinggi</li>
+                        <li>Gunakan foto berkualitas tinggi (minimal 800x600px)</li>
                         <li>Cantumkan jam operasional yang jelas</li>
                         <li>Deskripsikan usaha Anda secara detail</li>
                         <li>Tambahkan link Google Maps yang akurat</li>
-                        <li>Ajukan verifikasi untuk kredibilitas</li>
+                        <li>Lengkapi semua field bertanda (*)</li>
                     </ul>
                 </div>
             </div>
@@ -661,38 +583,30 @@
         document.addEventListener('DOMContentLoaded', async function() {
 
             // ===== AUTH CHECK =====
-            // Proteksi: Hanya pengusaha terverifikasi yang boleh akses
             function checkAuth() {
                 const user = getUser();
                 if (!user) {
                     window.location.href = '../halaman-login-user.html';
                     return null;
                 }
-
-                // Admin tidak boleh akses halaman pengusaha
-                if (user.role === 'admin') {
-                    window.location.href = '../superadmin/verifikasi-pengelola.html';
+                if (user.role !== 'pengusaha') {
+                    if (user.role === 'admin') {
+                        window.location.href = '../superadmin/verifikasi-pengelola.html';
+                    } else {
+                        window.location.href = '../halaman-login-user.html';
+                    }
                     return null;
                 }
-
-                // Wisatawan tidak boleh akses halaman pengusaha
-                if (user.role === 'wisatawan') {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                // Pengusaha harus terverifikasi
-                if (user.role === 'pengusaha' && user.status_verifikasi !== 'terverifikasi') {
+                if (user.status_verifikasi !== 'terverifikasi') {
                     window.location.href = '../status-verifikasi.html';
                     return null;
                 }
-
                 return user;
             }
             const currentUser = checkAuth();
             if (!currentUser) return;
 
-            // UI Elements
+            // ===== UI ELEMENTS =====
             const profileBtn = document.getElementById('profileBtn');
             const profileDropdown = document.getElementById('profileDropdown');
             profileBtn.addEventListener('click', function(e) {
@@ -713,14 +627,6 @@
                 }
             });
 
-            // Status toggle
-            const statusToggle = document.getElementById('status_usaha');
-            const statusLabel = document.getElementById('statusLabel');
-            statusToggle.addEventListener('change', function() {
-                statusLabel.textContent = this.checked ? 'Buka' : 'Tutup';
-                statusLabel.className = this.checked ? 'toggle-label active' : 'toggle-label';
-            });
-
             // Show alert - only show if message is valid
             function showAlert(type, message) {
                 // Don't show empty/null/undefined messages
@@ -738,134 +644,239 @@
                 }, 5000);
             }
 
-            // Image URL input
-            document.getElementById('foto_usaha').addEventListener('change', function() {
-                const url = this.value.trim();
-                if (url) {
-                    document.getElementById('fotoPreview').src = url;
-                    document.getElementById('fotoPreviewContainer').style.display = 'block';
-                }
-            });
-
-            document.getElementById('banner_usaha').addEventListener('change', function() {
-                const url = this.value.trim();
-                if (url) {
-                    document.getElementById('bannerPreview').src = url;
-                    document.getElementById('bannerPreviewContainer').style.display = 'block';
-                }
-            });
-
-            window.removePreview = function(type) {
-                if (type === 'foto') {
-                    document.getElementById('foto_usaha').value = '';
-                    document.getElementById('fotoPreviewContainer').style.display = 'none';
-                } else {
-                    document.getElementById('banner_usaha').value = '';
-                    document.getElementById('bannerPreviewContainer').style.display = 'none';
-                }
+            // ===== IMAGE UPLOAD HANDLING =====
+            let uploadedFiles = {
+                foto_usaha: null,
+                banner_usaha: null
             };
 
-            // Load profile
+            function setupImageUpload(inputId, areaId, previewId, previewContainerId, removeId, fieldName) {
+                const area = document.getElementById(areaId);
+                const input = document.getElementById(inputId);
+                const preview = document.getElementById(previewId);
+                const previewContainer = document.getElementById(previewContainerId);
+                const removeBtn = document.getElementById(removeId);
+
+                // Click on area to trigger file input
+                area.addEventListener('click', function() {
+                    input.click();
+                });
+
+                // Drag and drop
+                area.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                    area.style.borderColor = '#0ea5e9';
+                    area.style.background = '#f0f9ff';
+                });
+
+                area.addEventListener('dragleave', function() {
+                    area.style.borderColor = '#e2e8f0';
+                    area.style.background = '#f8fafc';
+                });
+
+                area.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                    area.style.borderColor = '#e2e8f0';
+                    area.style.background = '#f8fafc';
+
+                    const files = e.dataTransfer.files;
+                    if (files.length > 0) {
+                        handleFile(files[0], input, preview, previewContainer, fieldName);
+                    }
+                });
+
+                // File input change
+                input.addEventListener('change', function() {
+                    if (this.files && this.files.length > 0) {
+                        handleFile(this.files[0], input, preview, previewContainer, fieldName);
+                    }
+                });
+
+                // Remove button
+                removeBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    input.value = '';
+                    preview.src = '';
+                    previewContainer.style.display = 'none';
+                    area.style.display = 'block';
+                    uploadedFiles[fieldName] = null;
+                });
+            }
+
+            function handleFile(file, input, preview, previewContainer, fieldName) {
+                // Validate file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+                if (!allowedTypes.includes(file.type)) {
+                    showAlert('error', 'File harus berformat JPG, PNG, atau WEBP.');
+                    return;
+                }
+
+                // Validate file size (5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                    showAlert('error', 'Ukuran file maksimal 5MB.');
+                    return;
+                }
+
+                // Store file for upload
+                uploadedFiles[fieldName] = file;
+
+                // Show preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Setup image uploads
+            setupImageUpload('fotoFile', 'fotoArea', 'fotoPreview', 'fotoPreviewContainer', 'fotoRemove', 'foto_usaha');
+            setupImageUpload('bannerFile', 'bannerArea', 'bannerPreview', 'bannerPreviewContainer', 'bannerRemove', 'banner_usaha');
+
+            // ===== LOAD PROFILE =====
             async function loadProfile() {
                 try {
-                    const data = await apiFetch('/admin/business-profile');
+                    const data = await apiFetch('/pengelola/business-profile');
 
                     // Fill form
                     document.getElementById('nama_usaha').value = data.nama_usaha || '';
                     document.getElementById('kategori_usaha').value = data.kategori_usaha || '';
                     document.getElementById('no_wa').value = data.no_wa || '';
-                    document.getElementById('email').value = data.email || '';
                     document.getElementById('deskripsi_usaha').value = data.deskripsi_usaha || '';
-                    document.getElementById('lokasi_usaha').value = data.link_gmaps ? '' : '';
+                    document.getElementById('lokasi_usaha').value = data.lokasi_usaha || '';
                     document.getElementById('link_gmaps').value = data.link_gmaps || '';
                     document.getElementById('jam_buka').value = data.jam_buka ? data.jam_buka.substring(0, 5) : '';
                     document.getElementById('jam_tutup').value = data.jam_tutup ? data.jam_tutup.substring(0, 5) : '';
-                    document.getElementById('status_usaha').checked = data.status_usaha !== 'tutup';
-                    statusLabel.textContent = data.status_usaha === 'tutup' ? 'Tutup' : 'Buka';
-                    statusLabel.className = data.status_usaha === 'tutup' ? 'toggle-label' : 'toggle-label active';
-
-                    // Photo preview
-                    if (data.foto_usaha) {
-                        document.getElementById('foto_usaha').value = data.foto_usaha;
-                        document.getElementById('fotoPreview').src = data.foto_usaha;
-                        document.getElementById('fotoPreviewContainer').style.display = 'block';
-                    }
-                    if (data.banner_usaha) {
-                        document.getElementById('banner_usaha').value = data.banner_usaha;
-                        document.getElementById('bannerPreview').src = data.banner_usaha;
-                        document.getElementById('bannerPreviewContainer').style.display = 'block';
-                    }
 
                     // Owner info
                     document.getElementById('ownerName').textContent = data.nama_lengkap || 'Pemilik';
                     document.getElementById('ownerEmail').textContent = data.email || '-';
-                    document.getElementById('ownerRole').textContent = data.role === 'pengusaha' ? 'Pengusaha' : 'Wisatawan';
+                    document.getElementById('ownerRole').textContent = 'Pengusaha';
                     if (data.created_at) {
                         document.getElementById('ownerDate').textContent = new Date(data.created_at).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' });
                     }
 
-                    // Verification status
-                    const badge = document.getElementById('statusBadge');
-                    const verifBtn = document.getElementById('btnAjukanVerif');
-                    badge.textContent = data.status_verifikasi || 'pending';
-                    badge.className = 'status-badge ' + (data.status_verifikasi || 'pending');
-                    if (data.status_verifikasi === 'terverifikasi') {
-                        verifBtn.disabled = true;
-                        verifBtn.innerHTML = '<i class="fas fa-check-circle"></i> Sudah Terverifikasi';
-                    } else if (data.status_verifikasi === 'pending') {
-                        verifBtn.disabled = true;
-                        verifBtn.innerHTML = '<i class="fas fa-clock"></i> Menunggu Verifikasi';
+                    // Show existing images if no new file uploaded
+                    if (data.foto_usaha && !uploadedFiles.foto_usaha) {
+                        const fotoPreview = document.getElementById('fotoPreview');
+                        const fotoPreviewContainer = document.getElementById('fotoPreviewContainer');
+                        const fotoArea = document.getElementById('fotoArea');
+                        fotoPreview.src = data.foto_usaha.startsWith('/') ? data.foto_usaha : '/' + data.foto_usaha;
+                        fotoPreviewContainer.style.display = 'block';
                     }
+                    if (data.banner_usaha && !uploadedFiles.banner_usaha) {
+                        const bannerPreview = document.getElementById('bannerPreview');
+                        const bannerPreviewContainer = document.getElementById('bannerPreviewContainer');
+                        bannerPreview.src = data.banner_usaha.startsWith('/') ? data.banner_usaha : '/' + data.banner_usaha;
+                        bannerPreviewContainer.style.display = 'block';
+                    }
+
+                    // Update progress
+                    updateProgress();
 
                 } catch (err) {
                     console.error('Gagal load profile:', err);
                 }
             }
 
-            // Save profile
-            const profileForm = document.getElementById('profileForm');
-            const btnSimpan = document.getElementById('btnSimpan');
+            // ===== UPDATE PROGRESS =====
+            function updateProgress() {
+                const requiredFields = [
+                    'nama_usaha',
+                    'kategori_usaha',
+                    'lokasi_usaha',
+                    'link_gmaps',
+                    'jam_buka',
+                    'jam_tutup'
+                ];
+                const imageFields = ['foto_usaha', 'banner_usaha'];
 
-            btnSimpan.addEventListener('click', async function(e) {
-                e.preventDefault();
+                let filled = 0;
+                let total = requiredFields.length + imageFields.length;
+
+                requiredFields.forEach(field => {
+                    const el = document.getElementById(field);
+                    if (el && el.value.trim()) filled++;
+                });
+
+                // Check images
+                const fotoSrc = document.getElementById('fotoPreview').src;
+                const bannerSrc = document.getElementById('bannerPreview').src;
+                if (fotoSrc && fotoSrc !== window.location.href) filled++;
+                if (bannerSrc && bannerSrc !== window.location.href) filled++;
+
+                const percent = Math.round((filled / total) * 100);
+                document.getElementById('progressFill').style.width = percent + '%';
+                document.getElementById('progressText').textContent =
+                    filled + ' dari ' + total + ' field terisi (' + percent + '%)' +
+                    (percent === 100 ? ' - Profil lengkap!' : ' - Lengkapi semua field untuk mengakses dashboard.');
+            }
+
+            // Listen for field changes to update progress
+            ['nama_usaha', 'kategori_usaha', 'lokasi_usaha', 'link_gmaps', 'jam_buka', 'jam_tutup'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('change', updateProgress);
+            });
+
+            // ===== SAVE PROFILE =====
+            const btnSimpan = document.getElementById('btnSimpan');
+            btnSimpan.addEventListener('click', async function() {
                 btnSimpan.disabled = true;
                 btnSimpan.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Menyimpan...';
 
-                const payload = {
-                    nama_usaha: document.getElementById('nama_usaha').value.trim(),
-                    kategori_usaha: document.getElementById('kategori_usaha').value,
-                    deskripsi_usaha: document.getElementById('deskripsi_usaha').value.trim(),
-                    foto_usaha: document.getElementById('foto_usaha').value.trim(),
-                    banner_usaha: document.getElementById('banner_usaha').value.trim(),
-                    link_gmaps: document.getElementById('link_gmaps').value.trim(),
-                    jam_buka: document.getElementById('jam_buka').value || null,
-                    jam_tutup: document.getElementById('jam_tutup').value || null,
-                    status_usaha: document.getElementById('status_usaha').checked ? 'buka' : 'tutup'
-                };
-
                 try {
-                    await apiFetch('/admin/business-profile', {
+                    // First upload files if any
+                    if (uploadedFiles.foto_usaha || uploadedFiles.banner_usaha) {
+                        const formData = new FormData();
+                        if (uploadedFiles.foto_usaha) {
+                            formData.append('foto_usaha', uploadedFiles.foto_usaha);
+                        }
+                        if (uploadedFiles.banner_usaha) {
+                            formData.append('banner_usaha', uploadedFiles.banner_usaha);
+                        }
+
+                        // Use fetch with multipart/form-data
+                        const token = getToken();
+                        const uploadRes = await fetch('/api/pengelola/business-profile/upload', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': 'Bearer ' + token
+                            },
+                            body: formData
+                        });
+                        const uploadData = await uploadRes.json();
+                        if (!uploadRes.ok) throw new Error(uploadData.message || 'Upload gagal');
+
+                        console.log('Upload success:', uploadData);
+                    }
+
+                    // Then save other profile data
+                    const payload = {
+                        nama_usaha: document.getElementById('nama_usaha').value.trim(),
+                        kategori_usaha: document.getElementById('kategori_usaha').value,
+                        deskripsi_usaha: document.getElementById('deskripsi_usaha').value.trim(),
+                        lokasi_usaha: document.getElementById('lokasi_usaha').value.trim(),
+                        link_gmaps: document.getElementById('link_gmaps').value.trim(),
+                        jam_buka: document.getElementById('jam_buka').value || null,
+                        jam_tutup: document.getElementById('jam_tutup').value || null
+                    };
+
+                    await apiFetch('/pengelola/business-profile', {
                         method: 'PUT',
                         body: JSON.stringify(payload)
                     });
+
                     showAlert('success', '✅ Profil usaha berhasil disimpan!');
+
+                    // Check if profile is complete, redirect to dashboard
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+
                 } catch (err) {
                     showAlert('error', '⚠️ Gagal menyimpan: ' + err.message);
-                }
-
-                btnSimpan.disabled = false;
-                btnSimpan.innerHTML = '<i class="fas fa-save"></i> Simpan Perubahan';
-            });
-
-            // Ajukan verifikasi
-            document.getElementById('btnAjukanVerif').addEventListener('click', async function() {
-                if (!confirm('Ajukan verifikasi usaha sekarang?')) return;
-                try {
-                    await apiFetch('/admin/business-profile/verification', { method: 'POST' });
-                    showAlert('success', '✅ Pengajuan verifikasi berhasil dikirim!');
-                    loadProfile();
-                } catch (err) {
-                    showAlert('error', '⚠️ ' + err.message);
+                    btnSimpan.disabled = false;
+                    btnSimpan.innerHTML = '<i class="fas fa-save"></i> Simpan Perubahan';
                 }
             });
 

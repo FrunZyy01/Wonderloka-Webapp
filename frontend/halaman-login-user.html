@@ -69,10 +69,59 @@
             padding: 40px 36px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             background: #ffffff;
             height: 100%;
             position: relative;
+            overflow-y: auto;
+        }
+
+        /* Back button - di kiri atas, di luar form content */
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 36px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #1565c0;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            z-index: 10;
+        }
+
+        .back-link:hover {
+            background: #1565c0;
+            color: #fff;
+            transform: translateX(-4px);
+        }
+
+        /* Back button - inline di kiri atas area form */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #1565c0;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 0;
+            margin-bottom: 16px;
+            transition: all 0.3s;
+        }
+
+        .back-link:hover {
+            color: #0a3d8a;
+            transform: translateX(-4px);
+        }
+
+        .back-link i {
+            font-size: 12px;
         }
 
         .form-section {
@@ -85,7 +134,7 @@
         .form-toggle {
             display: flex;
             gap: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             flex-shrink: 0;
         }
 
@@ -335,17 +384,18 @@
             border-left: 4px solid #0d47a1;
         }
 
-        /* ---------- RESPONSIVE ---------- */
+        /* Responsive adjustments for login page */
         @media (max-width: 768px) {
             .login-container {
                 flex-direction: column;
                 border-radius: 24px;
                 max-width: 440px;
                 height: auto;
+                min-height: 100vh;
             }
 
             .login-image {
-                height: 200px;
+                height: 180px;
                 width: 100%;
                 order: 1;
             }
@@ -357,9 +407,14 @@
             }
 
             .login-form {
-                padding: 28px 20px;
+                padding: 24px 20px;
                 order: 2;
                 height: auto;
+                min-height: auto;
+            }
+
+            .form-section {
+                padding-top: 0;
             }
 
             .form-toggle button {
@@ -376,19 +431,7 @@
                 gap: 0;
             }
         }
-
-        @media (max-width: 480px) {
-            .login-form {
-                padding: 20px 16px;
-            }
-            .form-options {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
     </style>
-</head>
-
 <body>
     <div class="login-container">
 
@@ -400,6 +443,12 @@
         <!-- KANAN: FORM -->
         <div class="login-form">
 
+            <!-- Tombol Kembali ke Landing Page -->
+            <a href="index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+
+            <!-- Tab Masuk / Daftar -->
             <div class="form-toggle">
                 <button id="tabLogin" class="active">Masuk</button>
                 <button id="tabRegister">Buat Akun</button>
@@ -510,5 +559,20 @@
 
     <script src="script-api.js"></script>
     <script src="script-login.js"></script>
+    <script>
+        // Tampilkan pesan auth error dari redirect
+        document.addEventListener('DOMContentLoaded', function() {
+            const authError = sessionStorage.getItem('auth_error');
+            if (authError) {
+                sessionStorage.removeItem('auth_error');
+                const feedback = document.getElementById('feedback');
+                if (feedback) {
+                    feedback.textContent = authError;
+                    feedback.className = 'form-feedback error';
+                    feedback.style.display = 'block';
+                }
+            }
+        });
+    </script>
 </body>
 </html>

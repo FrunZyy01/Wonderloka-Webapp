@@ -616,11 +616,41 @@
     <script src="../assets/js/script-api.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Auth guard - redirect if not logged in
-            if (!isLoggedIn()) {
-                window.location.href = '../halaman-login-user.html';
-                return;
+            // ===== AUTH CHECK =====
+            // Proteksi: Hanya wisatawan yang boleh akses dashboard游客
+            function checkAuth() {
+                const user = getUser();
+                if (!user) {
+                    window.location.href = '../halaman-login-user.html';
+                    return null;
+                }
+
+                // Admin tidak boleh akses halaman wisatawan
+                if (user.role === 'admin') {
+                    window.location.href = '../superadmin/verifikasi-pengelola.html';
+                    return null;
+                }
+
+                // Pengusaha tidak boleh akses halaman wisatawan
+                if (user.role === 'pengusaha') {
+                    if (user.status_verifikasi === 'terverifikasi') {
+                        window.location.href = '../pengelola/index.html';
+                    } else {
+                        window.location.href = '../status-verifikasi.html';
+                    }
+                    return null;
+                }
+
+                // Pastikan role wisatawan
+                if (user.role !== 'wisatawan') {
+                    window.location.href = '../halaman-login-user.html';
+                    return null;
+                }
+
+                return user;
             }
+            const currentUser = checkAuth();
+            if (!currentUser) return;
 
             // Profile dropdown
             const profileBtn = document.getElementById('profileBtn');
@@ -656,18 +686,36 @@
                 });
             }
 
-            // Search
+            // Search - dengan parameter dari URL
             const searchBtn = document.querySelector('.btn-search');
             const searchInput = document.querySelector('.search-box input');
             if (searchBtn && searchInput) {
-                searchBtn.addEventListener('click', async function(e) {
-                    e.preventDefault();
-                    const query = searchInput.value.trim();
-                    if (query) {
-                        const grid = document.getElementById('destinasiGrid');
-                        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Mencari...</p>';
-                        try {
-                            // Simpan search log
+                // Ambil parameter search dari URL jika ada
+                const urlParams = new URLSearchParams(window.location.search);
+                const searchQuery = urlParams.get('search');
+                const kategoriQuery = urlParams.get('kategori');
+
+                if (searchQuery) {
+                    searchInput.value = searchQuery;
+                }
+
+                // Fungsi pencarian
+                async function performSearch(query, kategori) {
+                    const grid = document.getElementById('destinasiGrid');
+                    let apiUrl = '/destinations';
+                    let params = [];
+
+                    if (query) params.push('search=' + encodeURIComponent(query));
+                    if (kategori) params.push('kategori=' + encodeURIComponent(kategori));
+
+                    if (params.length > 0) {
+                        apiUrl += '?' + params.join('&');
+                    }
+
+                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Mencari...</p>';
+                    try {
+                        // Simpan search log
+                        if (query) {
                             try {
                                 await fetch('/api/destinations/search-logs', {
                                     method: 'POST',
@@ -675,12 +723,20 @@
                                     body: JSON.stringify({ keyword: query })
                                 });
                             } catch (_) {}
-
-                            const data = await apiFetch('/destinations?search=' + encodeURIComponent(query));
-                            renderDestinasi(data);
-                        } catch (err) {
-                            grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">' + err.message + '</p>';
                         }
+
+                        const data = await apiFetch(apiUrl);
+                        renderDestinasi(data);
+                    } catch (err) {
+                        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">' + err.message + '</p>';
+                    }
+                }
+
+                searchBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    const query = searchInput.value.trim();
+                    if (query) {
+                        await performSearch(query, null);
                     } else {
                         alert('Silakan ketik destinasi yang ingin dicari.');
                     }
@@ -688,6 +744,11 @@
                 searchInput.addEventListener('keypress', function(e) {
                     if (e.key === 'Enter') searchBtn.click();
                 });
+
+                // Jalankan search dari URL parameter saat load
+                if (searchQuery || kategoriQuery) {
+                    setTimeout(() => performSearch(searchQuery, kategoriQuery), 500);
+                }
             }
 
             // Nav menu links
@@ -730,21 +791,33 @@
                     grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Destinasi tidak ditemukan.</p>';
                     return;
                 }
+                const fallbackImg = '../assets/images/wonderloka.jpeg';
                 let html = '';
                 data.forEach(d => {
                     const isFav = favoritSet.has(d.id_destinasi);
+                    // Fallback image: destination.gambar -> owner.banner_usaha -> owner.foto_usaha -> fallback lokal
+                    let imageSrc = d.gambar;
+                    if (!imageSrc) {
+                        imageSrc = d.owner_banner_usaha || d.owner_foto_usaha || fallbackImg;
+                    }
+                    // Owner badge
+                    let ownerBadge = '';
+                    if (d.owner_nama_usaha) {
+                        ownerBadge = '<span style="display:block;font-size:11px;color:#0d47a1;margin-top:4px;"><i class="fas fa-store"></i> ' + d.owner_nama_usaha + '</span>';
+                    }
                     html += `
                         <div class="destinasi-card">
                             <div class="card-image">
-                                <img src="${d.gambar}" alt="${d.nama}" />
-                                <span class="card-rating">⭐ ${d.rating}</span>
+                                <img src="${imageSrc}" alt="${d.nama}" onerror="this.onerror=null; this.src='${fallbackImg}';" />
+                                <span class="card-rating">⭐ ${d.rating || 0}</span>
                                 <button class="btn-favorit ${isFav ? 'active' : ''}" data-id="${d.id_destinasi}" title="${isFav ? 'Hapus dari favorit' : 'Tambah ke favorit'}">
                                     <i class="fas fa-heart"></i>
                                 </button>
                             </div>
                             <div class="card-body">
                                 <h3>${d.nama}</h3>
-                                <p class="location"><i class="fas fa-map-marker-alt"></i> ${d.lokasi}</p>
+                                <p class="location"><i class="fas fa-map-marker-alt"></i> ${d.lokasi || '-'}</p>
+                                ${ownerBadge}
                                 <a href="detail-destinasi.html?id=${d.id_destinasi}" class="btn-detail">Detail</a>
                             </div>
                         </div>
@@ -777,7 +850,13 @@
                                 this.title = 'Hapus dari favorit';
                             }
                         } catch (err) {
-                            alert('⚠️ ' + err.message);
+                            // Handle 409 (already in favorites) gracefully
+                            if (err.message.includes('sudah ada') || err.message.includes('already')) {
+                                this.classList.add('active');
+                                this.title = 'Hapus dari favorit';
+                            } else {
+                                alert('⚠️ ' + err.message);
+                            }
                         }
                         this.disabled = false;
                     });

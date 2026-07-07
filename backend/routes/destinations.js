@@ -6,33 +6,53 @@ const router = express.Router();
 
 // ============================================================
 // GET /api/destinations
-// List destinasi dengan filter & search
+// List destinasi dengan filter & search + owner info
 // ============================================================
 router.get('/', async (req, res) => {
     try {
         const { kategori, search } = req.query;
-        let query = 'SELECT * FROM destination';
+        let query = `SELECT d.*,
+                     u.nama_usaha AS owner_nama_usaha,
+                     u.foto_usaha AS owner_foto_usaha,
+                     u.banner_usaha AS owner_banner_usaha,
+                     u.kategori_usaha AS owner_kategori_usaha
+                     FROM destination d
+                     LEFT JOIN user u ON d.id_owner = u.id_user`;
         let params = [];
         const conditions = [];
 
         if (kategori) {
-            conditions.push('kategori = ?');
+            conditions.push('d.kategori = ?');
             params.push(kategori);
         }
 
         if (search) {
-            conditions.push('(nama LIKE ? OR deskripsi LIKE ? OR lokasi LIKE ?)');
-            params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+            conditions.push('(d.nama LIKE ? OR d.deskripsi LIKE ? OR d.lokasi LIKE ? OR u.nama_usaha LIKE ?)');
+            params.push(`%${search}%`, `%${search}%`, `%${search}%`, `%${search}%`);
         }
 
         if (conditions.length > 0) {
             query += ' WHERE ' + conditions.join(' AND ');
         }
 
-        query += ' ORDER BY rating DESC';
+        query += ' ORDER BY d.rating DESC';
 
         const [rows] = await pool.query(query, params);
-        res.json(rows);
+
+        // Process image paths to URLs
+        const processedRows = rows.map(row => {
+            const processed = { ...row };
+            // Convert owner image paths to URLs if they exist
+            if (processed.owner_foto_usaha) {
+                processed.owner_foto_usaha = '/uploads/business/' + processed.owner_foto_usaha;
+            }
+            if (processed.owner_banner_usaha) {
+                processed.owner_banner_usaha = '/uploads/business/' + processed.owner_banner_usaha;
+            }
+            return processed;
+        });
+
+        res.json(processedRows);
     } catch (err) {
         console.error('Get destinations error:', err);
         res.status(500).json({ message: 'Terjadi kesalahan server.' });
@@ -41,18 +61,42 @@ router.get('/', async (req, res) => {
 
 // ============================================================
 // GET /api/destinations/:id
-// Detail destinasi
+// Detail destinasi dengan owner info
 // ============================================================
 router.get('/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        const [rows] = await pool.query('SELECT * FROM destination WHERE id_destinasi = ?', [id]);
+        const [rows] = await pool.query(
+            `SELECT d.*,
+             u.nama_usaha AS owner_nama_usaha,
+             u.foto_usaha AS owner_foto_usaha,
+             u.banner_usaha AS owner_banner_usaha,
+             u.kategori_usaha AS owner_kategori_usaha,
+             u.lokasi_usaha AS owner_lokasi_usaha,
+             u.link_gmaps AS owner_link_gmaps,
+             u.jam_buka AS owner_jam_buka,
+             u.jam_tutup AS owner_jam_tutup,
+             u.deskripsi_usaha AS owner_deskripsi_usaha
+             FROM destination d
+             LEFT JOIN user u ON d.id_owner = u.id_user
+             WHERE d.id_destinasi = ?`,
+            [id]
+        );
 
         if (rows.length === 0) {
             return res.status(404).json({ message: 'Destinasi tidak ditemukan.' });
         }
 
-        res.json(rows[0]);
+        const processed = { ...rows[0] };
+        // Convert owner image paths to URLs
+        if (processed.owner_foto_usaha) {
+            processed.owner_foto_usaha = '/uploads/business/' + processed.owner_foto_usaha;
+        }
+        if (processed.owner_banner_usaha) {
+            processed.owner_banner_usaha = '/uploads/business/' + processed.owner_banner_usaha;
+        }
+
+        res.json(processed);
     } catch (err) {
         console.error('Get destination detail error:', err);
         res.status(500).json({ message: 'Terjadi kesalahan server.' });

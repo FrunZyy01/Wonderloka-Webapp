@@ -7,14 +7,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    />
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -49,7 +43,6 @@
             font-weight: 700;
             color: #0d47a1;
         }
-        .nav-brand i { font-size: 28px; }
         .nav-menu {
             display: flex;
             list-style: none;
@@ -63,17 +56,11 @@
             padding: 6px 0;
             border-bottom: 3px solid transparent;
         }
-        .nav-menu a:hover,
-        .nav-menu a.active {
+        .nav-menu a:hover, .nav-menu a.active {
             color: #0d47a1;
             border-bottom-color: #0d47a1;
         }
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: relative;
-        }
+        .nav-actions { display: flex; align-items: center; gap: 16px; position: relative; }
         .profile-btn {
             background: none;
             border: none;
@@ -81,9 +68,7 @@
             font-size: 28px;
             color: #555;
             transition: color 0.3s;
-            padding: 4px;
         }
-        .profile-btn:hover { color: #0d47a1; }
         .profile-dropdown {
             display: none;
             position: absolute;
@@ -109,15 +94,9 @@
         }
         .profile-dropdown a:last-child { border-bottom: none; }
         .profile-dropdown a:hover { background: #e3f2fd; }
-        .profile-dropdown a i { width: 20px; color: #0d47a1; }
+        .profile-dropdown a i { color: #0d47a1; width: 20px; }
         .profile-dropdown .logout-item { color: #d32f2f; }
         .profile-dropdown .logout-item i { color: #d32f2f; }
-        .nav-toggle {
-            display: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-        }
 
         .page-hero {
             background: linear-gradient(135deg, #0d47a1, #1565c0);
@@ -165,11 +144,7 @@
             box-shadow: 0 4px 16px rgba(13, 71, 161, 0.06);
             overflow-x: auto;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
         th {
             background: #e3f2fd;
             color: #0d47a1;
@@ -177,11 +152,7 @@
             padding: 14px 16px;
             font-weight: 600;
         }
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid #f0f0f0;
-            color: #333;
-        }
+        td { padding: 12px 16px; border-bottom: 1px solid #f0f0f0; color: #333; }
         tr:last-child td { border-bottom: none; }
         .btn-action {
             border: none;
@@ -191,14 +162,14 @@
             font-weight: 500;
             font-size: 12px;
             cursor: pointer;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s;
+            margin-right: 4px;
         }
         .btn-edit { background: #bbdefb; color: #0d47a1; }
         .btn-edit:hover { background: #0d47a1; color: #fff; }
-        .btn-hapus { background: #ffcdd2; color: #c62828; margin-left: 6px; }
+        .btn-hapus { background: #ffcdd2; color: #c62828; }
         .btn-hapus:hover { background: #c62828; color: #fff; }
 
-        /* MODAL */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -220,18 +191,10 @@
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
         }
-        .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; color: #1a1a1a; }
+        .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 20px; }
         .form-group { margin-bottom: 16px; }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 4px;
-        }
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group label { display: block; font-size: 13px; font-weight: 500; color: #333; margin-bottom: 4px; }
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 10px 14px;
             border: 1.5px solid #e0e0e0;
@@ -241,19 +204,13 @@
             transition: border-color 0.3s;
             background: #fafafa;
         }
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-group input:focus, .form-group textarea:focus {
             outline: none;
             border-color: #0d47a1;
-            box-shadow: 0 0 0 4px rgba(13,71,161,0.1);
+            background: #fff;
         }
         .form-group textarea { min-height: 80px; resize: vertical; }
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
+        .modal-actions { display: flex; gap: 12px; margin-top: 20px; }
         .btn-simpan {
             flex: 1;
             padding: 12px;
@@ -263,7 +220,6 @@
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
-            font-size: 15px;
             cursor: pointer;
         }
         .btn-simpan:hover { background: #0a3d8a; }
@@ -276,42 +232,15 @@
             border-radius: 12px;
             font-family: 'Poppins', sans-serif;
             font-weight: 500;
-            font-size: 15px;
             cursor: pointer;
         }
         .btn-batal-modal:hover { background: #bdbdbd; }
 
-        .empty-state { text-align: center; padding: 60px 20px; color: #777; }
-        .empty-state i { font-size: 48px; color: #bbdefb; margin-bottom: 12px; }
-
-        .footer {
-            text-align: center;
-            padding: 24px 20px;
-            font-size: 14px;
-            color: #777;
-            border-top: 1px solid #bbdefb;
-        }
+        .footer { text-align: center; padding: 24px; font-size: 14px; color: #777; border-top: 1px solid #bbdefb; }
 
         @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-                flex-direction: column;
-                background: #fff;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                padding: 20px 24px;
-                gap: 16px;
-                box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
-            }
-            .nav-menu.active { display: flex; }
-            .nav-toggle { display: block; }
+            .nav-menu { display: none; }
             .page-hero h1 { font-size: 26px; }
-        }
-        @media (max-width: 480px) {
-            .page-hero h1 { font-size: 22px; }
-            .modal { padding: 24px 16px; }
         }
     </style>
 </head>
@@ -321,37 +250,32 @@
         <div class="nav-container">
             <div class="nav-brand">
                 <i class="fas fa-globe-asia"></i>
-                <span>Wonderloka Admin</span>
+                <span>Wonderloka</span>
             </div>
             <ul class="nav-menu" id="navMenu">
                 <li><a href="index.html">Dashboard</a></li>
-                <li><a href="kelola-destinasi.html" class="active">Kelola Destinasi</a></li>
-                <li><a href="kelola-pesanan.html">Kelola Pesanan</a></li>
+                <li><a href="kelola-destinasi.html" class="active">Destinasi</a></li>
+                <li><a href="kelola-pesanan.html">Pesanan</a></li>
             </ul>
             <div class="nav-actions">
-                <button class="profile-btn" id="profileBtn" aria-label="Profile">
-                    <i class="fas fa-user-circle"></i>
-                </button>
+                <button class="profile-btn" id="profileBtn"><i class="fas fa-user-circle"></i></button>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <a href="#"><i class="fas fa-user"></i> Profil Saya</a>
+                    <a href="profil-usaha.html"><i class="fas fa-store"></i> Profil</a>
                     <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
                 </div>
-            </div>
-            <div class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
             </div>
         </div>
     </nav>
 
     <section class="page-hero">
         <h1>Kelola Destinasi</h1>
-        <p>Tambah, edit, atau hapus destinasi wisata.</p>
+        <p>Tambah, edit, atau hapus destinasi wisata Anda.</p>
     </section>
 
     <section class="table-section">
         <div class="section-header">
-            <h2>Daftar Destinasi</h2>
-            <button class="btn-tambah" id="btnTambah"><i class="fas fa-plus"></i> Tambah Destinasi</button>
+            <h2>Daftar Destinasi Saya</h2>
+            <button class="btn-tambah" id="btnTambah"><i class="fas fa-plus"></i> Tambah</button>
         </div>
         <div class="table-wrapper">
             <table>
@@ -362,16 +286,11 @@
                         <th>Kategori</th>
                         <th>Lokasi</th>
                         <th>Harga</th>
-                        <th>Rating</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="destinasiBody"></tbody>
             </table>
-        </div>
-        <div id="emptyState" class="empty-state" style="display:none;">
-            <i class="fas fa-map-marked-alt"></i>
-            <h3>Belum ada destinasi</h3>
         </div>
     </section>
 
@@ -385,250 +304,156 @@
                     <input type="text" id="nama" required />
                 </div>
                 <div class="form-group">
-                    <label for="deskripsi">Deskripsi</label>
-                    <textarea id="deskripsi" required></textarea>
-                </div>
-                <div class="form-group">
                     <label for="kategori">Kategori</label>
                     <select id="kategori">
                         <option value="Alam">Alam</option>
-                        <option value="Pantai">Pantai</option>
-                        <option value="Gunung">Gunung</option>
                         <option value="Budaya">Budaya</option>
                         <option value="Kuliner">Kuliner</option>
-                        <option value="Religi">Religi</option>
+                        <option value="Penginapan">Penginapan</option>
+                        <option value="Tour">Tour</option>
+                        <option value="Campground">Campground</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="lokasi">Lokasi</label>
-                    <input type="text" id="lokasi" required />
+                    <input type="text" id="lokasi" />
                 </div>
                 <div class="form-group">
                     <label for="harga">Harga (Rp)</label>
-                    <input type="number" id="harga" min="0" required />
+                    <input type="number" id="harga" min="0" />
                 </div>
                 <div class="form-group">
                     <label for="gambar">URL Gambar</label>
                     <input type="url" id="gambar" placeholder="https://..." />
                 </div>
                 <div class="form-group">
-                    <label for="rating">Rating</label>
-                    <input type="number" id="rating" min="0" max="5" step="0.1" value="4.5" />
+                    <label for="deskripsi">Deskripsi</label>
+                    <textarea id="deskripsi"></textarea>
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-batal-modal" id="btnBatalModal">Batal</button>
-                    <button type="submit" class="btn-simpan" id="btnSimpan">Simpan</button>
+                    <button type="submit" class="btn-simpan">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <footer class="footer">
-        <p>&copy; 2026 Wonderloka. All rights reserved.</p>
-    </footer>
+    <footer class="footer"><p>&copy; 2026 Wonderloka. All rights reserved.</p></footer>
 
     <script src="../assets/js/script-api.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            // ===== AUTH CHECK =====
-            // Proteksi: Hanya pengusaha terverifikasi yang boleh akses
-            function checkAuth() {
-                const user = getUser();
-                if (!user) {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                // Admin tidak boleh akses halaman pengusaha
-                if (user.role === 'admin') {
-                    window.location.href = '../superadmin/verifikasi-pengelola.html';
-                    return null;
-                }
-
-                // Wisatawan tidak boleh akses halaman pengusaha
-                if (user.role === 'wisatawan') {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                // Pengusaha harus terverifikasi
-                if (user.role === 'pengusaha' && user.status_verifikasi !== 'terverifikasi') {
-                    window.location.href = '../status-verifikasi.html';
-                    return null;
-                }
-
-                return user;
+            // Auth check
+            const user = getUser();
+            if (!user || user.role !== 'pengusaha') {
+                clearAuth();
+                window.location.href = '../halaman-login-user.html';
+                return;
             }
-            const currentUser = checkAuth();
-            if (!currentUser) return;
 
+            // Profile dropdown
             const profileBtn = document.getElementById('profileBtn');
             const profileDropdown = document.getElementById('profileDropdown');
-            if (profileBtn && profileDropdown) {
-                profileBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    profileDropdown.classList.toggle('active');
-                });
-                document.addEventListener('click', function(e) {
-                    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-                        profileDropdown.classList.remove('active');
-                    }
-                });
-            }
+            profileBtn.addEventListener('click', function(e) { e.stopPropagation(); profileDropdown.classList.toggle('active'); });
+            document.addEventListener('click', function(e) {
+                if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                    profileDropdown.classList.remove('active');
+                }
+            });
 
-            const navToggle = document.getElementById('navToggle');
-            const navMenu = document.getElementById('navMenu');
-            if (navToggle && navMenu) {
-                navToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                });
-            }
-
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
+            // Logout
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (confirm('Yakin keluar?')) {
                     clearAuth();
                     window.location.href = '../halaman-login-user.html';
-                });
-            }
+                }
+            });
 
             const tbody = document.getElementById('destinasiBody');
-            const emptyState = document.getElementById('emptyState');
             const modalOverlay = document.getElementById('modalOverlay');
-            const modalTitle = document.getElementById('modalTitle');
             const destinasiForm = document.getElementById('destinasiForm');
-            const editId = document.getElementById('editId');
-            const btnBatalModal = document.getElementById('btnBatalModal');
-            const btnTambah = document.getElementById('btnTambah');
-
-            function resetForm() {
-                destinasiForm.reset();
-                editId.value = '';
-                modalTitle.textContent = 'Tambah Destinasi';
-            }
 
             function openModal(data) {
-                resetForm();
-                if (data) {
-                    modalTitle.textContent = 'Edit Destinasi';
-                    editId.value = data.id_destinasi;
-                    document.getElementById('nama').value = data.nama || '';
-                    document.getElementById('deskripsi').value = data.deskripsi || '';
-                    document.getElementById('kategori').value = data.kategori || 'Alam';
-                    document.getElementById('lokasi').value = data.lokasi || '';
-                    document.getElementById('harga').value = data.harga || 0;
-                    document.getElementById('gambar').value = data.gambar || '';
-                    document.getElementById('rating').value = data.rating || 4.5;
-                }
+                document.getElementById('modalTitle').textContent = data ? 'Edit Destinasi' : 'Tambah Destinasi';
+                document.getElementById('editId').value = data ? data.id_destinasi : '';
+                document.getElementById('nama').value = data ? data.nama : '';
+                document.getElementById('kategori').value = data ? data.kategori : 'Alam';
+                document.getElementById('lokasi').value = data ? data.lokasi : '';
+                document.getElementById('harga').value = data ? data.harga : 0;
+                document.getElementById('gambar').value = data ? data.gambar : '';
+                document.getElementById('deskripsi').value = data ? data.deskripsi : '';
                 modalOverlay.classList.add('active');
             }
 
             function closeModal() {
                 modalOverlay.classList.remove('active');
-                resetForm();
+                destinasiForm.reset();
             }
 
-            btnTambah.addEventListener('click', function() {
-                openModal(null);
-            });
-
-            btnBatalModal.addEventListener('click', closeModal);
-            modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) closeModal();
-            });
+            document.getElementById('btnTambah').addEventListener('click', () => openModal(null));
+            document.getElementById('btnBatalModal').addEventListener('click', closeModal);
+            modalOverlay.addEventListener('click', function(e) { if (e.target === modalOverlay) closeModal(); });
 
             async function loadDestinasi() {
                 try {
-                    const data = await apiFetch('/admin/destinations');
-                    if (data.length === 0) {
-                        tbody.innerHTML = '';
-                        emptyState.style.display = 'block';
+                    const data = await apiFetch('/pengelola/destinations');
+                    if (!data.length) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#94a3b8;">Belum ada destinasi</td></tr>';
                         return;
                     }
-                    emptyState.style.display = 'none';
                     let html = '';
                     data.forEach((d, i) => {
-                        html += `
-                            <tr>
-                                <td>${i + 1}</td>
-                                <td>${d.nama}</td>
-                                <td>${d.kategori || '-'}</td>
-                                <td>${d.lokasi}</td>
-                                <td>Rp ${Number(d.harga || 0).toLocaleString('id-ID')}</td>
-                                <td>${d.rating || '-'}</td>
-                                <td>
-                                    <button class="btn-action btn-edit" data-id="${d.id_destinasi}"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="btn-action btn-hapus" data-id="${d.id_destinasi}"><i class="fas fa-trash"></i> Hapus</button>
-                                </td>
-                            </tr>
-                        `;
+                        html += '<tr><td>' + (i+1) + '</td><td>' + d.nama + '</td><td>' + d.kategori + '</td><td>' + (d.lokasi || '-') + '</td><td>Rp ' + Number(d.harga || 0).toLocaleString('id-ID') + '</td><td><button class="btn-action btn-edit" data-id="' + d.id_destinasi + '"><i class="fas fa-edit"></i></button> <button class="btn-action btn-hapus" data-id="' + d.id_destinasi + '"><i class="fas fa-trash"></i></button></td></tr>';
                     });
                     tbody.innerHTML = html;
 
                     tbody.querySelectorAll('.btn-edit').forEach(btn => {
                         btn.addEventListener('click', function() {
                             const id = this.dataset.id;
-                            const d = data.find(item => item.id_destinasi == id);
-                            if (d) openModal(d);
+                            openModal(data.find(d => d.id_destinasi == id));
                         });
                     });
 
                     tbody.querySelectorAll('.btn-hapus').forEach(btn => {
                         btn.addEventListener('click', async function() {
                             const id = this.dataset.id;
-                            if (!confirm('Yakin ingin menghapus destinasi ini?')) return;
+                            if (!confirm('Yakin hapus?')) return;
                             try {
-                                await apiFetch('/admin/destinations/' + id, { method: 'DELETE' });
-                                alert('Destinasi berhasil dihapus.');
+                                await apiFetch('/pengelola/destinations/' + id, { method: 'DELETE' });
                                 loadDestinasi();
-                            } catch (err) {
-                                alert('Gagal menghapus: ' + err.message);
-                            }
+                            } catch (err) { alert(err.message); }
                         });
                     });
                 } catch (err) {
-                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:#c62828;">Gagal memuat: ' + err.message + '</td></tr>';
+                    tbody.innerHTML = '<tr><td colspan="6" style="color:red;">Gagal memuat</td></tr>';
                 }
             }
 
             destinasiForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                const id = document.getElementById('editId').value;
                 const payload = {
                     nama: document.getElementById('nama').value.trim(),
-                    deskripsi: document.getElementById('deskripsi').value.trim(),
                     kategori: document.getElementById('kategori').value,
                     lokasi: document.getElementById('lokasi').value.trim(),
                     harga: parseInt(document.getElementById('harga').value) || 0,
                     gambar: document.getElementById('gambar').value.trim(),
-                    rating: parseFloat(document.getElementById('rating').value) || 0
+                    deskripsi: document.getElementById('deskripsi').value.trim()
                 };
-                const id = editId.value;
                 try {
                     if (id) {
-                        await apiFetch('/admin/destinations/' + id, {
-                            method: 'PUT',
-                            body: JSON.stringify(payload)
-                        });
-                        alert('Destinasi berhasil diperbarui.');
+                        await apiFetch('/pengelola/destinations/' + id, { method: 'PUT', body: JSON.stringify(payload) });
                     } else {
-                        await apiFetch('/admin/destinations', {
-                            method: 'POST',
-                            body: JSON.stringify(payload)
-                        });
-                        alert('Destinasi berhasil ditambahkan.');
+                        await apiFetch('/pengelola/destinations', { method: 'POST', body: JSON.stringify(payload) });
                     }
                     closeModal();
                     loadDestinasi();
-                } catch (err) {
-                    alert('Gagal menyimpan: ' + err.message);
-                }
+                } catch (err) { alert(err.message); }
             });
 
             loadDestinasi();
         });
     </script>
-
 </body>
 </html>

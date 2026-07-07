@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Status Verifikasi - Wonderloka</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .logo {
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .status-card.pending {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+        }
+
+        .status-card.ditolak {
+            background: #ffebee;
+            border: 2px solid #f44336;
+        }
+
+        .status-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+        }
+
+        .status-card.pending .status-icon {
+            background: #fff3e0;
+            color: #ff9800;
+        }
+
+        .status-card.ditolak .status-icon {
+            background: #ffebee;
+            color: #f44336;
+        }
+
+        .status-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .status-card.pending .status-title {
+            color: #e65100;
+        }
+
+        .status-card.ditolak .status-title {
+            color: #c62828;
+        }
+
+        .status-description {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .rejection-reason {
+            background: #ffebee;
+            border: 1px solid #ef5350;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .rejection-reason h3 {
+            font-size: 14px;
+            color: #c62828;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .rejection-reason p {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .pending-info {
+            background: #fff8e1;
+            border: 1px solid #ffc107;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .pending-info h3 {
+            font-size: 14px;
+            color: #f57c00;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pending-info ul {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.8;
+            padding-left: 20px;
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #0d47a1;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #0a3d8a;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="mainContainer">
+        <div class="logo">
+            <img src="wonderloka.jpeg" alt="Wonderloka" onerror="this.style.display='none'" />
+        </div>
+
+        <h1>Wonderloka</h1>
+        <p class="subtitle">Status Verifikasi Akun Pengusaha</p>
+
+        <div id="statusContent"></div>
+
+        <div class="btn-container">
+            <a href="halaman-login-user.html" class="btn btn-secondary" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </a>
+        </div>
+
+        <p class="footer">© 2024 Wonderloka. All rights reserved.</p>
+    </div>
+
+    <script src="script-api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            const user = getUser();
+            const statusContent = document.getElementById('statusContent');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Redirect if not logged in
+            if (!user) {
+                window.location.href = 'halaman-login-user.html';
+                return;
+            }
+
+            // Only show this page for entrepreneurs with non-verified status
+            if (user.role !== 'pengusaha') {
+                if (user.role === 'admin') {
+                    window.location.href = 'superadmin/verifikasi-pengelola.html';
+                } else if (user.role === 'wisatawan') {
+                    window.location.href = 'wisatawan/dashboard.html';
+                }
+                return;
+            }
+
+            // Render based on verification status
+            if (user.status_verifikasi === 'pending') {
+                renderPendingStatus(statusContent);
+            } else if (user.status_verifikasi === 'ditolak') {
+                renderDitolakStatus(statusContent, user.alasan_penolakan);
+            } else if (user.status_verifikasi === 'terverifikasi') {
+                // Fetch current profile completion status
+                try {
+                    const profileData = await apiFetch('/api/pengelola/profile-completion');
+                    if (profileData.complete) {
+                        window.location.href = 'pengelola/index.html';
+                    } else {
+                        window.location.href = 'pengelola/profil-usaha.html';
+                    }
+                } catch (err) {
+                    window.location.href = 'pengelola/profil-usaha.html';
+                }
+            }
+
+            // Logout handler
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                clearAuth();
+                window.location.href = 'halaman-login-user.html';
+            });
+        });
+
+        function renderPendingStatus(container) {
+            container.innerHTML = `
+                <div class="status-card pending">
+                    <div class="status-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h2 class="status-title">Menunggu Verifikasi</h2>
+                    <p class="status-description">
+                        Akun Anda sedang dalam proses verifikasi oleh tim Wonderloka.
+                        Biasanya memakan waktu maksimal 24 jam kerja.
+                    </p>
+                    <div class="pending-info">
+                        <h3><i class="fas fa-info-circle"></i> Yang perlu Anda ketahui:</h3>
+                        <ul>
+                            <li>Tim kami akan meninjau data usaha Anda</li>
+                            <li>Kami akan menghubungi Anda via WhatsApp</li>
+                            <li>Anda akan mendapat notifikasi setelah diverifikasi</li>
+                            <li>Halaman ini akan otomatis terarahkan setelah terverifikasi</li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDitolakStatus(container, alasan) {
+            const alasanText = alasan || 'Alasan penolakan tidak tersedia.';
+
+            container.innerHTML = `
+                <div class="status-card ditolak">
+                    <div class="status-icon">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <h2 class="status-title">Pendaftaran Ditolak</h2>
+                    <p class="status-description">
+                        Mohon maaf, pendaftaran akun pengusaha Anda belum dapat kami setujui.
+                        Silakan perbaiki data Anda dan coba lagi.
+                    </p>
+                    <div class="rejection-reason">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Alasan Penolakan:</h3>
+                        <p>${alasanText}</p>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    // Jika sudah login, redirect sesuai role
+    // Jika sudah login, redirect sesuai role (cek profil completion untuk pengusaha)
     if (isLoggedIn()) {
         const user = getUser();
         if (user && user.role === 'pengusaha') {
-            window.location.href = 'admin/index.html';
+            // Cek kelengkapan profil secara async
+            checkPengelolaRedirect();
+            return;
+        } else if (user && user.role === 'admin') {
+            window.location.href = 'superadmin/verifikasi-pengelola.html';
+            return;
         } else {
             window.location.href = 'wisatawan/dashboard.html';
+            return;
         }
-        return;
     }
 
     const loginSection = document.getElementById('loginSection');
@@ -121,28 +126,69 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // ---------- FUNGSI REDIRECT BERDASARKAN ROLE ----------
-    function goToDashboard() {
+    // ---------- CEK REDIRECT UNTUK PENGELOLA ----------
+    async function checkPengelolaRedirect() {
         const user = getUser();
-        const target = (user && user.role === 'pengusaha')
-            ? 'admin/index.html'
-            : 'wisatawan/dashboard.html';
+        if (user.status_verifikasi !== 'terverifikasi') {
+            // Pending atau ditolak -> ke status verifikasi
+            window.location.href = '../status-verifikasi.html';
+            return;
+        }
+
+        try {
+            const profileData = await apiFetch('/pengelola/profile-completion');
+            if (profileData.complete) {
+                window.location.href = 'pengelola/index.html';
+            } else {
+                window.location.href = 'pengelola/profil-usaha.html';
+            }
+        } catch (err) {
+            // Default ke profil usaha jika gagal
+            window.location.href = 'pengelola/profil-usaha.html';
+        }
+    }
+
+    // ---------- FUNGSI REDIRECT BERDASARKAN ROLE & STATUS VERIFIKASI ----------
+    async function goToDashboard() {
+        const user = getUser();
+        let target = 'wisatawan/dashboard.html';
+        let message = 'Login berhasil! Mengalihkan ke Dashboard...';
+
+        if (user && user.role === 'admin') {
+            target = 'superadmin/verifikasi-pengelola.html';
+            message = 'Login berhasil! Mengalihkan ke Dashboard Admin...';
+        } else if (user && user.role === 'pengusaha') {
+            if (user.status_verifikasi === 'terverifikasi') {
+                // Cek kelengkapan profil usaha
+                try {
+                    const profileData = await apiFetch('/pengelola/profile-completion');
+                    if (profileData.complete) {
+                        target = 'pengelola/index.html';
+                        message = 'Login berhasil! Mengalihkan ke Dashboard Pengelola...';
+                    } else {
+                        target = 'pengelola/profil-usaha.html';
+                        message = 'Login berhasil! Mengalihkan ke Profil Usaha...';
+                    }
+                } catch (err) {
+                    // Default ke profil usaha jika gagal
+                    target = 'pengelola/profil-usaha.html';
+                    message = 'Login berhasil! Mengalihkan ke Profil Usaha...';
+                }
+            } else if (user.status_verifikasi === 'pending') {
+                target = 'status-verifikasi.html';
+                message = 'Login berhasil! Mengalihkan ke halaman status verifikasi...';
+            } else if (user.status_verifikasi === 'ditolak') {
+                target = 'status-verifikasi.html';
+                message = 'Login berhasil! Mengalihkan ke halaman status verifikasi...';
+            }
+        }
 
         console.log('🔄 Redirect ke ' + target + '...');
 
-        try {
+        showFeedback('✅ ' + message, 'success');
+        setTimeout(() => {
             window.location.href = target;
-        } catch (e) {
-            console.error('❌ Redirect gagal:', e);
-            feedback.innerHTML = `
-                ✅ Login berhasil!
-                <a href="${target}" style="color:#00695c;font-weight:bold;text-decoration:underline;">
-                    Klik di sini
-                </a>
-                untuk melanjutkan.
-            `;
-            feedback.className = 'form-feedback success';
-        }
+        }, 1000);
     }
 
     // ---------- HANDLE LOGIN ----------
@@ -173,8 +219,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             setAuth(data.token, data.user);
-            showFeedback('✅ Login berhasil! Mengalihkan ke Dashboard...', 'success');
-            setTimeout(goToDashboard, 800);
+            goToDashboard();
         } catch (err) {
             showFeedback('⚠️ ' + err.message, 'error');
         }
@@ -224,8 +269,19 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             setAuth(data.token, data.user);
-            showFeedback('✅ Pendaftaran berhasil! Mengalihkan ke Dashboard...', 'success');
-            setTimeout(goToDashboard, 800);
+
+            let message = '✅ Pendaftaran berhasil! ';
+            if (data.user.role === 'pengusaha') {
+                message += 'Akun Anda menunggu verifikasi dari admin Wonderloka. Mengalihkan...';
+                setTimeout(() => {
+                    clearAuth();
+                    window.location.href = '../halaman-login-user.html';
+                }, 3000);
+            } else {
+                message += 'Mengalihkan ke Dashboard...';
+                setTimeout(goToDashboard, 1000);
+            }
+            showFeedback(message, 'success');
         } catch (err) {
             showFeedback('⚠️ ' + err.message, 'error');
         }
