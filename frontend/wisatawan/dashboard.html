@@ -435,6 +435,39 @@
             cursor: not-allowed;
         }
 
+        /* ---------- SMART SEARCH BADGES ---------- */
+        .smart-search-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .smart-badge {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            color: #0d47a1;
+            font-weight: 500;
+        }
+
+        .smart-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(13, 71, 161, 0.85);
+            color: #fff;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            z-index: 2;
+        }
+
+        .smart-indicator i {
+            font-size: 10px;
+        }
+
         /* ---------- FOOTER ---------- */
         .footer {
             text-align: center;
@@ -574,7 +607,8 @@
             <div class="search-box">
                 <input
                     type="text"
-                    placeholder="Ketik: Tempat camping di atas bukit yang udaranya sejuk dan masih sepi"
+                    id="searchInput"
+                    placeholder="Coba ketik: tempat nongkrong murah di Jogja dekat UGM"
                 />
                 <button class="btn-search">
                     <i class="fas fa-search"></i> Temukan
@@ -688,7 +722,7 @@
 
             // Search - dengan parameter dari URL
             const searchBtn = document.querySelector('.btn-search');
-            const searchInput = document.querySelector('.search-box input');
+            const searchInput = document.getElementById('searchInput');
             if (searchBtn && searchInput) {
                 // Ambil parameter search dari URL jika ada
                 const urlParams = new URLSearchParams(window.location.search);
@@ -726,7 +760,7 @@
                         }
 
                         const data = await apiFetch(apiUrl);
-                        renderDestinasi(data);
+                        renderDestinasi(data, query);
                     } catch (err) {
                         grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">' + err.message + '</p>';
                     }
@@ -780,13 +814,18 @@
                 try {
                     const data = await apiFetch('/destinations');
                     await loadFavoritSet();
-                    renderDestinasi(data);
+                    renderDestinasi(data, null);
                 } catch (err) {
                     grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">Gagal memuat: ' + err.message + '</p>';
                 }
             }
 
-            function renderDestinasi(data) {
+            /**
+             * Render destinasi cards dengan optional smart search badges
+             * @param {Array} data - Data destinasi dari API
+             * @param {string|null} currentQuery - Query pencarian saat ini (untuk badge)
+             */
+            function renderDestinasi(data, currentQuery) {
                 if (data.length === 0) {
                     grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Destinasi tidak ditemukan.</p>';
                     return;
@@ -805,6 +844,19 @@
                     if (d.owner_nama_usaha) {
                         ownerBadge = '<span style="display:block;font-size:11px;color:#0d47a1;margin-top:4px;"><i class="fas fa-store"></i> ' + d.owner_nama_usaha + '</span>';
                     }
+                    // Smart search badge - tampilkan jika ada matched keywords
+                    let searchBadge = '';
+                    if (d._matchedKeywords && d._matchedKeywords.length > 0) {
+                        const badges = d._matchedKeywords.slice(0, 3).map(k =>
+                            `<span class="smart-badge">${k}</span>`
+                        ).join('');
+                        searchBadge = `<div class="smart-search-badges">${badges}</div>`;
+                    }
+                    // Smart search indicator
+                    let smartIndicator = '';
+                    if (currentQuery && (d._searchScore > 0 || d._searchReason)) {
+                        smartIndicator = `<span class="smart-indicator" title="Smart Search aktif"><i class="fas fa-magic"></i></span>`;
+                    }
                     html += `
                         <div class="destinasi-card">
                             <div class="card-image">
@@ -813,10 +865,12 @@
                                 <button class="btn-favorit ${isFav ? 'active' : ''}" data-id="${d.id_destinasi}" title="${isFav ? 'Hapus dari favorit' : 'Tambah ke favorit'}">
                                     <i class="fas fa-heart"></i>
                                 </button>
+                                ${smartIndicator}
                             </div>
                             <div class="card-body">
                                 <h3>${d.nama}</h3>
                                 <p class="location"><i class="fas fa-map-marker-alt"></i> ${d.lokasi || '-'}</p>
+                                ${searchBadge}
                                 ${ownerBadge}
                                 <a href="detail-destinasi.html?id=${d.id_destinasi}" class="btn-detail">Detail</a>
                             </div>
