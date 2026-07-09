@@ -5,7 +5,7 @@
 const express = require('express');
 const pool = require('../config/db');
 const { authenticate } = require('../middleware/auth');
-const { smartSearchDestinations, fallbackLikeSearch } = require('../utils/smartSearch');
+const { smartSearchDestinations, fallbackLikeSearch, parseSmartQuery, getStrictDbCategories } = require('../utils/smartSearch');
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ const router = express.Router();
 // ============================================================
 router.get('/', async (req, res) => {
     try {
-        const { kategori, search } = req.query;
+        const { kategori, search, sort } = req.query;
 
         // Tentukan apakah query menggunakan Smart Search SEBELUM query SQL
         const useSmart = search && search.trim().length > 0 && shouldUseSmartSearch(search);
@@ -70,25 +70,114 @@ router.get('/', async (req, res) => {
         // Jika ada search query, proses dengan Smart Search
         // ============================================================
         let resultData = processedRows;
+        let parsedQuery = null;
 
         if (search && search.trim().length > 0) {
             if (useSmart) {
-                // Gunakan Smart Search (rule-based NLP)
-                let smartResults = smartSearchDestinations(processedRows, search);
+                // Parse query
+                parsedQuery = parseSmartQuery(search);
 
-                // Fallback jika smart search tidak menemukan hasil
-                if (smartResults.length === 0) {
-                    smartResults = fallbackLikeSearch(processedRows, search);
-                    // Tandai sebagai fallback
-                    smartResults = smartResults.map(d => ({
-                        ...d,
-                        _isFallback: true,
-                        _searchScore: d._searchScore || 1,
-                        _searchReason: d._searchReason || `Fallback: "${search}"`
-                    }));
+                // ============================================================
+                // TAHAP 1: DAPATKAN STRICT DB CATEGORIES
+                // ============================================================
+                const strictDbCategories =
+                    parsedQuery.strictDbCategories ||
+                    getStrictDbCategories(parsedQuery);
+
+                // ============================================================
+                // TAHAP 2: FILTER BERDASARKAN KATEGORI TERLEBIH DAHULU
+                // Jika kategori spesifik ditemukan, filter data SEBELUM search
+                // ============================================================
+                let categoryFilteredRows = processedRows;
+
+                if (strictDbCategories.length > 0) {
+                    categoryFilteredRows = processedRows.filter((destination) => {
+                        const destinationCategory = String(
+                            destination.kategori || ''
+                        ).toLowerCase();
+
+                        const ownerCategory = String(
+                            destination.owner_kategori_usaha || ''
+                        ).toLowerCase();
+
+                        return strictDbCategories.some((category) => {
+                            const requiredCategory = String(category).toLowerCase();
+                            return (
+                                destinationCategory === requiredCategory ||
+                                ownerCategory === requiredCategory
+                            );
+                        });
+                    });
                 }
 
-                resultData = smartResults;
+                // ============================================================
+                // TAHAP 3: JALANKAN SMART SEARCH PADA DATA YANG SUDAH DIFILTER
+                // ============================================================
+                let smartResults = smartSearchDestinations(categoryFilteredRows, search);
+
+                // ============================================================
+                // TAHAP 4: FALLBACK JIKA SMART SEARCH TIDAK MENEMUKAN HASIL
+                // Fallback tetap menggunakan strict category filter
+                // ============================================================
+                if (!smartResults || smartResults.length === 0) {
+                    smartResults = fallbackLikeSearch(
+                        categoryFilteredRows,
+                        search,
+                        strictDbCategories
+                    );
+
+                    if (smartResults && smartResults.length > 0) {
+                        smartResults = smartResults.map(d => ({
+                            ...d,
+                            _isFallback: true,
+                            _searchScore: d._searchScore || 1,
+                            _searchReason: d._searchReason || `Fallback: "${search}"`
+                        }));
+                    }
+                }
+
+                // ============================================================
+                // TAHAP 5: SORTING BERDASARKAN QUERY
+                // Hanya urutkan jika hasil sudah difilter dan ada isinya
+                // ============================================================
+                if (smartResults && smartResults.length > 0) {
+                    // Jika query mengandung "murah" atau "termurah":
+                    // Urutkan harga ASC, jika harga sama rating DESC
+                    if (parsedQuery.hargaMurah) {
+                        smartResults.sort((a, b) => {
+                            const priceA = Number(a.harga) || 0;
+                            const priceB = Number(b.harga) || 0;
+
+                            if (priceA !== priceB) {
+                                return priceA - priceB; // Harga lebih murah duluan
+                            }
+
+                            // Jika harga sama, rating lebih tinggi duluan
+                            return (Number(b.rating) || 0) - (Number(a.rating) || 0);
+                        });
+                    }
+
+                    // Jika query mengandung "rating tinggi" (tanpa "murah"):
+                    // Urutkan berdasarkan rating DESC
+                    if (parsedQuery.ratingTinggi && !parsedQuery.hargaMurah) {
+                        smartResults.sort((a, b) => {
+                            const ratingA = Number(a.rating) || 0;
+                            const ratingB = Number(b.rating) || 0;
+                            return ratingB - ratingA;
+                        });
+                    }
+
+                    // Jika sort parameter explicit dari query string
+                    if (sort === 'price_asc') {
+                        smartResults.sort((a, b) => (Number(a.harga) || 0) - (Number(b.harga) || 0));
+                    } else if (sort === 'price_desc') {
+                        smartResults.sort((a, b) => (Number(b.harga) || 0) - (Number(a.harga) || 0));
+                    } else if (sort === 'rating') {
+                        smartResults.sort((a, b) => (Number(b.rating) || 0) - (Number(a.rating) || 0));
+                    }
+                }
+
+                resultData = smartResults || [];
             } else {
                 // Gunakan LIKE search lama (query sederhana)
                 resultData = processedRows;
@@ -117,7 +206,8 @@ function shouldUseSmartSearch(query) {
     // Smart keywords yang memicu smart search
     const smartTriggers = [
         // Harga
-        'murah', 'hemat', 'budget', 'terjangkau', 'ekonomis',
+        'murah', 'hemat', 'budget', 'terjangkau', 'ekonomis', 'termurah', 'harga termurah',
+        'mahal', 'mewah', 'luxury', 'premium',
         // Suasana
         'sejuk', 'adem', 'dingin', 'sepi', 'tenang', 'ramai', 'terkenal', 'populer',
         'sunset', 'matahari', 'foto', 'instagram', 'romantis', 'rombongan',
@@ -127,7 +217,9 @@ function shouldUseSmartSearch(query) {
         'dekat', 'terdekat', 'sekitar',
         // Multi-word locations
         'jogja', 'yogyakarta', 'bali', 'bandung', 'malang', 'surabaya',
-        'malioboro', 'ugm', 'ubud', 'bromo'
+        'malioboro', 'ugm', 'ubud', 'bromo',
+        // Rating
+        'rating tinggi', 'rating baik', 'terbaik', 'top rated', 'rekomendasi'
     ];
 
     for (const trigger of smartTriggers) {

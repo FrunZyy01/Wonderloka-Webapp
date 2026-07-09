@@ -563,6 +563,438 @@
                 font-size: 24px;
             }
         }
+
+        /* ========== AI TRAVEL PLANNER ========== */
+        .ai-float-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(13, 71, 161, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-float-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(13, 71, 161, 0.5);
+        }
+
+        .ai-float-btn .ai-badge {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 18px;
+            height: 18px;
+            background: #e53935;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        .ai-chat-panel {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 380px;
+            max-width: calc(100vw - 40px);
+            height: 520px;
+            max-height: calc(100vh - 140px);
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            animation: slideUp 0.3s ease;
+        }
+
+        .ai-chat-panel.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .ai-chat-header {
+            background: linear-gradient(135deg, #0d47a1, #1565c0);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .ai-chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ai-chat-header-info i {
+            font-size: 22px;
+        }
+
+        .ai-chat-header-info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .ai-chat-header-info span {
+            font-size: 11px;
+            opacity: 0.85;
+        }
+
+        .ai-chat-close {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.2s;
+        }
+
+        .ai-chat-close:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .ai-chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            background: #f5f7fa;
+        }
+
+        .ai-message {
+            margin-bottom: 12px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .ai-message.bot {
+            text-align: left;
+        }
+
+        .ai-message.user {
+            text-align: right;
+        }
+
+        .ai-message-bubble {
+            display: inline-block;
+            max-width: 90%;
+            padding: 10px 14px;
+            border-radius: 16px;
+            font-size: 13px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .ai-message.bot .ai-message-bubble {
+            background: white;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        .ai-message.user .ai-message-bubble {
+            background: #0d47a1;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .ai-message-bubble a {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+
+        .ai-message-bubble strong {
+            color: inherit;
+        }
+
+        .ai-message-bubble em {
+            font-style: italic;
+        }
+
+        .ai-chat-loading {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #777;
+            font-size: 13px;
+            padding: 8px 0;
+        }
+
+        .ai-loading-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .ai-loading-dots span {
+            width: 6px;
+            height: 6px;
+            background: #0d47a1;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .ai-loading-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .ai-loading-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .ai-loading-dots span:nth-child(3) { animation-delay: 0s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .ai-chat-input-area {
+            padding: 12px 16px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .ai-chat-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 24px;
+            padding: 10px 16px;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            resize: none;
+            max-height: 100px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .ai-chat-input:focus {
+            border-color: #0d47a1;
+        }
+
+        .ai-chat-input::placeholder {
+            color: #aaa;
+        }
+
+        .ai-chat-send {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #0d47a1;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ai-chat-send:hover {
+            background: #0a3d8a;
+            transform: scale(1.05);
+        }
+
+        .ai-chat-send:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .ai-suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .ai-suggestion-chip {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 11px;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ai-suggestion-chip:hover {
+            background: #e3f2fd;
+            border-color: #0d47a1;
+            color: #0d47a1;
+        }
+
+        @media (max-width: 480px) {
+            .ai-float-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 52px;
+                height: 52px;
+                font-size: 20px;
+            }
+
+            .ai-chat-panel {
+                bottom: 85px;
+                right: 15px;
+                left: 15px;
+                width: auto;
+                height: 70vh;
+            }
+        }
+
+        /* ========== AI ITINERARY STYLES ========== */
+        .ai-itinerary {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .ai-itinerary-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: #0d47a1;
+            margin-bottom: 8px;
+        }
+
+        .ai-itinerary-day {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-top: 12px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ai-itinerary-day::before {
+            content: '';
+        }
+
+        .ai-itinerary-theme {
+            font-size: 11px;
+            color: #666;
+            font-weight: 400;
+            margin-left: 4px;
+        }
+
+        .ai-itinerary-item {
+            margin-left: 8px;
+            margin-bottom: 8px;
+            padding-left: 12px;
+            border-left: 2px solid #e3f2fd;
+        }
+
+        .ai-itinerary-time {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .ai-itinerary-dest {
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        .ai-itinerary-desc {
+            font-size: 12px;
+            color: #666;
+            margin-left: 16px;
+        }
+
+        .ai-budget {
+            font-weight: 600;
+            color: #2e7d32;
+            background: #e8f5e9;
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 8px;
+        }
+
+        .ai-summary {
+            margin-top: 12px;
+            padding-top: 8px;
+            border-top: 1px dashed #ddd;
+            font-size: 12px;
+        }
+
+        .ai-summary-title {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 4px;
+        }
+
+        .ai-tip {
+            background: #fff3e0;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #e65100;
+        }
+
+        /* Table wrapper untuk markdown tables */
+        .ai-table-wrapper {
+            overflow-x: auto;
+            margin: 8px 0;
+            max-width: 100%;
+        }
+
+        .ai-table-wrapper table {
+            font-size: 12px;
+            border-collapse: collapse;
+            min-width: 200px;
+        }
+
+        .ai-table-wrapper th,
+        .ai-table-wrapper td {
+            padding: 6px 10px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .ai-table-wrapper th {
+            background: #e3f2fd;
+            color: #0d47a1;
+            font-weight: 600;
+        }
+
+        /* Horizontal line separator */
+        .ai-separator {
+            border: none;
+            border-top: 1px dashed #ddd;
+            margin: 12px 0;
+        }
     </style>
 </head>
 
@@ -640,6 +1072,40 @@
         <div class="destinasi-grid" id="destinasiGrid">
         </div>
     </section>
+
+    <!-- ========== AI TRAVEL PLANNER ========== -->
+    <button class="ai-float-btn" id="aiFloatBtn" title="AI Travel Planner">
+        <i class="fas fa-robot"></i>
+    </button>
+
+    <div class="ai-chat-panel" id="aiChatPanel">
+        <div class="ai-chat-header">
+            <div class="ai-chat-header-info">
+                <i class="fas fa-robot"></i>
+                <div>
+                    <h3>AI Travel Planner</h3>
+                    <span>Buat itinerary perjalanan Anda</span>
+                </div>
+            </div>
+            <button class="ai-chat-close" id="aiChatClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="ai-chat-messages" id="aiChatMessages">
+            <!-- Messages will be inserted here -->
+        </div>
+        <div class="ai-chat-input-area">
+            <textarea
+                class="ai-chat-input"
+                id="aiChatInput"
+                placeholder="Ketik pesan Anda... (cth: Buatkan itinerary 3 hari di Jogja)"
+                rows="1"
+            ></textarea>
+            <button class="ai-chat-send" id="aiChatSend">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
 
     <!-- ========== FOOTER ========== -->
     <footer class="footer">
@@ -746,7 +1212,8 @@
                         apiUrl += '?' + params.join('&');
                     }
 
-                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Mencari...</p>';
+                    // Loading state
+                    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#555;padding:40px 20px;"><i class="fas fa-spinner fa-spin" style="font-size:24px;color:#0d47a1;"></i><p style="margin-top:12px;">Mencari katalog...</p></div>';
                     try {
                         // Simpan search log
                         if (query) {
@@ -762,7 +1229,7 @@
                         const data = await apiFetch(apiUrl);
                         renderDestinasi(data, query);
                     } catch (err) {
-                        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">' + err.message + '</p>';
+                        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#c62828;padding:40px 20px;"><i class="fas fa-exclamation-circle" style="font-size:24px;"></i><p style="margin-top:12px;">Gagal mengambil data. Silakan coba lagi.</p></div>';
                     }
                 }
 
@@ -772,7 +1239,17 @@
                     if (query) {
                         await performSearch(query, null);
                     } else {
-                        alert('Silakan ketik destinasi yang ingin dicari.');
+                        // Ganti alert dengan inline message
+                        const searchBox = document.querySelector('.search-box');
+                        const existingMsg = searchBox.querySelector('.search-empty-msg');
+                        if (existingMsg) existingMsg.remove();
+                        const msg = document.createElement('span');
+                        msg.className = 'search-empty-msg';
+                        msg.style.cssText = 'position:absolute;bottom:-28px;left:24px;font-size:12px;color:#c62828;background:#fff;padding:4px 12px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);';
+                        msg.textContent = 'Ketik destinasi yang ingin dicari';
+                        searchBox.style.position = 'relative';
+                        searchBox.appendChild(msg);
+                        setTimeout(() => msg.remove(), 3000);
                     }
                 });
                 searchInput.addEventListener('keypress', function(e) {
@@ -810,13 +1287,13 @@
             }
 
             async function loadDestinasi() {
-                grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Memuat destinasi...</p>';
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#555;padding:40px 20px;"><i class="fas fa-spinner fa-spin" style="font-size:24px;color:#0d47a1;"></i><p style="margin-top:12px;">Memuat destinasi...</p></div>';
                 try {
                     const data = await apiFetch('/destinations');
                     await loadFavoritSet();
                     renderDestinasi(data, null);
                 } catch (err) {
-                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#c62828;">Gagal memuat: ' + err.message + '</p>';
+                    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#c62828;padding:40px 20px;"><i class="fas fa-exclamation-circle" style="font-size:24px;"></i><p style="margin-top:12px;">Gagal memuat destinasi. Silakan refresh halaman.</p></div>';
                 }
             }
 
@@ -827,7 +1304,7 @@
              */
             function renderDestinasi(data, currentQuery) {
                 if (data.length === 0) {
-                    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#555;">Destinasi tidak ditemukan.</p>';
+                    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#555;padding:40px 20px;"><i class="fas fa-search" style="font-size:32px;color:#ddd;"></i><p style="margin-top:12px;">Destinasi tidak ditemukan untuk pencarian ini.</p><p style="font-size:13px;color:#999;margin-top:4px;">Coba kata kunci lain atau hapus filter.</p></div>';
                     return;
                 }
                 const fallbackImg = '../assets/images/wonderloka.jpeg';
@@ -916,6 +1393,261 @@
                     });
                 });
             }
+
+            // ========== AI TRAVEL PLANNER ==========
+            const aiFloatBtn = document.getElementById('aiFloatBtn');
+            const aiChatPanel = document.getElementById('aiChatPanel');
+            const aiChatClose = document.getElementById('aiChatClose');
+            const aiChatMessages = document.getElementById('aiChatMessages');
+            const aiChatInput = document.getElementById('aiChatInput');
+            const aiChatSend = document.getElementById('aiChatSend');
+
+            // Buka/tutup panel AI
+            if (aiFloatBtn && aiChatPanel) {
+                aiFloatBtn.addEventListener('click', function() {
+                    aiChatPanel.classList.toggle('active');
+                    if (aiChatPanel.classList.contains('active') && aiChatMessages.children.length === 0) {
+                        // Tampilkan pesan pembuka saat pertama kali dibuka
+                        showWelcomeMessage();
+                    }
+                });
+            }
+
+            if (aiChatClose && aiChatPanel) {
+                aiChatClose.addEventListener('click', function() {
+                    aiChatPanel.classList.remove('active');
+                });
+            }
+
+            // Auto-resize textarea
+            if (aiChatInput) {
+                aiChatInput.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+                });
+
+                aiChatInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendAIMessage();
+                    }
+                });
+            }
+
+            if (aiChatSend) {
+                aiChatSend.addEventListener('click', sendAIMessage);
+            }
+
+            function showWelcomeMessage() {
+                const welcomeHtml = `
+                    <div class="ai-message bot">
+                        <div class="ai-message-bubble">
+Halo! 👋 Selamat datang di <strong>AI Travel Planner</strong> Wonderloka!
+
+Saya siap membantu Anda membuat itinerary perjalanan yang sempurna di Indonesia.
+
+Silakan ceritakan:
+• Destinasi yang ingin dikunjungi
+• Durasi perjalanan (berapa hari)
+• Budget (murah, sedang, luxe)
+• Minat (kuliner, alam, budaya, pantai, dll)
+
+<span style="color:#888;font-size:11px;">Contoh: "Buatkan rencana 3 hari di Jogja, suka kuliner dan alam"</span>
+                        </div>
+                    </div>
+                    <div class="ai-suggestion-chips">
+                        <button class="ai-suggestion-chip" onclick="fillSuggestion('Buatkan itinerary 3 hari di Yogyakarta, suka kuliner dan alam')">🏯 Yogyakarta 3D</button>
+                        <button class="ai-suggestion-chip" onclick="fillSuggestion('Buat itinerary 2 hari di Bali yang santai')">🏝️ Bali 2D</button>
+                        <button class="ai-suggestion-chip" onclick="fillSuggestion('Saya mau liburan 4 hari, suka pantai dan budaya')">🌊 Pantai & Budaya</button>
+                    </div>
+                `;
+                aiChatMessages.innerHTML = welcomeHtml;
+                scrollToBottom();
+            }
+
+            window.fillSuggestion = function(text) {
+                if (aiChatInput) {
+                    aiChatInput.value = text;
+                    aiChatInput.focus();
+                }
+            };
+
+            async function sendAIMessage() {
+                const message = aiChatInput.value.trim();
+                if (!message) return;
+
+                // Tambahkan pesan user ke chat
+                const userMsgHtml = `<div class="ai-message user"><div class="ai-message-bubble">${escapeHtml(message)}</div></div>`;
+                aiChatMessages.insertAdjacentHTML('beforeend', userMsgHtml);
+                aiChatInput.value = '';
+                aiChatInput.style.height = 'auto';
+
+                // Tampilkan loading
+                const loadingHtml = `
+                    <div class="ai-message bot" id="aiLoadingMsg">
+                        <div class="ai-chat-loading">
+                            <div class="ai-loading-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <span>Membuat itinerary...</span>
+                        </div>
+                    </div>
+                `;
+                aiChatMessages.insertAdjacentHTML('beforeend', loadingHtml);
+                scrollToBottom();
+
+                // Disable tombol kirim
+                if (aiChatSend) {
+                    aiChatSend.disabled = true;
+                    aiChatSend.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                }
+
+                try {
+                    const response = await fetch('/api/ai/travel-planner', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: message })
+                    });
+
+                    const data = await response.json();
+
+                    // Hapus loading
+                    const loadingEl = document.getElementById('aiLoadingMsg');
+                    if (loadingEl) loadingEl.remove();
+
+                    // Handle new response format with success field
+                    if (data.success && data.reply) {
+                        // Logging untuk debugging (di console browser)
+                        console.log('[AI Chat] Response source:', data.source);
+
+                        const botMsgHtml = `<div class="ai-message bot"><div class="ai-message-bubble">${formatAIResponse(data.reply)}</div></div>`;
+                        aiChatMessages.insertAdjacentHTML('beforeend', botMsgHtml);
+                    } else {
+                        // Tampilkan error dengan pesan yang sopan
+                        const errorMsg = data.error || 'Maaf, Travel Planner sedang bermasalah. Silakan coba lagi.';
+                        const errorHtml = `<div class="ai-message bot"><div class="ai-message-bubble" style="color:#c62828;"><i class="fas fa-exclamation-circle"></i> ${escapeHtml(errorMsg)}</div></div>`;
+                        aiChatMessages.insertAdjacentHTML('beforeend', errorHtml);
+                    }
+                } catch (err) {
+                    console.error('[AI Chat] Error:', err);
+                    const loadingEl = document.getElementById('aiLoadingMsg');
+                    if (loadingEl) loadingEl.remove();
+
+                    const errorHtml = `<div class="ai-message bot"><div class="ai-message-bubble" style="color:#c62828;"><i class="fas fa-exclamation-circle"></i> Maaf, Travel Planner sedang bermasalah. Coba cek koneksi backend atau coba lagi dalam beberapa menit.</div></div>`;
+                    aiChatMessages.insertAdjacentHTML('beforeend', errorHtml);
+                }
+
+                // Enable tombol kirim lagi
+                if (aiChatSend) {
+                    aiChatSend.disabled = false;
+                    aiChatSend.innerHTML = '<i class="fas fa-paper-plane"></i>';
+                }
+
+                scrollToBottom();
+            }
+
+            function scrollToBottom() {
+                if (aiChatMessages) {
+                    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+                }
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function formatAIResponse(text) {
+                if (!text) return '';
+
+                // Step 1: Escape HTML untuk keamanan
+                let formatted = escapeHtml(text);
+
+                // Step 2: Convert markdown tables ke HTML wrapper
+                // Deteksi tabel markdown: baris dengan |
+                formatted = formatted.replace(/\|(.+)\|/g, function(match) {
+                    // Skip garis separator (---|---|)
+                    if (match.match(/^\|[-:\s]+\|[-:\s]+\|?$/)) {
+                        return ''; // Hapus baris separator
+                    }
+                    return match;
+                });
+
+                // Process tabel markdown menjadi HTML yang scrollable
+                const tableRegex = /(\|.+\|\n?)(\|.+\|\n?)?(\|.+\|\n?)?/g;
+                let tableBuffer = [];
+                let isInTable = false;
+
+                const lines = formatted.split('\n');
+                const processedLines = [];
+                let inTableBlock = false;
+                let tableLines = [];
+
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+
+                    // Deteksi awal tabel (baris dengan | yang bukan separator)
+                    if (line.includes('|') && !line.match(/^\|[-:\s]+\|/) && line.trim().startsWith('|')) {
+                        inTableBlock = true;
+                        tableLines = [];
+                    }
+
+                    if (inTableBlock) {
+                        // Baris separator atau kosong = akhir tabel
+                        if (line.match(/^\|[-:\s]+\|/) || line.trim() === '') {
+                            // Render tabel
+                            if (tableLines.length > 0) {
+                                const rows = tableLines.filter(r => r.includes('|') && !r.match(/^\|[-:\s]+\|/));
+                                if (rows.length > 0) {
+                                    let html = '<div class="ai-table-wrapper"><table><tbody>';
+                                    rows.forEach((row, idx) => {
+                                        const cells = row.split('|').filter(c => c.trim());
+                                        if (idx === 0) {
+                                            html += '<thead><tr>' + cells.map(c => `<th>${c.trim()}</th>`).join('') + '</tr></thead><tbody>';
+                                        } else {
+                                            html += '<tr>' + cells.map(c => `<td>${c.trim()}</td>`).join('') + '</tr>';
+                                        }
+                                    });
+                                    html += '</tbody></table></div>';
+                                    processedLines.push(html);
+                                }
+                            }
+                            inTableBlock = false;
+                            tableLines = [];
+                            // Jangan push baris separator
+                            continue;
+                        } else {
+                            tableLines.push(line);
+                            continue;
+                        }
+                    }
+
+                    processedLines.push(line);
+                }
+
+                formatted = processedLines.join('\n');
+
+                // Step 3: Convert markdown heading ### ke style
+                formatted = formatted.replace(/^###\s+(.+)$/gm, '<div class="ai-itinerary-title">$1</div>');
+                formatted = formatted.replace(/^##\s+(.+)$/gm, '<div class="ai-itinerary-day">📍 $1</div>');
+
+                // Step 4: Convert bold markdown
+                formatted = formatted.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+                // Step 5: Convert separator --- ke styled line
+                formatted = formatted.replace(/^---+$/gm, '<hr class="ai-separator">');
+
+                // Step 6: Convert list items
+                formatted = formatted.replace(/^[•\-]\s+(.+)$/gm, '<div>• $1</div>');
+
+                // Step 7: Convert line breaks ke <br>
+                formatted = formatted.replace(/\n/g, '<br>');
+
+                return formatted;
+            }
+
+            // ========== END AI TRAVEL PLANNER ==========
 
             loadDestinasi();
         });

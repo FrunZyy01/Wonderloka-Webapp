@@ -10,6 +10,7 @@ const favoriteRoutes = require('./routes/favorites');
 const adminRoutes = require('./routes/admin');
 const adminVerificationRoutes = require('./routes/adminVerification');
 const pengelolaRoutes = require('./routes/pengelola');
+const aiPlannerRoutes = require('./routes/aiPlanner');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -39,6 +40,7 @@ app.use('/api/favorites', favoriteRoutes);
 app.use('/api/admin', adminVerificationRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/pengelola', pengelolaRoutes);
+app.use('/api/ai', aiPlannerRoutes);
 
 app.get('*', (req, res) => {
     const possiblePaths = [

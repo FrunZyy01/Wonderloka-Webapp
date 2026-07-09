@@ -221,7 +221,7 @@ router.post('/destinations', checkVerified, async (req, res) => {
             return res.status(400).json({ message: 'Nama dan kategori wajib diisi.' });
         }
 
-        const validKategori = ['Alam', 'Budaya', 'Kuliner', 'Penginapan', 'Tour', 'Campground'];
+        const validKategori = ['Alam', 'Budaya', 'Penginapan', 'Tour', 'Campground'];
         if (!validKategori.includes(kategori)) {
             return res.status(400).json({ message: 'Kategori harus dari daftar yang valid.' });
         }

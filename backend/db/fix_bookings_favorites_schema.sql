@@ -86,7 +86,7 @@ SET @preparedStatement = (
         (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS
          WHERE TABLE_SCHEMA = @dbname AND TABLE_NAME = @tablename AND COLUMN_NAME = @columnname) > 0,
         'SELECT 1',
-        'ALTER TABLE user ADD COLUMN kategori_usaha ENUM("Alam", "Budaya", "Kuliner", "Penginapan", "Tour", "Campground") DEFAULT NULL'
+        'ALTER TABLE user ADD COLUMN kategori_usaha ENUM("Alam", "Budaya", "Penginapan", "Tour", "Campground") DEFAULT NULL'
     )
 );
 PREPARE alterIfNotExists FROM @preparedStatement;
