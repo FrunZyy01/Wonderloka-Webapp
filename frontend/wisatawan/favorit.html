@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wonderloka - Favorit</title>
@@ -8,551 +8,838 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
     />
     <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
 
     <style>
-        /* ---------- RESET ---------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #e3f2fd;
-            color: #1a1a1a;
-        }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #e3f2fd;
+        color: #1a1a1a;
+      }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-        /* ---------- NAVBAR ---------- */
-        .navbar {
-            background: #ffffff;
-            box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
-            padding: 0 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+      .navbar {
+        background: #ffffff;
+        box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-        }
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+      }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: 700;
-            color: #0d47a1;
-        }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #0d47a1;
+      }
 
-        .nav-brand i {
-            font-size: 28px;
-        }
+      .nav-brand i {
+        font-size: 28px;
+      }
 
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 32px;
+        font-weight: 500;
+        font-size: 15px;
+      }
+
+      .nav-menu a {
+        color: #555;
+        transition: color 0.3s;
+        padding: 6px 0;
+        border-bottom: 3px solid transparent;
+      }
+
+      .nav-menu a:hover,
+      .nav-menu a.active {
+        color: #0d47a1;
+        border-bottom-color: #0d47a1;
+      }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+      }
+
+      .profile-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 28px;
+        color: #555;
+        transition: color 0.3s;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .profile-btn:hover {
+        color: #0d47a1;
+      }
+
+      .profile-dropdown {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(13, 71, 161, 0.12);
+        min-width: 180px;
+        overflow: hidden;
+        z-index: 200;
+      }
+
+      .profile-dropdown.active {
+        display: block;
+      }
+
+      .profile-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 14px;
+        color: #333;
+        transition: background 0.2s;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+      }
+
+      .profile-dropdown a:last-child {
+        border-bottom: none;
+      }
+
+      .profile-dropdown a:hover {
+        background: #e3f2fd;
+      }
+
+      .profile-dropdown a i {
+        width: 20px;
+        color: #0d47a1;
+      }
+
+      .profile-dropdown .logout-item {
+        color: #d32f2f;
+      }
+      .profile-dropdown .logout-item i {
+        color: #d32f2f;
+      }
+
+      .nav-toggle {
+        display: none;
+        font-size: 24px;
+        color: #333;
+        cursor: pointer;
+      }
+
+      .page-hero {
+        position: relative;
+        background-image: url("../assets/images/wonderloka.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(13, 71, 161, 0.65);
+        z-index: 1;
+      }
+
+      .page-hero-content {
+        position: relative;
+        z-index: 2;
+        color: #ffffff;
+      }
+
+      .page-hero h1 {
+        font-size: 32px;
+        font-weight: 700;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-hero p {
+        font-size: 16px;
+        opacity: 0.9;
+        margin-top: 6px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .favorit-container {
+        max-width: 1200px;
+        margin: 32px auto 0;
+        padding: 0 20px 60px;
+      }
+
+      .favorit-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 24px;
+      }
+
+      .favorit-card {
+        background: #ffffff;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 4px 16px rgba(13, 71, 161, 0.06);
+        transition:
+          transform 0.25s ease,
+          box-shadow 0.25s ease;
+        position: relative;
+      }
+
+      .favorit-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 32px rgba(13, 71, 161, 0.12);
+      }
+
+      .favorit-card .card-image {
+        position: relative;
+        height: 180px;
+        overflow: hidden;
+      }
+
+      .favorit-card .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .favorit-card .card-rating {
+        position: absolute;
+        bottom: 10px;
+        left: 12px;
+        background: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        font-size: 13px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        backdrop-filter: blur(4px);
+      }
+
+      .favorit-card .btn-hapus-favorit {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+        color: #d32f2f;
+        cursor: pointer;
+        transition:
+          background 0.3s,
+          transform 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      }
+
+      .favorit-card .btn-hapus-favorit:hover {
+        background: #d32f2f;
+        color: #fff;
+        transform: scale(1.1);
+      }
+
+      .favorit-card .card-body {
+        padding: 16px 18px 20px;
+      }
+
+      .favorit-card .card-body h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .favorit-card .card-body .location {
+        font-size: 14px;
+        color: #777;
+        margin: 4px 0 12px;
+      }
+
+      .favorit-card .card-body .location i {
+        color: #0d47a1;
+        margin-right: 4px;
+      }
+
+      .favorit-card .btn-detail {
+        display: inline-block;
+        background: #bbdefb;
+        color: #0d47a1;
+        font-weight: 600;
+        font-size: 14px;
+        padding: 6px 20px;
+        border-radius: 30px;
+        transition: background 0.3s;
+      }
+
+      .favorit-card .btn-detail:hover {
+        background: #0d47a1;
+        color: #fff;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #777;
+      }
+
+      .empty-state i {
+        font-size: 64px;
+        color: #bbdefb;
+        margin-bottom: 16px;
+      }
+
+      .empty-state h3 {
+        font-size: 22px;
+        color: #333;
+      }
+
+      .empty-state p {
+        font-size: 16px;
+        margin-top: 8px;
+      }
+
+      .empty-state a {
+        display: inline-block;
+        margin-top: 16px;
+        background: #0d47a1;
+        color: #fff;
+        padding: 10px 28px;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: background 0.3s;
+      }
+
+      .empty-state a:hover {
+        background: #0a3d8a;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 24px 20px;
+        font-size: 14px;
+        color: #777;
+        border-top: 1px solid #bbdefb;
+      }
+
+      /* ========== MODAL PROFIL ========== */
+      .profile-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        animation: fadeInOverlay 0.3s ease;
+      }
+
+      .profile-modal-overlay.active {
+        display: flex;
+      }
+
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .profile-modal {
+        background: #ffffff;
+        border-radius: 24px;
+        max-width: 420px;
+        width: 92%;
+        padding: 32px 28px 28px;
+        box-shadow: 0 20px 60px rgba(13, 71, 161, 0.2);
+        animation: slideUpModal 0.3s ease;
+        position: relative;
+      }
+
+      @keyframes slideUpModal {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .profile-modal-close {
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #999;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+
+      .profile-modal-close:hover {
+        color: #333;
+      }
+
+      .profile-modal-avatar {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .profile-modal-avatar i {
+        font-size: 72px;
+        color: #0d47a1;
+        background: #e3f2fd;
+        padding: 16px;
+        border-radius: 50%;
+      }
+
+      .profile-modal-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+
+      .profile-modal-email {
+        font-size: 15px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .profile-modal-details {
+        background: #f5f7fa;
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin: 12px 0 20px;
+      }
+
+      .profile-modal-details .row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 14px;
+      }
+
+      .profile-modal-details .row:last-child {
+        border-bottom: none;
+      }
+
+      .profile-modal-details .label {
+        color: #888;
+        font-weight: 500;
+      }
+
+      .profile-modal-details .value {
+        color: #1a1a1a;
+        font-weight: 600;
+      }
+
+      .profile-modal .btn-logout-modal {
+        width: 100%;
+        padding: 12px;
+        background: #d32f2f;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .profile-modal .btn-logout-modal:hover {
+        background: #b71c1c;
+      }
+
+      @media (max-width: 992px) {
+        .favorit-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        }
+        .profile-modal {
+          padding: 24px 16px 20px;
+        }
+        .profile-modal-avatar i {
+          font-size: 56px;
+          padding: 12px;
+        }
+        .profile-modal-name {
+          font-size: 18px;
+        }
+        .profile-modal-details .row {
+          font-size: 13px;
+          flex-wrap: wrap;
+          gap: 4px;
+        }
+      }
+
+      @media (max-width: 768px) {
         .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-            font-weight: 500;
-            font-size: 15px;
+          display: none;
+          flex-direction: column;
+          background: #fff;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          right: 0;
+          padding: 20px 24px;
+          gap: 16px;
+          box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
         }
-
-        .nav-menu a {
-            color: #555;
-            transition: color 0.3s;
-            padding: 6px 0;
-            border-bottom: 3px solid transparent;
+        .nav-menu.active {
+          display: flex;
         }
-
-        .nav-menu a:hover,
-        .nav-menu a.active {
-            color: #0d47a1;
-            border-bottom-color: #0d47a1;
-        }
-
-        /* ---------- PROFILE DROPDOWN ---------- */
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: relative;
-        }
-
-        .profile-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 28px;
-            color: #555;
-            transition: color 0.3s;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-btn:hover {
-            color: #0d47a1;
-        }
-
-        .profile-dropdown {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(13, 71, 161, 0.12);
-            min-width: 180px;
-            overflow: hidden;
-            z-index: 200;
-        }
-
-        .profile-dropdown.active {
-            display: block;
-        }
-
-        .profile-dropdown a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            font-size: 14px;
-            color: #333;
-            transition: background 0.2s;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .profile-dropdown a:last-child {
-            border-bottom: none;
-        }
-
-        .profile-dropdown a:hover {
-            background: #e3f2fd;
-        }
-
-        .profile-dropdown a i {
-            width: 20px;
-            color: #0d47a1;
-        }
-
-        .profile-dropdown .logout-item {
-            color: #d32f2f;
-        }
-        .profile-dropdown .logout-item i {
-            color: #d32f2f;
-        }
-
         .nav-toggle {
-            display: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-        }
-
-        /* ---------- HERO ---------- */
-        .page-hero {
-            position: relative;
-            background-image: url('../assets/images/wonderloka.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(13, 71, 161, 0.65);
-            z-index: 1;
-        }
-
-        .page-hero-content {
-            position: relative;
-            z-index: 2;
-            color: #ffffff;
+          display: block;
         }
 
         .page-hero h1 {
-            font-size: 32px;
-            font-weight: 700;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .page-hero p {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-top: 6px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        /* ---------- DAFTAR FAVORIT ---------- */
-        .favorit-container {
-            max-width: 1200px;
-            margin: 32px auto 0;
-            padding: 0 20px 60px;
+          font-size: 26px;
         }
 
         .favorit-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 24px;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         }
+      }
 
-        .favorit-card {
-            background: #ffffff;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 16px rgba(13, 71, 161, 0.06);
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-            position: relative;
+      @media (max-width: 480px) {
+        .page-hero h1 {
+          font-size: 22px;
         }
-
-        .favorit-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 32px rgba(13, 71, 161, 0.12);
+        .favorit-grid {
+          grid-template-columns: 1fr;
         }
-
-        .favorit-card .card-image {
-            position: relative;
-            height: 180px;
-            overflow: hidden;
-        }
-
-        .favorit-card .card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .favorit-card .card-rating {
-            position: absolute;
-            bottom: 10px;
-            left: 12px;
-            background: rgba(0, 0, 0, 0.7);
-            color: #fff;
-            font-size: 13px;
-            padding: 4px 12px;
-            border-radius: 20px;
-            backdrop-filter: blur(4px);
-        }
-
-        .favorit-card .btn-hapus-favorit {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            font-size: 16px;
-            color: #d32f2f;
-            cursor: pointer;
-            transition: background 0.3s, transform 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-        }
-
-        .favorit-card .btn-hapus-favorit:hover {
-            background: #d32f2f;
-            color: #fff;
-            transform: scale(1.1);
-        }
-
-        .favorit-card .card-body {
-            padding: 16px 18px 20px;
-        }
-
-        .favorit-card .card-body h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-
-        .favorit-card .card-body .location {
-            font-size: 14px;
-            color: #777;
-            margin: 4px 0 12px;
-        }
-
-        .favorit-card .card-body .location i {
-            color: #0d47a1;
-            margin-right: 4px;
-        }
-
-        .favorit-card .btn-detail {
-            display: inline-block;
-            background: #bbdefb;
-            color: #0d47a1;
-            font-weight: 600;
-            font-size: 14px;
-            padding: 6px 20px;
-            border-radius: 30px;
-            transition: background 0.3s;
-        }
-
-        .favorit-card .btn-detail:hover {
-            background: #0d47a1;
-            color: #fff;
-        }
-
-        /* ---------- KOSONG ---------- */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #777;
-        }
-
-        .empty-state i {
-            font-size: 64px;
-            color: #bbdefb;
-            margin-bottom: 16px;
-        }
-
-        .empty-state h3 {
-            font-size: 22px;
-            color: #333;
-        }
-
-        .empty-state p {
-            font-size: 16px;
-            margin-top: 8px;
-        }
-
-        .empty-state a {
-            display: inline-block;
-            margin-top: 16px;
-            background: #0d47a1;
-            color: #fff;
-            padding: 10px 28px;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .empty-state a:hover {
-            background: #0a3d8a;
-        }
-
-        /* ---------- FOOTER ---------- */
-        .footer {
-            text-align: center;
-            padding: 24px 20px;
-            font-size: 14px;
-            color: #777;
-            border-top: 1px solid #bbdefb;
-        }
-
-        /* ---------- RESPONSIVE ---------- */
-        @media (max-width: 992px) {
-            .favorit-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-                flex-direction: column;
-                background: #fff;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                padding: 20px 24px;
-                gap: 16px;
-                box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .nav-toggle {
-                display: block;
-            }
-
-            .nav-actions {
-                display: flex;
-            }
-
-            .page-hero h1 {
-                font-size: 26px;
-            }
-
-            .favorit-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-        }
-
-        @media (max-width: 480px) {
-            .page-hero h1 {
-                font-size: 22px;
-            }
-            .favorit-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <!-- ========== NAVBAR ========== -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <i class="fas fa-globe-asia"></i>
-                <span>Wonderloka</span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="dashboard.html">Beranda</a></li>
-                <li><a href="pesanan-saya.html">Pesanan saya</a></li>
-                <li><a href="favorit.html" class="active">Favorit</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="profile-btn" id="profileBtn" aria-label="Profile">
-                    <i class="fas fa-user-circle"></i>
-                </button>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <a href="#"><i class="fas fa-user"></i> Profil Saya</a>
-                    <a href="pesanan-saya.html"><i class="fas fa-history"></i> Riwayat Pesanan</a>
-                    <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
-                </div>
-            </div>
-            <div class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </div>
+      <div class="nav-container">
+        <div class="nav-brand">
+          <i class="fas fa-globe-asia"></i>
+          <span>Wonderloka</span>
         </div>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="dashboard.html">Beranda</a></li>
+          <li><a href="pesanan-saya.html">Pesanan saya</a></li>
+          <li><a href="favorit.html" class="active">Favorit</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="profile-btn" id="profileBtn" aria-label="Profile">
+            <i class="fas fa-user-circle"></i>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a id="profileMenuItem"><i class="fas fa-user"></i> Profil Saya</a>
+            <a href="pesanan-saya.html"
+              ><i class="fas fa-history"></i> Riwayat Pesanan</a
+            >
+            <a class="logout-item" id="logoutBtn"
+              ><i class="fas fa-sign-out-alt"></i> Keluar</a
+            >
+          </div>
+        </div>
+        <div class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
     </nav>
 
     <!-- ========== HERO ========== -->
     <section class="page-hero">
-        <div class="page-hero-content">
-            <h1>Favorit Saya</h1>
-            <p>Destinasi wisata favorit yang telah Anda simpan.</p>
-        </div>
+      <div class="page-hero-content">
+        <h1>Favorit Saya</h1>
+        <p>Destinasi wisata favorit yang telah Anda simpan.</p>
+      </div>
     </section>
 
     <!-- ========== DAFTAR FAVORIT ========== -->
-    <section class="favorit-container" id="favoritContainer">
-        <!-- Akan di-render oleh JavaScript -->
-    </section>
+    <section class="favorit-container" id="favoritContainer"></section>
+
+    <!-- ========== MODAL PROFIL ========== -->
+    <div class="profile-modal-overlay" id="profileModal">
+      <div class="profile-modal">
+        <button class="profile-modal-close" id="profileModalClose">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <div class="profile-modal-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="profile-modal-name" id="profileModalName">
+          Nama Pengguna
+        </div>
+        <div class="profile-modal-email" id="profileModalEmail">
+          email@example.com
+        </div>
+
+        <div class="profile-modal-details">
+          <div class="row">
+            <span class="label">Role</span>
+            <span class="value" id="profileModalRole">Wisatawan</span>
+          </div>
+          <div class="row">
+            <span class="label">Status</span>
+            <span class="value" id="profileModalStatus">Aktif</span>
+          </div>
+          <div class="row">
+            <span class="label">Bergabung Sejak</span>
+            <span class="value" id="profileModalJoined">-</span>
+          </div>
+        </div>
+
+        <button class="btn-logout-modal" id="profileModalLogout">
+          <i class="fas fa-sign-out-alt"></i> Keluar
+        </button>
+      </div>
+    </div>
 
     <!-- ========== FOOTER ========== -->
     <footer class="footer">
-        <p>&copy; 2026 Wonderloka. All rights reserved.</p>
+      <p>&copy; 2026 Wonderloka. All rights reserved.</p>
     </footer>
 
     <!-- ========== JAVASCRIPT ========== -->
     <script src="../assets/js/script-api.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ===== AUTH CHECK =====
-            // Proteksi: Hanya wisatawan yang boleh akses
-            function checkAuth() {
-                const user = getUser();
-                if (!user) {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                // Admin tidak boleh akses halaman wisatawan
-                if (user.role === 'admin') {
-                    window.location.href = '../superadmin/verifikasi-pengelola.html';
-                    return null;
-                }
-
-                // Pengusaha tidak boleh akses halaman wisatawan
-                if (user.role === 'pengusaha') {
-                    if (user.status_verifikasi === 'terverifikasi') {
-                        window.location.href = '../admin/index.html';
-                    } else {
-                        window.location.href = '../status-verifikasi.html';
-                    }
-                    return null;
-                }
-
-                if (user.role !== 'wisatawan') {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                return user;
+      document.addEventListener("DOMContentLoaded", function () {
+        // ===== AUTH CHECK =====
+        function checkAuth() {
+          const user = getUser();
+          if (!user) {
+            window.location.href = "../halaman-login-user.html";
+            return null;
+          }
+          if (user.role === "admin") {
+            window.location.href = "../superadmin/verifikasi-pengelola.html";
+            return null;
+          }
+          if (user.role === "pengusaha") {
+            if (user.status_verifikasi === "terverifikasi") {
+              window.location.href = "../admin/index.html";
+            } else {
+              window.location.href = "../status-verifikasi.html";
             }
-            const currentUser = checkAuth();
-            if (!currentUser) return;
+            return null;
+          }
+          if (user.role !== "wisatawan") {
+            window.location.href = "../halaman-login-user.html";
+            return null;
+          }
+          return user;
+        }
+        const currentUser = checkAuth();
+        if (!currentUser) return;
 
-            // ---------- PROFILE DROPDOWN ----------
-            const profileBtn = document.getElementById('profileBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-            if (profileBtn && profileDropdown) {
-                profileBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    profileDropdown.classList.toggle('active');
-                });
-                document.addEventListener('click', function(e) {
-                    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-                        profileDropdown.classList.remove('active');
-                    }
-                });
+        // ===== PROFILE DROPDOWN =====
+        const profileBtn = document.getElementById("profileBtn");
+        const profileDropdown = document.getElementById("profileDropdown");
+        if (profileBtn && profileDropdown) {
+          profileBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            profileDropdown.classList.toggle("active");
+          });
+          document.addEventListener("click", function (e) {
+            if (
+              !profileBtn.contains(e.target) &&
+              !profileDropdown.contains(e.target)
+            ) {
+              profileDropdown.classList.remove("active");
             }
+          });
+        }
 
-            // ---------- MOBILE NAV TOGGLE ----------
-            const navToggle = document.getElementById('navToggle');
-            const navMenu = document.getElementById('navMenu');
-            if (navToggle && navMenu) {
-                navToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                });
+        // ===== MOBILE NAV =====
+        const navToggle = document.getElementById("navToggle");
+        const navMenu = document.getElementById("navMenu");
+        if (navToggle && navMenu) {
+          navToggle.addEventListener("click", function () {
+            navMenu.classList.toggle("active");
+          });
+        }
+
+        // ===== LOGOUT DROPDOWN =====
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (confirm("Yakin ingin keluar?")) {
+              clearAuth();
+              window.location.href = "../halaman-login-user.html";
             }
+          });
+        }
 
-            // ---------- LOGOUT ----------
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    clearAuth();
-                    window.location.href = '../halaman-login-user.html';
-                });
+        // ===== MODAL PROFIL =====
+        const profileModal = document.getElementById("profileModal");
+        const profileModalClose = document.getElementById("profileModalClose");
+        const profileModalName = document.getElementById("profileModalName");
+        const profileModalEmail = document.getElementById("profileModalEmail");
+        const profileModalRole = document.getElementById("profileModalRole");
+        const profileModalStatus =
+          document.getElementById("profileModalStatus");
+        const profileModalJoined =
+          document.getElementById("profileModalJoined");
+        const profileModalLogout =
+          document.getElementById("profileModalLogout");
+
+        function openProfileModal() {
+          const user = getUser();
+          if (!user) {
+            alert("Anda belum login. Silakan login terlebih dahulu.");
+            window.location.href = "../halaman-login-user.html";
+            return;
+          }
+
+          profileModalName.textContent =
+            user.nama_lengkap || user.nama || user.email || "Pengguna";
+          profileModalEmail.textContent = user.email || "-";
+
+          const roleMap = {
+            wisatawan: "Wisatawan",
+            pengusaha: "Pengusaha Lokal",
+            admin: "Admin",
+          };
+          profileModalRole.textContent =
+            roleMap[user.role] || user.role || "Wisatawan";
+          profileModalStatus.textContent =
+            user.status_verifikasi === "terverifikasi"
+              ? "Terverifikasi"
+              : "Aktif";
+
+          if (user.created_at) {
+            const date = new Date(user.created_at);
+            profileModalJoined.textContent = date.toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            });
+          } else {
+            profileModalJoined.textContent = "-";
+          }
+
+          profileModal.classList.add("active");
+          document.body.style.overflow = "hidden";
+          if (profileDropdown) profileDropdown.classList.remove("active");
+        }
+
+        function closeProfileModal() {
+          profileModal.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+
+        const profileMenuItem = document.getElementById("profileMenuItem");
+        if (profileMenuItem) {
+          profileMenuItem.addEventListener("click", function (e) {
+            e.preventDefault();
+            openProfileModal();
+          });
+        }
+
+        if (profileModalClose) {
+          profileModalClose.addEventListener("click", closeProfileModal);
+        }
+
+        if (profileModal) {
+          profileModal.addEventListener("click", function (e) {
+            if (e.target === this) {
+              closeProfileModal();
             }
+          });
+        }
 
-            // ---------- LOAD & RENDER FAVORIT DARI API ----------
-            const container = document.getElementById('favoritContainer');
+        if (profileModalLogout) {
+          profileModalLogout.addEventListener("click", function () {
+            if (confirm("Yakin ingin keluar?")) {
+              clearAuth();
+              window.location.href = "../halaman-login-user.html";
+            }
+          });
+        }
 
-            async function loadFavorit() {
-                if (!isLoggedIn()) {
-                    container.innerHTML = `
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "Escape" &&
+            profileModal &&
+            profileModal.classList.contains("active")
+          ) {
+            closeProfileModal();
+          }
+        });
+
+        // ===== LOAD FAVORIT =====
+        const container = document.getElementById("favoritContainer");
+        const fallbackImg = "../assets/images/wonderloka.jpeg";
+
+        async function loadFavorit() {
+          if (!isLoggedIn()) {
+            container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-lock"></i>
                             <h3>Silakan Login</h3>
@@ -560,16 +847,17 @@
                             <a href="../halaman-login-user.html">Login</a>
                         </div>
                     `;
-                    return;
-                }
+            return;
+          }
 
-                container.innerHTML = '<p style="text-align:center;padding:40px;color:#555;">Memuat favorit...</p>';
+          container.innerHTML =
+            '<p style="text-align:center;padding:40px;color:#555;">Memuat favorit...</p>';
 
-                try {
-                    const data = await apiFetch('/favorites');
-                    renderFavorit(data);
-                } catch (err) {
-                    container.innerHTML = `
+          try {
+            const data = await apiFetch("/favorites");
+            renderFavorit(data);
+          } catch (err) {
+            container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-exclamation-circle"></i>
                             <h3>Gagal Memuat</h3>
@@ -577,14 +865,12 @@
                             <a href="dashboard.html">Kembali</a>
                         </div>
                     `;
-                }
-            }
+          }
+        }
 
-            function renderFavorit(data) {
-                const fallbackImg = '../assets/images/wonderloka.jpeg';
-
-                if (data.length === 0) {
-                    container.innerHTML = `
+        function renderFavorit(data) {
+          if (data.length === 0) {
+            container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-heart"></i>
                             <h3>Belum ada favorit</h3>
@@ -592,20 +878,20 @@
                             <a href="dashboard.html">Cari Destinasi</a>
                         </div>
                     `;
-                    return;
-                }
+            return;
+          }
 
-                let html = `<div class="favorit-grid">`;
-                data.forEach(item => {
-                    const dest = item.destination || item;
-                    const nama = dest.nama || item.nama || item.destinasi || 'Destinasi';
-                    const lokasi = dest.lokasi || item.lokasi || '-';
-                    const gambar = item.gambar || dest.gambar || fallbackImg;
-                    const rating = dest.rating || item.rating || 0;
-                    const idDestinasi = dest.id_destinasi || item.id_destinasi;
-                    const idFavorit = item.id_favorit;
+          let html = `<div class="favorit-grid">`;
+          data.forEach((item) => {
+            const dest = item.destination || item;
+            const nama = dest.nama || item.nama || "Destinasi";
+            const lokasi = dest.lokasi || item.lokasi || "-";
+            const gambar = item.gambar || dest.gambar || fallbackImg;
+            const rating = dest.rating || item.rating || 0;
+            const idDestinasi = dest.id_destinasi || item.id_destinasi;
+            const idFavorit = item.id_favorit;
 
-                    html += `
+            html += `
                         <div class="favorit-card" data-id="${idFavorit}">
                             <div class="card-image">
                                 <img src="${gambar}" alt="${nama}" onerror="this.onerror=null; this.src='${fallbackImg}';" />
@@ -621,36 +907,34 @@
                             </div>
                         </div>
                     `;
-                });
-                html += `</div>`;
-                container.innerHTML = html;
+          });
+          html += `</div>`;
+          container.innerHTML = html;
 
-                container.querySelectorAll('.btn-hapus-favorit').forEach(btn => {
-                    btn.addEventListener('click', async function(e) {
-                        e.stopPropagation();
-                        const id = this.dataset.id;
-                        if (!confirm('Hapus destinasi ini dari favorit?')) return;
+          container.querySelectorAll(".btn-hapus-favorit").forEach((btn) => {
+            btn.addEventListener("click", async function (e) {
+              e.stopPropagation();
+              const id = this.dataset.id;
+              if (!confirm("Hapus destinasi ini dari favorit?")) return;
 
-                        const btnEl = this;
-                        btnEl.disabled = true;
-                        btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+              const btnEl = this;
+              btnEl.disabled = true;
+              btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
 
-                        try {
-                            await apiFetch('/favorites/' + id, { method: 'DELETE' });
-                            loadFavorit();
-                        } catch (err) {
-                            alert('⚠️ ' + err.message);
-                            btnEl.disabled = false;
-                            btnEl.innerHTML = '<i class="fas fa-times"></i>';
-                        }
-                    });
-                });
-            }
+              try {
+                await apiFetch("/favorites/" + id, { method: "DELETE" });
+                loadFavorit();
+              } catch (err) {
+                alert("⚠️ " + err.message);
+                btnEl.disabled = false;
+                btnEl.innerHTML = '<i class="fas fa-times"></i>';
+              }
+            });
+          });
+        }
 
-            loadFavorit();
-
-        });
+        loadFavorit();
+      });
     </script>
-
-</body>
+  </body>
 </html>

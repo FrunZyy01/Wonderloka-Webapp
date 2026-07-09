@@ -214,44 +214,151 @@ router.get('/destinations', checkVerified, async (req, res) => {
 // ============================================================
 router.post('/destinations', checkVerified, async (req, res) => {
     try {
-        const { nama, deskripsi, kategori, lokasi, harga, gambar, rating, fasilitas, jam_buka, jam_tutup, kontak_usaha } = req.body;
         const userId = req.user.id_user;
 
-        if (!nama || !kategori) {
-            return res.status(400).json({ message: 'Nama dan kategori wajib diisi.' });
+        console.log('[Destination Create] Request received:', {
+            userId,
+            nama: req.body.nama,
+            kategori: req.body.kategori,
+            hasLocation: Boolean(req.body.lokasi),
+            harga: req.body.harga
+        });
+
+        // Ekstrak dan validasi payload
+        const { nama, deskripsi, kategori, lokasi, harga, gambar, rating, fasilitas, jam_buka, jam_tutup, kontak_usaha } = req.body;
+
+        // Validasi minimal
+        if (!nama || typeof nama !== 'string' || nama.trim().length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Nama destinasi wajib diisi.'
+            });
         }
 
+        if (!kategori) {
+            return res.status(400).json({
+                success: false,
+                message: 'Kategori wajib dipilih.'
+            });
+        }
+
+        // Validasi kategori harus sesuai ENUM di database
         const validKategori = ['Alam', 'Budaya', 'Penginapan', 'Tour', 'Campground'];
         if (!validKategori.includes(kategori)) {
-            return res.status(400).json({ message: 'Kategori harus dari daftar yang valid.' });
+            return res.status(400).json({
+                success: false,
+                message: 'Kategori harus dari daftar yang valid: ' + validKategori.join(', ')
+            });
         }
 
+        // Validasi harga tidak negatif
+        const hargaNum = parseInt(harga) || 0;
+        if (hargaNum < 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'Harga tidak boleh negatif.'
+            });
+        }
+
+        // Normalisasi payload secara aman
+        const normalizedData = {
+            nama: nama.trim(),
+            deskripsi: deskripsi && typeof deskripsi === 'string' ? deskripsi.trim() : null,
+            kategori: kategori,
+            lokasi: lokasi && typeof lokasi === 'string' ? lokasi.trim() : null,
+            harga: hargaNum,
+            gambar: gambar && typeof gambar === 'string' ? gambar.trim() : null,
+            rating: parseFloat(rating) || 0,
+            fasilitas: fasilitas && typeof fasilitas === 'string' ? fasilitas.trim() : null,
+            jam_buka: jam_buka || null,
+            jam_tutup: jam_tutup || null,
+            kontak_usaha: kontak_usaha && typeof kontak_usaha === 'string' ? kontak_usaha.trim() : null,
+            id_owner: userId
+        };
+
+        // INSERT ke database
         const [result] = await pool.query(
             `INSERT INTO destination (nama, deskripsi, kategori, lokasi, harga, gambar, rating, fasilitas, jam_buka, jam_tutup, kontak_usaha, id_owner)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
-                nama,
-                deskripsi || null,
-                kategori,
-                lokasi || null,
-                parseInt(harga) || 0,
-                gambar || null,
-                parseFloat(rating) || 0,
-                fasilitas || null,
-                jam_buka || null,
-                jam_tutup || null,
-                kontak_usaha || null,
-                userId
+                normalizedData.nama,
+                normalizedData.deskripsi,
+                normalizedData.kategori,
+                normalizedData.lokasi,
+                normalizedData.harga,
+                normalizedData.gambar,
+                normalizedData.rating,
+                normalizedData.fasilitas,
+                normalizedData.jam_buka,
+                normalizedData.jam_tutup,
+                normalizedData.kontak_usaha,
+                normalizedData.id_owner
             ]
         );
 
-        res.status(201).json({
-            message: 'Destinasi berhasil ditambahkan.',
-            destination: { id_destinasi: result.insertId, ...req.body, id_owner: userId }
+        // Validasi hasil INSERT
+        if (!result || result.affectedRows !== 1 || !result.insertId) {
+            console.error('[Destination Create Error] INSERT failed:', result);
+            return res.status(500).json({
+                success: false,
+                message: 'Gagal menyimpan destinasi. Silakan coba lagi.'
+            });
+        }
+
+        console.log('[Destination Create Success]', {
+            insertId: result.insertId,
+            affectedRows: result.affectedRows,
+            ownerId: userId
         });
+
+        // Ambil kembali data yang baru dibuat dari database
+        const [createdRows] = await pool.query(
+            `SELECT d.*,
+                    u.nama_usaha AS owner_nama_usaha,
+                    u.foto_usaha AS owner_foto_usaha,
+                    u.banner_usaha AS owner_banner_usaha
+             FROM destination d
+             LEFT JOIN user u ON d.id_owner = u.id_user
+             WHERE d.id_destinasi = ?`,
+            [result.insertId]
+        );
+
+        if (!createdRows || createdRows.length === 0) {
+            console.error('[Destination Create Error] Created row not found:', result.insertId);
+            return res.status(500).json({
+                success: false,
+                message: 'Destinasi tersimpan tetapi gagal mengambil data. Silakan refresh halaman.'
+            });
+        }
+
+        // Process image paths untuk owner info
+        const created = createdRows[0];
+        if (created.owner_foto_usaha) {
+            created.owner_foto_usaha = '/uploads/business/' + created.owner_foto_usaha;
+        }
+        if (created.owner_banner_usaha) {
+            created.owner_banner_usaha = '/uploads/business/' + created.owner_banner_usaha;
+        }
+
+        res.status(201).json({
+            success: true,
+            message: 'Destinasi berhasil ditambahkan.',
+            destination: created
+        });
+
     } catch (err) {
-        console.error('Pengelola create destination error:', err);
-        res.status(500).json({ message: 'Terjadi kesalahan server.' });
+        console.error('[Destination Create Error]', {
+            code: err.code,
+            errno: err.errno,
+            message: err.message,
+            sqlMessage: err.sqlMessage
+        });
+
+        res.status(500).json({
+            success: false,
+            message: 'Destinasi gagal disimpan.',
+            error_code: process.env.NODE_ENV === 'development' ? err.code || null : undefined
+        });
     }
 });
 
@@ -262,8 +369,40 @@ router.post('/destinations', checkVerified, async (req, res) => {
 router.put('/destinations/:id', checkVerified, async (req, res) => {
     try {
         const { id } = req.params;
-        const { nama, deskripsi, kategori, lokasi, harga, gambar, rating, fasilitas, jam_buka, jam_tutup, kontak_usaha } = req.body;
         const userId = req.user.id_user;
+
+        console.log('[Destination Update] Request received:', {
+            id,
+            userId,
+            nama: req.body.nama,
+            kategori: req.body.kategori,
+            harga: req.body.harga
+        });
+
+        // Ekstrak payload
+        const { nama, deskripsi, kategori, lokasi, harga, gambar, rating, fasilitas, jam_buka, jam_tutup, kontak_usaha } = req.body;
+
+        // Validasi minimal
+        if (!nama || typeof nama !== 'string' || nama.trim().length === 0) {
+            return res.status(400).json({ success: false, message: 'Nama destinasi wajib diisi.' });
+        }
+
+        if (!kategori) {
+            return res.status(400).json({ success: false, message: 'Kategori wajib dipilih.' });
+        }
+
+        const validKategori = ['Alam', 'Budaya', 'Penginapan', 'Tour', 'Campground'];
+        if (!validKategori.includes(kategori)) {
+            return res.status(400).json({
+                success: false,
+                message: 'Kategori harus dari daftar yang valid: ' + validKategori.join(', ')
+            });
+        }
+
+        const hargaNum = parseInt(harga) || 0;
+        if (hargaNum < 0) {
+            return res.status(400).json({ success: false, message: 'Harga tidak boleh negatif.' });
+        }
 
         // Cek kepemilikan
         const [existing] = await pool.query(
@@ -272,34 +411,86 @@ router.put('/destinations/:id', checkVerified, async (req, res) => {
         );
 
         if (existing.length === 0) {
-            return res.status(404).json({ message: 'Destinasi tidak ditemukan atau bukan milik Anda.' });
+            return res.status(404).json({ success: false, message: 'Destinasi tidak ditemukan atau bukan milik Anda.' });
         }
 
-        await pool.query(
+        // Update database
+        const [updateResult] = await pool.query(
             `UPDATE destination SET
              nama = ?, deskripsi = ?, kategori = ?, lokasi = ?, harga = ?,
              gambar = ?, rating = ?, fasilitas = ?, jam_buka = ?, jam_tutup = ?, kontak_usaha = ?
-             WHERE id_destinasi = ?`,
+             WHERE id_destinasi = ? AND id_owner = ?`,
             [
-                nama,
-                deskripsi || null,
+                nama.trim(),
+                deskripsi && typeof deskripsi === 'string' ? deskripsi.trim() : null,
                 kategori,
-                lokasi || null,
-                parseInt(harga) || 0,
-                gambar || null,
+                lokasi && typeof lokasi === 'string' ? lokasi.trim() : null,
+                hargaNum,
+                gambar && typeof gambar === 'string' ? gambar.trim() : null,
                 parseFloat(rating) || 0,
-                fasilitas || null,
+                fasilitas && typeof fasilitas === 'string' ? fasilitas.trim() : null,
                 jam_buka || null,
                 jam_tutup || null,
-                kontak_usaha || null,
-                id
+                kontak_usaha && typeof kontak_usaha === 'string' ? kontak_usaha.trim() : null,
+                id,
+                userId
             ]
         );
 
-        res.json({ message: 'Destinasi berhasil diperbarui.' });
+        // Validasi update berhasil
+        if (!updateResult || updateResult.affectedRows !== 1) {
+            console.error('[Destination Update Error] Update failed:', updateResult);
+            return res.status(500).json({ success: false, message: 'Gagal memperbarui destinasi.' });
+        }
+
+        console.log('[Destination Update Success]', {
+            id,
+            userId,
+            affectedRows: updateResult.affectedRows
+        });
+
+        // Ambil data terbaru dari database
+        const [updatedRows] = await pool.query(
+            `SELECT d.*,
+                    u.nama_usaha AS owner_nama_usaha,
+                    u.foto_usaha AS owner_foto_usaha,
+                    u.banner_usaha AS owner_banner_usaha
+             FROM destination d
+             LEFT JOIN user u ON d.id_owner = u.id_user
+             WHERE d.id_destinasi = ?`,
+            [id]
+        );
+
+        if (!updatedRows || updatedRows.length === 0) {
+            return res.status(500).json({ success: false, message: 'Gagal mengambil data terbaru.' });
+        }
+
+        const updated = updatedRows[0];
+        if (updated.owner_foto_usaha) {
+            updated.owner_foto_usaha = '/uploads/business/' + updated.owner_foto_usaha;
+        }
+        if (updated.owner_banner_usaha) {
+            updated.owner_banner_usaha = '/uploads/business/' + updated.owner_banner_usaha;
+        }
+
+        res.json({
+            success: true,
+            message: 'Destinasi berhasil diperbarui.',
+            destination: updated
+        });
+
     } catch (err) {
-        console.error('Pengelola update destination error:', err);
-        res.status(500).json({ message: 'Terjadi kesalahan server.' });
+        console.error('[Destination Update Error]', {
+            code: err.code,
+            errno: err.errno,
+            message: err.message,
+            sqlMessage: err.sqlMessage
+        });
+        res.status(500).json({
+            success: false,
+            message: 'Destinasi gagal diperbarui.',
+            error_code: process.env.NODE_ENV === 'development' ? err.code || null : undefined
+        });
     }
 });
 

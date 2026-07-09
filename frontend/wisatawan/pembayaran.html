@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wonderloka - Pembayaran</title>
@@ -8,467 +8,477 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
     />
     <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
 
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f0f4f8;
-            color: #1a1a1a;
-            min-height: 100vh;
-        }
-        a { text-decoration: none; color: inherit; }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #f0f4f8;
+        color: #1a1a1a;
+        min-height: 100vh;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-        .navbar {
-            background: #fff;
-            box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
-            padding: 0 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-        }
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: 700;
-            color: #0d47a1;
-        }
-        .nav-brand i { font-size: 28px; }
+      .navbar {
+        background: #fff;
+        box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .nav-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+      }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #0d47a1;
+      }
+      .nav-brand i {
+        font-size: 28px;
+      }
 
-        .payment-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px 60px;
-        }
+      .payment-container {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px 60px;
+      }
 
-        .page-title {
-            text-align: center;
-            margin-bottom: 32px;
+      .page-title {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .page-title h1 {
+        font-size: 28px;
+        font-weight: 700;
+        color: #1a1a1a;
+        margin-bottom: 8px;
+      }
+      .page-title p {
+        color: #666;
+        font-size: 15px;
+      }
+
+      .payment-grid {
+        display: grid;
+        grid-template-columns: 1fr 350px;
+        gap: 24px;
+      }
+
+      .card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      }
+      .card h2 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .card h2 i {
+        color: #0d47a1;
+      }
+
+      /* Booking Summary */
+      .booking-summary {
+        margin-bottom: 24px;
+      }
+      .summary-item {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 0;
+        border-bottom: 1px solid #f0f0f0;
+      }
+      .summary-item:last-child {
+        border-bottom: none;
+      }
+      .summary-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #e3f2fd;
+        flex-shrink: 0;
+      }
+      .summary-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .summary-details h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a1a;
+        margin-bottom: 4px;
+      }
+      .summary-details p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 2px;
+      }
+      .summary-details p i {
+        color: #0d47a1;
+        width: 18px;
+      }
+
+      /* Price Breakdown */
+      .price-breakdown {
+        background: #f8fafc;
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .price-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        font-size: 14px;
+        color: #555;
+      }
+      .price-row.total {
+        border-top: 2px solid #e0e0e0;
+        margin-top: 8px;
+        padding-top: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+      .price-row.total span:last-child {
+        color: #0d47a1;
+        font-size: 20px;
+      }
+
+      /* Payment Method */
+      .payment-method-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .payment-method {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .payment-method:hover {
+        border-color: #0d47a1;
+        background: #f0f7ff;
+      }
+      .payment-method.selected {
+        border-color: #0d47a1;
+        background: #e3f2fd;
+      }
+      .payment-method input {
+        display: none;
+      }
+      .payment-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 10px;
+        background: #e3f2fd;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        color: #0d47a1;
+      }
+      .payment-info h4 {
+        font-size: 15px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+      .payment-info p {
+        font-size: 13px;
+        color: #666;
+      }
+      .payment-check {
+        margin-left: auto;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 2px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .payment-method.selected .payment-check {
+        background: #0d47a1;
+        border-color: #0d47a1;
+        color: #fff;
+      }
+
+      /* OTP Section */
+      .otp-section {
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid #f0f0f0;
+      }
+      .otp-info {
+        background: #fff3e0;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+      }
+      .otp-info i {
+        color: #e65100;
+        font-size: 20px;
+        margin-top: 2px;
+      }
+      .otp-info p {
+        font-size: 14px;
+        color: #555;
+        line-height: 1.5;
+      }
+      .otp-info strong {
+        color: #1a1a1a;
+      }
+
+      .otp-input-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .otp-input {
+        flex: 1;
+        padding: 14px;
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        font-size: 18px;
+        font-family: "Poppins", sans-serif;
+        text-align: center;
+        letter-spacing: 8px;
+        transition: border-color 0.2s;
+      }
+      .otp-input:focus {
+        outline: none;
+        border-color: #0d47a1;
+      }
+
+      .btn-otp {
+        width: 100%;
+        padding: 14px;
+        background: #0d47a1;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn-otp:hover {
+        background: #0a3d8a;
+        transform: translateY(-2px);
+      }
+      .btn-otp:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .btn-pay {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #0d47a1, #1565c0);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 6px 20px rgba(13, 71, 161, 0.3);
+        margin-top: 16px;
+      }
+      .btn-pay:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(13, 71, 161, 0.4);
+      }
+      .btn-pay:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .error-message {
+        background: #ffebee;
+        color: #c62828;
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        margin-top: 12px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+      }
+      .error-message.show {
+        display: flex;
+      }
+      .success-message {
+        background: #e8f5e9;
+        color: #2e7d32;
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 14px;
+        margin-top: 12px;
+        display: none;
+        align-items: center;
+        gap: 8px;
+      }
+      .success-message.show {
+        display: flex;
+      }
+
+      /* Empty state */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+      }
+      .empty-state i {
+        font-size: 64px;
+        color: #ccc;
+        margin-bottom: 16px;
+      }
+      .empty-state h3 {
+        font-size: 20px;
+        color: #555;
+        margin-bottom: 8px;
+      }
+      .empty-state p {
+        color: #888;
+        margin-bottom: 20px;
+      }
+      .empty-state a {
+        display: inline-block;
+        padding: 12px 28px;
+        background: #0d47a1;
+        color: #fff;
+        border-radius: 30px;
+        font-weight: 600;
+      }
+
+      .footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 14px;
+        color: #888;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      @media (max-width: 768px) {
+        .payment-grid {
+          grid-template-columns: 1fr;
         }
         .page-title h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-bottom: 8px;
+          font-size: 24px;
         }
-        .page-title p {
-            color: #666;
-            font-size: 15px;
-        }
-
-        .payment-grid {
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            gap: 24px;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 16px;
-            padding: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        }
-        .card h2 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card h2 i {
-            color: #0d47a1;
-        }
-
-        /* Booking Summary */
-        .booking-summary {
-            margin-bottom: 24px;
-        }
-        .summary-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .summary-item:last-child {
-            border-bottom: none;
-        }
-        .summary-image {
-            width: 80px;
-            height: 80px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #e3f2fd;
-            flex-shrink: 0;
-        }
-        .summary-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .summary-details h3 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
-            margin-bottom: 4px;
-        }
-        .summary-details p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 2px;
-        }
-        .summary-details p i {
-            color: #0d47a1;
-            width: 18px;
-        }
-
-        /* Price Breakdown */
-        .price-breakdown {
-            background: #f8fafc;
-            border-radius: 12px;
-            padding: 16px;
-        }
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-            color: #555;
-        }
-        .price-row.total {
-            border-top: 2px solid #e0e0e0;
-            margin-top: 8px;
-            padding-top: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-        .price-row.total span:last-child {
-            color: #0d47a1;
-            font-size: 20px;
-        }
-
-        /* Payment Method */
-        .payment-method-list {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .payment-method {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .payment-method:hover {
-            border-color: #0d47a1;
-            background: #f0f7ff;
-        }
-        .payment-method.selected {
-            border-color: #0d47a1;
-            background: #e3f2fd;
-        }
-        .payment-method input {
-            display: none;
-        }
-        .payment-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            background: #e3f2fd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #0d47a1;
-        }
-        .payment-info h4 {
-            font-size: 15px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-        .payment-info p {
-            font-size: 13px;
-            color: #666;
-        }
-        .payment-check {
-            margin-left: auto;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid #e0e0e0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .payment-method.selected .payment-check {
-            background: #0d47a1;
-            border-color: #0d47a1;
-            color: #fff;
-        }
-
-        /* OTP Section */
-        .otp-section {
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid #f0f0f0;
-        }
-        .otp-info {
-            background: #fff3e0;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-        }
-        .otp-info i {
-            color: #e65100;
-            font-size: 20px;
-            margin-top: 2px;
-        }
-        .otp-info p {
-            font-size: 14px;
-            color: #555;
-            line-height: 1.5;
-        }
-        .otp-info strong {
-            color: #1a1a1a;
-        }
-
-        .otp-input-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .otp-input {
-            flex: 1;
-            padding: 14px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 18px;
-            font-family: 'Poppins', sans-serif;
-            text-align: center;
-            letter-spacing: 8px;
-            transition: border-color 0.2s;
-        }
-        .otp-input:focus {
-            outline: none;
-            border-color: #0d47a1;
-        }
-
-        .btn-otp {
-            width: 100%;
-            padding: 14px;
-            background: #0d47a1;
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-otp:hover {
-            background: #0a3d8a;
-            transform: translateY(-2px);
-        }
-        .btn-otp:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .btn-pay {
-            width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #0d47a1, #1565c0);
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 6px 20px rgba(13, 71, 161, 0.3);
-            margin-top: 16px;
-        }
-        .btn-pay:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(13, 71, 161, 0.4);
-        }
-        .btn-pay:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .error-message {
-            background: #ffebee;
-            color: #c62828;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 14px;
-            margin-top: 12px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-        .error-message.show {
-            display: flex;
-        }
-        .success-message {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 12px 16px;
-            border-radius: 10px;
-            font-size: 14px;
-            margin-top: 12px;
-            display: none;
-            align-items: center;
-            gap: 8px;
-        }
-        .success-message.show {
-            display: flex;
-        }
-
-        /* Empty state */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .empty-state i {
-            font-size: 64px;
-            color: #ccc;
-            margin-bottom: 16px;
-        }
-        .empty-state h3 {
-            font-size: 20px;
-            color: #555;
-            margin-bottom: 8px;
-        }
-        .empty-state p {
-            color: #888;
-            margin-bottom: 20px;
-        }
-        .empty-state a {
-            display: inline-block;
-            padding: 12px 28px;
-            background: #0d47a1;
-            color: #fff;
-            border-radius: 30px;
-            font-weight: 600;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 24px;
-            font-size: 14px;
-            color: #888;
-            border-top: 1px solid #e0e0e0;
-        }
-
-        @media (max-width: 768px) {
-            .payment-grid {
-                grid-template-columns: 1fr;
-            }
-            .page-title h1 {
-                font-size: 24px;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <i class="fas fa-globe-asia"></i>
-                <span>Wonderloka</span>
-            </div>
+      <div class="nav-container">
+        <div class="nav-brand">
+          <i class="fas fa-globe-asia"></i>
+          <span>Wonderloka</span>
         </div>
+      </div>
     </nav>
 
     <div class="payment-container" id="paymentContainer">
-        <!-- Content will be loaded by JS -->
+      <!-- Content will be loaded by JS -->
     </div>
 
     <footer class="footer">
-        <p>&copy; 2026 Wonderloka. All rights reserved.</p>
+      <p>&copy; 2026 Wonderloka. All rights reserved.</p>
     </footer>
 
     <script src="../assets/js/script-api.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const container = document.getElementById('paymentContainer');
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("paymentContainer");
 
-            // ===== AUTH CHECK =====
-            // Proteksi: Hanya wisatawan yang boleh akses
-            function checkAuth() {
-                const user = getUser();
-                if (!user) {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
+        // ===== AUTH CHECK =====
+        // Proteksi: Hanya wisatawan yang boleh akses
+        function checkAuth() {
+          const user = getUser();
+          if (!user) {
+            window.location.href = "../halaman-login-user.html";
+            return null;
+          }
 
-                // Admin tidak boleh akses halaman wisatawan
-                if (user.role === 'admin') {
-                    window.location.href = '../superadmin/verifikasi-pengelola.html';
-                    return null;
-                }
+          // Admin tidak boleh akses halaman wisatawan
+          if (user.role === "admin") {
+            window.location.href = "../superadmin/verifikasi-pengelola.html";
+            return null;
+          }
 
-                // Pengusaha tidak boleh akses halaman wisatawan
-                if (user.role === 'pengusaha') {
-                    if (user.status_verifikasi === 'terverifikasi') {
-                        window.location.href = '../admin/index.html';
-                    } else {
-                        window.location.href = '../status-verifikasi.html';
-                    }
-                    return null;
-                }
-
-                if (user.role !== 'wisatawan') {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                return user;
+          // Pengusaha tidak boleh akses halaman wisatawan
+          if (user.role === "pengusaha") {
+            if (user.status_verifikasi === "terverifikasi") {
+              window.location.href = "../admin/index.html";
+            } else {
+              window.location.href = "../status-verifikasi.html";
             }
-            const currentUser = checkAuth();
-            if (!currentUser) return;
+            return null;
+          }
 
-            // Get booking data from sessionStorage
-            const bookingData = JSON.parse(sessionStorage.getItem('pending_booking') || 'null');
+          if (user.role !== "wisatawan") {
+            window.location.href = "../halaman-login-user.html";
+            return null;
+          }
 
-            if (!bookingData) {
-                container.innerHTML = `
+          return user;
+        }
+        const currentUser = checkAuth();
+        if (!currentUser) return;
+
+        // Get booking data from sessionStorage
+        const bookingData = JSON.parse(
+          sessionStorage.getItem("pending_booking") || "null",
+        );
+
+        if (!bookingData) {
+          container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-receipt"></i>
                         <h3>Tidak Ada Data Pembayaran</h3>
@@ -476,11 +486,11 @@
                         <a href="dashboard.html">Cari Destinasi</a>
                     </div>
                 `;
-                return;
-            }
+          return;
+        }
 
-            // Render payment page
-            container.innerHTML = `
+        // Render payment page
+        container.innerHTML = `
                 <div class="page-title">
                     <h1>💳 Pembayaran</h1>
                     <p>Konfirmasi dan selesaikan pembayaran untuk booking Anda</p>
@@ -562,11 +572,11 @@
                         <div class="booking-summary">
                             <div class="summary-item">
                                 <div class="summary-image">
-                                    <img src="${bookingData.gambar || 'https://via.placeholder.com/200x200'}" alt="${bookingData.nama_destinasi}" />
+                                    <img src="${bookingData.gambar || "https://via.placeholder.com/200x200"}" alt="${bookingData.nama_destinasi}" />
                                 </div>
                                 <div class="summary-details">
                                     <h3>${bookingData.nama_destinasi}</h3>
-                                    <p><i class="fas fa-map-marker-alt"></i> ${bookingData.lokasi || '-'}</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> ${bookingData.lokasi || "-"}</p>
                                 </div>
                             </div>
                         </div>
@@ -574,7 +584,7 @@
                         <div class="price-breakdown">
                             <div class="price-row">
                                 <span>Harga per tiket</span>
-                                <span>Rp ${Number(bookingData.harga_per_tiket || 0).toLocaleString('id-ID')}</span>
+                                <span>Rp ${Number(bookingData.harga_per_tiket || 0).toLocaleString("id-ID")}</span>
                             </div>
                             <div class="price-row">
                                 <span>Jumlah tiket</span>
@@ -586,111 +596,114 @@
                             </div>
                             <div class="price-row total">
                                 <span>Total Pembayaran</span>
-                                <span>Rp ${Number(bookingData.total_harga || 0).toLocaleString('id-ID')}</span>
+                                <span>Rp ${Number(bookingData.total_harga || 0).toLocaleString("id-ID")}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
 
-            // Format date
-            function formatDate(dateStr) {
-                if (!dateStr) return '-';
-                const date = new Date(dateStr);
-                const options = { day: 'numeric', month: 'long', year: 'numeric' };
-                return date.toLocaleDateString('id-ID', options);
-            }
+        // Format date
+        function formatDate(dateStr) {
+          if (!dateStr) return "-";
+          const date = new Date(dateStr);
+          const options = { day: "numeric", month: "long", year: "numeric" };
+          return date.toLocaleDateString("id-ID", options);
+        }
 
-            // Payment method selection
-            document.querySelectorAll('.payment-method').forEach(method => {
-                method.addEventListener('click', function() {
-                    document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('selected'));
-                    this.classList.add('selected');
-                    this.querySelector('input').checked = true;
-                });
-            });
-
-            // OTP functionality
-            const btnKirimOtp = document.getElementById('btnKirimOtp');
-            const otpInputSection = document.getElementById('otpInputSection');
-            const otpInput = document.getElementById('otpInput');
-            const btnBayar = document.getElementById('btnBayar');
-            const errorMessage = document.getElementById('errorMessage');
-            const successMessage = document.getElementById('successMessage');
-            const errorText = document.getElementById('errorText');
-
-            let generatedOtp = '123456'; // Simulasi OTP
-
-            // Kirim OTP button
-            btnKirimOtp.addEventListener('click', function() {
-                // Simulasi kirim OTP
-                alert('(Simulasi SMS)\n\nKode OTP Anda: 123456\n\nMasukkan kode ini untuk melanjutkan pembayaran.');
-
-                // Show OTP input
-                otpInputSection.style.display = 'block';
-                btnKirimOtp.disabled = true;
-                btnKirimOtp.innerHTML = '<i class="fas fa-check"></i> OTP Terkirim';
-                btnKirimOtp.style.background = '#16a34a';
-
-                // Focus OTP input
-                setTimeout(() => otpInput.focus(), 100);
-            });
-
-            // OTP input validation
-            otpInput.addEventListener('input', function() {
-                const value = this.value.replace(/\D/g, '');
-                this.value = value;
-                btnBayar.disabled = value.length !== 6;
-                errorMessage.classList.remove('show');
-            });
-
-            // Bayar button
-            btnBayar.addEventListener('click', async function() {
-                const enteredOtp = otpInput.value;
-
-                // Validasi OTP
-                if (enteredOtp !== generatedOtp) {
-                    errorMessage.classList.add('show');
-                    errorText.textContent = 'Kode OTP salah. Silakan coba lagi.';
-                    return;
-                }
-
-                // Disable button
-                btnBayar.disabled = true;
-                btnBayar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
-
-                try {
-                    // Create booking
-                    const data = await apiFetch('/bookings', {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            id_destinasi: bookingData.id_destinasi,
-                            tgl_kunjungan: bookingData.tgl_kunjungan,
-                            jumlah_tiket: bookingData.jumlah_tiket
-                        })
-                    });
-
-                    // Clear pending booking
-                    sessionStorage.removeItem('pending_booking');
-
-                    // Show success
-                    successMessage.classList.add('show');
-                    btnBayar.style.display = 'none';
-
-                    // Redirect after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = 'pesanan-saya.html';
-                    }, 2000);
-
-                } catch (err) {
-                    errorMessage.classList.add('show');
-                    errorText.textContent = 'Gagal membuat booking: ' + err.message;
-                    btnBayar.disabled = false;
-                    btnBayar.innerHTML = '<i class="fas fa-lock"></i> Bayar Sekarang';
-                }
-            });
-
+        // Payment method selection
+        document.querySelectorAll(".payment-method").forEach((method) => {
+          method.addEventListener("click", function () {
+            document
+              .querySelectorAll(".payment-method")
+              .forEach((m) => m.classList.remove("selected"));
+            this.classList.add("selected");
+            this.querySelector("input").checked = true;
+          });
         });
+
+        // OTP functionality
+        const btnKirimOtp = document.getElementById("btnKirimOtp");
+        const otpInputSection = document.getElementById("otpInputSection");
+        const otpInput = document.getElementById("otpInput");
+        const btnBayar = document.getElementById("btnBayar");
+        const errorMessage = document.getElementById("errorMessage");
+        const successMessage = document.getElementById("successMessage");
+        const errorText = document.getElementById("errorText");
+
+        let generatedOtp = "123456"; // Simulasi OTP
+
+        // Kirim OTP button
+        btnKirimOtp.addEventListener("click", function () {
+          // Simulasi kirim OTP
+          alert(
+            "(Simulasi SMS)\n\nKode OTP Anda: 123456\n\nMasukkan kode ini untuk melanjutkan pembayaran.",
+          );
+
+          // Show OTP input
+          otpInputSection.style.display = "block";
+          btnKirimOtp.disabled = true;
+          btnKirimOtp.innerHTML = '<i class="fas fa-check"></i> OTP Terkirim';
+          btnKirimOtp.style.background = "#16a34a";
+
+          // Focus OTP input
+          setTimeout(() => otpInput.focus(), 100);
+        });
+
+        // OTP input validation
+        otpInput.addEventListener("input", function () {
+          const value = this.value.replace(/\D/g, "");
+          this.value = value;
+          btnBayar.disabled = value.length !== 6;
+          errorMessage.classList.remove("show");
+        });
+
+        // Bayar button
+        btnBayar.addEventListener("click", async function () {
+          const enteredOtp = otpInput.value;
+
+          // Validasi OTP
+          if (enteredOtp !== generatedOtp) {
+            errorMessage.classList.add("show");
+            errorText.textContent = "Kode OTP salah. Silakan coba lagi.";
+            return;
+          }
+
+          // Disable button
+          btnBayar.disabled = true;
+          btnBayar.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+          try {
+            // Create booking
+            const data = await apiFetch("/bookings", {
+              method: "POST",
+              body: JSON.stringify({
+                id_destinasi: bookingData.id_destinasi,
+                tgl_kunjungan: bookingData.tgl_kunjungan,
+                jumlah_tiket: bookingData.jumlah_tiket,
+              }),
+            });
+
+            // Clear pending booking
+            sessionStorage.removeItem("pending_booking");
+
+            // Show success
+            successMessage.classList.add("show");
+            btnBayar.style.display = "none";
+
+            // Redirect after 2 seconds
+            setTimeout(() => {
+              window.location.href = "pesanan-saya.html";
+            }, 2000);
+          } catch (err) {
+            errorMessage.classList.add("show");
+            errorText.textContent = "Gagal membuat booking: " + err.message;
+            btnBayar.disabled = false;
+            btnBayar.innerHTML = '<i class="fas fa-lock"></i> Bayar Sekarang';
+          }
+        });
+      });
     </script>
-</body>
+  </body>
 </html>

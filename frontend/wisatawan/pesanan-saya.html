@@ -1,6 +1,6 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wonderloka - Pesanan Saya</title>
@@ -8,611 +8,913 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
     />
     <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
 
     <style>
-        /* ---------- RESET ---------- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      /* ---------- RESET ---------- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #e3f2fd;
-            color: #1a1a1a;
-        }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: #e3f2fd;
+        color: #1a1a1a;
+      }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
 
-        /* ---------- NAVBAR ---------- */
-        .navbar {
-            background: #ffffff;
-            box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
-            padding: 0 20px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+      /* ---------- NAVBAR ---------- */
+      .navbar {
+        background: #ffffff;
+        box-shadow: 0 2px 12px rgba(13, 71, 161, 0.08);
+        padding: 0 20px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 70px;
-        }
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 70px;
+      }
 
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 22px;
-            font-weight: 700;
-            color: #0d47a1;
-        }
+      .nav-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+        font-weight: 700;
+        color: #0d47a1;
+      }
 
-        .nav-brand i {
-            font-size: 28px;
-        }
+      .nav-brand i {
+        font-size: 28px;
+      }
 
+      .nav-menu {
+        display: flex;
+        list-style: none;
+        gap: 32px;
+        font-weight: 500;
+        font-size: 15px;
+      }
+
+      .nav-menu a {
+        color: #555;
+        transition: color 0.3s;
+        padding: 6px 0;
+        border-bottom: 3px solid transparent;
+      }
+
+      .nav-menu a:hover,
+      .nav-menu a.active {
+        color: #0d47a1;
+        border-bottom-color: #0d47a1;
+      }
+
+      /* ---------- PROFILE DROPDOWN ---------- */
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+      }
+
+      .profile-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 28px;
+        color: #555;
+        transition: color 0.3s;
+        padding: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .profile-btn:hover {
+        color: #0d47a1;
+      }
+
+      .profile-dropdown {
+        display: none;
+        position: absolute;
+        top: 50px;
+        right: 0;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 30px rgba(13, 71, 161, 0.12);
+        min-width: 180px;
+        overflow: hidden;
+        z-index: 200;
+      }
+
+      .profile-dropdown.active {
+        display: block;
+      }
+
+      .profile-dropdown a {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 20px;
+        font-size: 14px;
+        color: #333;
+        transition: background 0.2s;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+      }
+
+      .profile-dropdown a:last-child {
+        border-bottom: none;
+      }
+
+      .profile-dropdown a:hover {
+        background: #e3f2fd;
+      }
+
+      .profile-dropdown a i {
+        width: 20px;
+        color: #0d47a1;
+      }
+
+      .profile-dropdown .logout-item {
+        color: #d32f2f;
+      }
+      .profile-dropdown .logout-item i {
+        color: #d32f2f;
+      }
+
+      .nav-toggle {
+        display: none;
+        font-size: 24px;
+        color: #333;
+        cursor: pointer;
+      }
+
+      /* ---------- HERO ---------- */
+      .page-hero {
+        position: relative;
+        background-image: url("../assets/images/wonderloka.jpeg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .page-hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(13, 71, 161, 0.65);
+        z-index: 1;
+      }
+
+      .page-hero-content {
+        position: relative;
+        z-index: 2;
+        color: #ffffff;
+      }
+
+      .page-hero h1 {
+        font-size: 32px;
+        font-weight: 700;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      }
+
+      .page-hero p {
+        font-size: 16px;
+        opacity: 0.9;
+        margin-top: 6px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      /* ---------- DAFTAR PESANAN ---------- */
+      .pesanan-container {
+        max-width: 1000px;
+        margin: 32px auto 0;
+        padding: 0 20px 60px;
+      }
+
+      .pesanan-card {
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 4px 16px rgba(13, 71, 161, 0.06);
+        padding: 16px 20px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+
+      .pesanan-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(13, 71, 161, 0.1);
+      }
+
+      .pesanan-thumb {
+        flex-shrink: 0;
+        width: 90px;
+        height: 90px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #e3f2fd;
+      }
+
+      .pesanan-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .pesanan-info {
+        flex: 2;
+        min-width: 160px;
+      }
+
+      .pesanan-info h3 {
+        font-size: 18px;
+        font-weight: 600;
+        color: #1a1a1a;
+      }
+
+      .pesanan-info .detail {
+        font-size: 14px;
+        color: #555;
+        margin-top: 2px;
+      }
+
+      .pesanan-info .detail i {
+        color: #0d47a1;
+        width: 20px;
+      }
+
+      .pesanan-status {
+        flex: 0 0 110px;
+        text-align: center;
+      }
+
+      .status-badge {
+        display: inline-block;
+        padding: 4px 16px;
+        border-radius: 30px;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .status-badge.menunggu {
+        background: #fff3e0;
+        color: #e65100;
+      }
+      .status-badge.dikonfirmasi {
+        background: #bbdefb;
+        color: #0d47a1;
+      }
+      .status-badge.selesai {
+        background: #c8e6c9;
+        color: #2e7d32;
+      }
+      .status-badge.dibatalkan {
+        background: #ffcdd2;
+        color: #c62828;
+      }
+
+      .pesanan-harga {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0d47a1;
+        flex: 0 0 110px;
+        text-align: right;
+      }
+
+      .pesanan-actions {
+        display: flex;
+        gap: 8px;
+        flex: 0 0 auto;
+        flex-wrap: wrap;
+      }
+
+      .btn-action {
+        padding: 6px 16px;
+        border: none;
+        border-radius: 30px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 500;
+        font-size: 13px;
+        cursor: pointer;
+        transition:
+          background 0.3s,
+          color 0.3s;
+      }
+
+      .btn-detail-pesanan {
+        background: #bbdefb;
+        color: #0d47a1;
+      }
+
+      .btn-detail-pesanan:hover {
+        background: #0d47a1;
+        color: #fff;
+      }
+
+      .btn-batal {
+        background: #ffcdd2;
+        color: #c62828;
+      }
+
+      .btn-batal:hover {
+        background: #c62828;
+        color: #fff;
+      }
+
+      .btn-batal:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      /* ---------- KOSONG ---------- */
+      .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #777;
+      }
+
+      .empty-state i {
+        font-size: 64px;
+        color: #bbdefb;
+        margin-bottom: 16px;
+      }
+
+      .empty-state h3 {
+        font-size: 22px;
+        color: #333;
+      }
+
+      .empty-state p {
+        font-size: 16px;
+        margin-top: 8px;
+      }
+
+      .empty-state a {
+        display: inline-block;
+        margin-top: 16px;
+        background: #0d47a1;
+        color: #fff;
+        padding: 10px 28px;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: background 0.3s;
+      }
+
+      .empty-state a:hover {
+        background: #0a3d8a;
+      }
+
+      /* ---------- FOOTER ---------- */
+      .footer {
+        text-align: center;
+        padding: 24px 20px;
+        font-size: 14px;
+        color: #777;
+        border-top: 1px solid #bbdefb;
+      }
+
+      /* ========== MODAL PROFIL ========== */
+      .profile-modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        animation: fadeInOverlay 0.3s ease;
+      }
+
+      .profile-modal-overlay.active {
+        display: flex;
+      }
+
+      @keyframes fadeInOverlay {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .profile-modal {
+        background: #ffffff;
+        border-radius: 24px;
+        max-width: 420px;
+        width: 92%;
+        padding: 32px 28px 28px;
+        box-shadow: 0 20px 60px rgba(13, 71, 161, 0.2);
+        animation: slideUpModal 0.3s ease;
+        position: relative;
+      }
+
+      @keyframes slideUpModal {
+        from {
+          opacity: 0;
+          transform: translateY(30px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      .profile-modal-close {
+        position: absolute;
+        top: 16px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #999;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+
+      .profile-modal-close:hover {
+        color: #333;
+      }
+
+      .profile-modal-avatar {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .profile-modal-avatar i {
+        font-size: 72px;
+        color: #0d47a1;
+        background: #e3f2fd;
+        padding: 16px;
+        border-radius: 50%;
+      }
+
+      .profile-modal-name {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1a1a1a;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+
+      .profile-modal-email {
+        font-size: 15px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 16px;
+      }
+
+      .profile-modal-details {
+        background: #f5f7fa;
+        border-radius: 16px;
+        padding: 16px 20px;
+        margin: 12px 0 20px;
+      }
+
+      .profile-modal-details .row {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 14px;
+      }
+
+      .profile-modal-details .row:last-child {
+        border-bottom: none;
+      }
+
+      .profile-modal-details .label {
+        color: #888;
+        font-weight: 500;
+      }
+
+      .profile-modal-details .value {
+        color: #1a1a1a;
+        font-weight: 600;
+      }
+
+      .profile-modal .btn-logout-modal {
+        width: 100%;
+        padding: 12px;
+        background: #d32f2f;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .profile-modal .btn-logout-modal:hover {
+        background: #b71c1c;
+      }
+
+      /* ---------- RESPONSIVE ---------- */
+      @media (max-width: 768px) {
         .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-            font-weight: 500;
-            font-size: 15px;
+          display: none;
+          flex-direction: column;
+          background: #fff;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          right: 0;
+          padding: 20px 24px;
+          gap: 16px;
+          box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
         }
 
-        .nav-menu a {
-            color: #555;
-            transition: color 0.3s;
-            padding: 6px 0;
-            border-bottom: 3px solid transparent;
-        }
-
-        .nav-menu a:hover,
-        .nav-menu a.active {
-            color: #0d47a1;
-            border-bottom-color: #0d47a1;
-        }
-
-        /* ---------- PROFILE DROPDOWN ---------- */
-        .nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            position: relative;
-        }
-
-        .profile-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 28px;
-            color: #555;
-            transition: color 0.3s;
-            padding: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .profile-btn:hover {
-            color: #0d47a1;
-        }
-
-        .profile-dropdown {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(13, 71, 161, 0.12);
-            min-width: 180px;
-            overflow: hidden;
-            z-index: 200;
-        }
-
-        .profile-dropdown.active {
-            display: block;
-        }
-
-        .profile-dropdown a {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            font-size: 14px;
-            color: #333;
-            transition: background 0.2s;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .profile-dropdown a:last-child {
-            border-bottom: none;
-        }
-
-        .profile-dropdown a:hover {
-            background: #e3f2fd;
-        }
-
-        .profile-dropdown a i {
-            width: 20px;
-            color: #0d47a1;
-        }
-
-        .profile-dropdown .logout-item {
-            color: #d32f2f;
-        }
-        .profile-dropdown .logout-item i {
-            color: #d32f2f;
+        .nav-menu.active {
+          display: flex;
         }
 
         .nav-toggle {
-            display: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
+          display: block;
         }
 
-        /* ---------- HERO ---------- */
-        .page-hero {
-            position: relative;
-            background-image: url('../assets/images/wonderloka.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 220px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .page-hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(13, 71, 161, 0.65);
-            z-index: 1;
-        }
-
-        .page-hero-content {
-            position: relative;
-            z-index: 2;
-            color: #ffffff;
+        .nav-actions {
+          display: flex;
         }
 
         .page-hero h1 {
-            font-size: 32px;
-            font-weight: 700;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .page-hero p {
-            font-size: 16px;
-            opacity: 0.9;
-            margin-top: 6px;
-            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        /* ---------- DAFTAR PESANAN ---------- */
-        .pesanan-container {
-            max-width: 1000px;
-            margin: 32px auto 0;
-            padding: 0 20px 60px;
+          font-size: 26px;
         }
 
         .pesanan-card {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 16px rgba(13, 71, 161, 0.06);
-            padding: 16px 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .pesanan-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(13, 71, 161, 0.10);
+          flex-wrap: wrap;
+          gap: 12px;
+          padding: 16px;
         }
 
         .pesanan-thumb {
-            flex-shrink: 0;
-            width: 90px;
-            height: 90px;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #e3f2fd;
-        }
-
-        .pesanan-thumb img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+          width: 70px;
+          height: 70px;
         }
 
         .pesanan-info {
-            flex: 2;
-            min-width: 160px;
-        }
-
-        .pesanan-info h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #1a1a1a;
-        }
-
-        .pesanan-info .detail {
-            font-size: 14px;
-            color: #555;
-            margin-top: 2px;
-        }
-
-        .pesanan-info .detail i {
-            color: #0d47a1;
-            width: 20px;
+          flex: 1 1 100%;
+          min-width: unset;
         }
 
         .pesanan-status {
-            flex: 0 0 110px;
-            text-align: center;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 4px 16px;
-            border-radius: 30px;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .status-badge.menunggu {
-            background: #fff3e0;
-            color: #e65100;
-        }
-        .status-badge.dikonfirmasi {
-            background: #bbdefb;
-            color: #0d47a1;
-        }
-        .status-badge.selesai {
-            background: #c8e6c9;
-            color: #2e7d32;
-        }
-        .status-badge.dibatalkan {
-            background: #ffcdd2;
-            color: #c62828;
+          flex: 0 0 auto;
+          text-align: left;
         }
 
         .pesanan-harga {
-            font-size: 18px;
-            font-weight: 700;
-            color: #0d47a1;
-            flex: 0 0 110px;
-            text-align: right;
+          flex: 0 0 auto;
+          text-align: left;
+          font-size: 16px;
         }
 
         .pesanan-actions {
-            display: flex;
-            gap: 8px;
-            flex: 0 0 auto;
-            flex-wrap: wrap;
+          flex: 1 1 100%;
+          justify-content: flex-start;
         }
 
-        .btn-action {
-            padding: 6px 16px;
-            border: none;
-            border-radius: 30px;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 500;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.3s, color 0.3s;
+        .profile-modal {
+          padding: 24px 16px 20px;
         }
-
-        .btn-detail-pesanan {
-            background: #bbdefb;
-            color: #0d47a1;
+        .profile-modal-avatar i {
+          font-size: 56px;
+          padding: 12px;
         }
-
-        .btn-detail-pesanan:hover {
-            background: #0d47a1;
-            color: #fff;
+        .profile-modal-name {
+          font-size: 18px;
         }
-
-        .btn-batal {
-            background: #ffcdd2;
-            color: #c62828;
+        .profile-modal-details .row {
+          font-size: 13px;
+          flex-wrap: wrap;
+          gap: 4px;
         }
+      }
 
-        .btn-batal:hover {
-            background: #c62828;
-            color: #fff;
+      @media (max-width: 480px) {
+        .page-hero h1 {
+          font-size: 22px;
         }
-
-        .btn-batal:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .pesanan-card {
+          padding: 12px;
         }
-
-        /* ---------- KOSONG ---------- */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #777;
+        .pesanan-thumb {
+          width: 60px;
+          height: 60px;
         }
-
-        .empty-state i {
-            font-size: 64px;
-            color: #bbdefb;
-            margin-bottom: 16px;
+        .pesanan-info h3 {
+          font-size: 16px;
         }
-
-        .empty-state h3 {
-            font-size: 22px;
-            color: #333;
-        }
-
-        .empty-state p {
-            font-size: 16px;
-            margin-top: 8px;
-        }
-
-        .empty-state a {
-            display: inline-block;
-            margin-top: 16px;
-            background: #0d47a1;
-            color: #fff;
-            padding: 10px 28px;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: background 0.3s;
-        }
-
-        .empty-state a:hover {
-            background: #0a3d8a;
-        }
-
-        /* ---------- FOOTER ---------- */
-        .footer {
-            text-align: center;
-            padding: 24px 20px;
-            font-size: 14px;
-            color: #777;
-            border-top: 1px solid #bbdefb;
-        }
-
-        /* ---------- RESPONSIVE ---------- */
-        @media (max-width: 768px) {
-            .nav-menu {
-                display: none;
-                flex-direction: column;
-                background: #fff;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                padding: 20px 24px;
-                gap: 16px;
-                box-shadow: 0 8px 20px rgba(13, 71, 161, 0.08);
-            }
-
-            .nav-menu.active {
-                display: flex;
-            }
-
-            .nav-toggle {
-                display: block;
-            }
-
-            .nav-actions {
-                display: flex;
-            }
-
-            .page-hero h1 {
-                font-size: 26px;
-            }
-
-            .pesanan-card {
-                flex-wrap: wrap;
-                gap: 12px;
-                padding: 16px;
-            }
-
-            .pesanan-thumb {
-                width: 70px;
-                height: 70px;
-            }
-
-            .pesanan-info {
-                flex: 1 1 100%;
-                min-width: unset;
-            }
-
-            .pesanan-status {
-                flex: 0 0 auto;
-                text-align: left;
-            }
-
-            .pesanan-harga {
-                flex: 0 0 auto;
-                text-align: left;
-                font-size: 16px;
-            }
-
-            .pesanan-actions {
-                flex: 1 1 100%;
-                justify-content: flex-start;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .page-hero h1 {
-                font-size: 22px;
-            }
-            .pesanan-card {
-                padding: 12px;
-            }
-            .pesanan-thumb {
-                width: 60px;
-                height: 60px;
-            }
-            .pesanan-info h3 {
-                font-size: 16px;
-            }
-        }
+      }
     </style>
-</head>
+  </head>
 
-<body>
-
+  <body>
     <!-- ========== NAVBAR ========== -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <i class="fas fa-globe-asia"></i>
-                <span>Wonderloka</span>
-            </div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="dashboard.html">Beranda</a></li>
-                <li><a href="pesanan-saya.html" class="active">Pesanan saya</a></li>
-                <li><a href="favorit.html">Favorit</a></li>
-            </ul>
-            <div class="nav-actions">
-                <button class="profile-btn" id="profileBtn" aria-label="Profile">
-                    <i class="fas fa-user-circle"></i>
-                </button>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <a href="#"><i class="fas fa-user"></i> Profil Saya</a>
-                    <a href="pesanan-saya.html"><i class="fas fa-history"></i> Riwayat Pesanan</a>
-                    <a href="#" class="logout-item" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Keluar</a>
-                </div>
-            </div>
-            <div class="nav-toggle" id="navToggle">
-                <i class="fas fa-bars"></i>
-            </div>
+      <div class="nav-container">
+        <div class="nav-brand">
+          <i class="fas fa-globe-asia"></i>
+          <span>Wonderloka</span>
         </div>
+        <ul class="nav-menu" id="navMenu">
+          <li><a href="dashboard.html">Beranda</a></li>
+          <li><a href="pesanan-saya.html" class="active">Pesanan saya</a></li>
+          <li><a href="favorit.html">Favorit</a></li>
+        </ul>
+        <div class="nav-actions">
+          <button class="profile-btn" id="profileBtn" aria-label="Profile">
+            <i class="fas fa-user-circle"></i>
+          </button>
+          <div class="profile-dropdown" id="profileDropdown">
+            <a id="profileMenuItem"><i class="fas fa-user"></i> Profil Saya</a>
+            <a href="pesanan-saya.html"
+              ><i class="fas fa-history"></i> Riwayat Pesanan</a
+            >
+            <a class="logout-item" id="logoutBtn"
+              ><i class="fas fa-sign-out-alt"></i> Keluar</a
+            >
+          </div>
+        </div>
+        <div class="nav-toggle" id="navToggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
     </nav>
 
     <!-- ========== HERO ========== -->
     <section class="page-hero">
-        <div class="page-hero-content">
-            <h1>📋 Pesanan Saya</h1>
-            <p>Lihat dan kelola semua pesanan destinasi wisata Anda.</p>
-        </div>
+      <div class="page-hero-content">
+        <h1>📋 Pesanan Saya</h1>
+        <p>Lihat dan kelola semua pesanan destinasi wisata Anda.</p>
+      </div>
     </section>
 
     <!-- ========== DAFTAR PESANAN ========== -->
     <section class="pesanan-container" id="pesananContainer">
-        <!-- Akan di-render oleh JavaScript -->
+      <!-- Akan di-render oleh JavaScript -->
     </section>
+
+    <!-- ========== MODAL PROFIL ========== -->
+    <div class="profile-modal-overlay" id="profileModal">
+      <div class="profile-modal">
+        <button class="profile-modal-close" id="profileModalClose">
+          <i class="fas fa-times"></i>
+        </button>
+
+        <div class="profile-modal-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="profile-modal-name" id="profileModalName">
+          Nama Pengguna
+        </div>
+        <div class="profile-modal-email" id="profileModalEmail">
+          email@example.com
+        </div>
+
+        <div class="profile-modal-details">
+          <div class="row">
+            <span class="label">Role</span>
+            <span class="value" id="profileModalRole">Wisatawan</span>
+          </div>
+          <div class="row">
+            <span class="label">Status</span>
+            <span class="value" id="profileModalStatus">Aktif</span>
+          </div>
+          <div class="row">
+            <span class="label">Bergabung Sejak</span>
+            <span class="value" id="profileModalJoined">-</span>
+          </div>
+        </div>
+
+        <button class="btn-logout-modal" id="profileModalLogout">
+          <i class="fas fa-sign-out-alt"></i> Keluar
+        </button>
+      </div>
+    </div>
 
     <!-- ========== FOOTER ========== -->
     <footer class="footer">
-        <p>&copy; 2026 Wonderloka. All rights reserved.</p>
+      <p>&copy; 2026 Wonderloka. All rights reserved.</p>
     </footer>
 
     <!-- ========== JAVASCRIPT ========== -->
     <script src="../assets/js/script-api.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // ===== AUTH CHECK =====
-            // Proteksi: Hanya wisatawan yang boleh akses
-            function checkAuth() {
-                const user = getUser();
-                if (!user) {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                // Admin tidak boleh akses halaman wisatawan
-                if (user.role === 'admin') {
-                    window.location.href = '../superadmin/verifikasi-pengelola.html';
-                    return null;
-                }
-
-                // Pengusaha tidak boleh akses halaman wisatawan
-                if (user.role === 'pengusaha') {
-                    if (user.status_verifikasi === 'terverifikasi') {
-                        window.location.href = '../admin/index.html';
-                    } else {
-                        window.location.href = '../status-verifikasi.html';
-                    }
-                    return null;
-                }
-
-                if (user.role !== 'wisatawan') {
-                    window.location.href = '../halaman-login-user.html';
-                    return null;
-                }
-
-                return user;
+      document.addEventListener("DOMContentLoaded", function () {
+        // ===== AUTH CHECK =====
+        function checkAuth() {
+          const user = getUser();
+          if (!user) {
+            window.location.href = "../halaman-login-user.html";
+            return null;
+          }
+          if (user.role === "admin") {
+            window.location.href = "../superadmin/verifikasi-pengelola.html";
+            return null;
+          }
+          if (user.role === "pengusaha") {
+            if (user.status_verifikasi === "terverifikasi") {
+              window.location.href = "../admin/index.html";
+            } else {
+              window.location.href = "../status-verifikasi.html";
             }
-            const currentUser = checkAuth();
-            if (!currentUser) return;
+            return null;
+          }
+          if (user.role !== "wisatawan") {
+            window.location.href = "../halaman-login-user.html";
+            return null;
+          }
+          return user;
+        }
+        const currentUser = checkAuth();
+        if (!currentUser) return;
 
-            // ---------- PROFILE DROPDOWN ----------
-            const profileBtn = document.getElementById('profileBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-            if (profileBtn && profileDropdown) {
-                profileBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    profileDropdown.classList.toggle('active');
-                });
-                document.addEventListener('click', function(e) {
-                    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-                        profileDropdown.classList.remove('active');
-                    }
-                });
+        // ===== PROFILE DROPDOWN =====
+        const profileBtn = document.getElementById("profileBtn");
+        const profileDropdown = document.getElementById("profileDropdown");
+        if (profileBtn && profileDropdown) {
+          profileBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            profileDropdown.classList.toggle("active");
+          });
+          document.addEventListener("click", function (e) {
+            if (
+              !profileBtn.contains(e.target) &&
+              !profileDropdown.contains(e.target)
+            ) {
+              profileDropdown.classList.remove("active");
             }
+          });
+        }
 
-            // ---------- MOBILE NAV TOGGLE ----------
-            const navToggle = document.getElementById('navToggle');
-            const navMenu = document.getElementById('navMenu');
-            if (navToggle && navMenu) {
-                navToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                });
+        // ===== MOBILE NAV =====
+        const navToggle = document.getElementById("navToggle");
+        const navMenu = document.getElementById("navMenu");
+        if (navToggle && navMenu) {
+          navToggle.addEventListener("click", function () {
+            navMenu.classList.toggle("active");
+          });
+        }
+
+        // ===== LOGOUT DROPDOWN =====
+        const logoutBtn = document.getElementById("logoutBtn");
+        if (logoutBtn) {
+          logoutBtn.addEventListener("click", function (e) {
+            e.preventDefault();
+            if (confirm("Yakin ingin keluar?")) {
+              clearAuth();
+              window.location.href = "../halaman-login-user.html";
             }
+          });
+        }
 
-            // ---------- LOGOUT ----------
-            const logoutBtn = document.getElementById('logoutBtn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    clearAuth();
-                    window.location.href = '../halaman-login-user.html';
-                });
+        // ===== MODAL PROFIL =====
+        const profileModal = document.getElementById("profileModal");
+        const profileModalClose = document.getElementById("profileModalClose");
+        const profileModalName = document.getElementById("profileModalName");
+        const profileModalEmail = document.getElementById("profileModalEmail");
+        const profileModalRole = document.getElementById("profileModalRole");
+        const profileModalStatus =
+          document.getElementById("profileModalStatus");
+        const profileModalJoined =
+          document.getElementById("profileModalJoined");
+        const profileModalLogout =
+          document.getElementById("profileModalLogout");
+
+        function openProfileModal() {
+          const user = getUser();
+          if (!user) {
+            alert("Anda belum login. Silakan login terlebih dahulu.");
+            window.location.href = "../halaman-login-user.html";
+            return;
+          }
+
+          profileModalName.textContent =
+            user.nama_lengkap || user.nama || user.email || "Pengguna";
+          profileModalEmail.textContent = user.email || "-";
+
+          const roleMap = {
+            wisatawan: "Wisatawan",
+            pengusaha: "Pengusaha Lokal",
+            admin: "Admin",
+          };
+          profileModalRole.textContent =
+            roleMap[user.role] || user.role || "Wisatawan";
+          profileModalStatus.textContent =
+            user.status_verifikasi === "terverifikasi"
+              ? "Terverifikasi"
+              : "Aktif";
+
+          if (user.created_at) {
+            const date = new Date(user.created_at);
+            profileModalJoined.textContent = date.toLocaleDateString("id-ID", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            });
+          } else {
+            profileModalJoined.textContent = "-";
+          }
+
+          profileModal.classList.add("active");
+          document.body.style.overflow = "hidden";
+          if (profileDropdown) profileDropdown.classList.remove("active");
+        }
+
+        function closeProfileModal() {
+          profileModal.classList.remove("active");
+          document.body.style.overflow = "";
+        }
+
+        const profileMenuItem = document.getElementById("profileMenuItem");
+        if (profileMenuItem) {
+          profileMenuItem.addEventListener("click", function (e) {
+            e.preventDefault();
+            openProfileModal();
+          });
+        }
+
+        if (profileModalClose) {
+          profileModalClose.addEventListener("click", closeProfileModal);
+        }
+
+        if (profileModal) {
+          profileModal.addEventListener("click", function (e) {
+            if (e.target === this) {
+              closeProfileModal();
             }
+          });
+        }
 
-            // ---------- RENDER PESANAN ----------
-            const container = document.getElementById('pesananContainer');
+        if (profileModalLogout) {
+          profileModalLogout.addEventListener("click", function () {
+            if (confirm("Yakin ingin keluar?")) {
+              clearAuth();
+              window.location.href = "../halaman-login-user.html";
+            }
+          });
+        }
 
-            function renderPesanan(data) {
-                const fallbackImg = '../assets/images/wonderloka.jpeg';
+        document.addEventListener("keydown", function (e) {
+          if (
+            e.key === "Escape" &&
+            profileModal &&
+            profileModal.classList.contains("active")
+          ) {
+            closeProfileModal();
+          }
+        });
 
-                if (data.length === 0) {
-                    container.innerHTML = `
+        // ========== RENDER PESANAN ==========
+        const container = document.getElementById("pesananContainer");
+        const fallbackImg = "../assets/images/wonderloka.jpeg";
+
+        function renderPesanan(data) {
+          if (data.length === 0) {
+            container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-inbox"></i>
                             <h3>Belum ada pesanan</h3>
@@ -620,19 +922,23 @@
                             <a href="dashboard.html">Cari Destinasi</a>
                         </div>
                     `;
-                    return;
-                }
+            return;
+          }
 
-                let html = '';
-                data.forEach(p => {
-                    const statusLabel = p.status.charAt(0).toUpperCase() + p.status.slice(1);
-                    const canCancel = p.status === 'menunggu' || p.status === 'dikonfirmasi';
-                    const tanggal = p.tgl_kunjungan ? p.tgl_kunjungan.split('T')[0] : p.tanggal;
-                    const gambar = p.gambar || fallbackImg;
-                    const destinasi = p.destinasi || 'Destinasi';
-                    const lokasi = p.lokasi || '-';
+          let html = "";
+          data.forEach((p) => {
+            const statusLabel =
+              p.status.charAt(0).toUpperCase() + p.status.slice(1);
+            const canCancel =
+              p.status === "menunggu" || p.status === "dikonfirmasi";
+            const tanggal = p.tgl_kunjungan
+              ? p.tgl_kunjungan.split("T")[0]
+              : p.tanggal;
+            const gambar = p.gambar || fallbackImg;
+            const destinasi = p.destinasi || "Destinasi";
+            const lokasi = p.lokasi || "-";
 
-                    html += `
+            html += `
                         <div class="pesanan-card" data-id="${p.id_booking}">
                             <div class="pesanan-thumb">
                                 <img src="${gambar}" alt="${destinasi}" onerror="this.onerror=null; this.src='${fallbackImg}';" />
@@ -653,65 +959,77 @@
                                 <span class="status-badge ${p.status}">${statusLabel}</span>
                             </div>
                             <div class="pesanan-harga">
-                                Rp ${Number(p.total_harga || 0).toLocaleString('id-ID')}
+                                Rp ${Number(p.total_harga || 0).toLocaleString("id-ID")}
                             </div>
                             <div class="pesanan-actions">
                                 <button class="btn-action btn-detail-pesanan" data-id="${p.id_booking}">
                                     <i class="fas fa-eye"></i> Detail
                                 </button>
-                                ${canCancel ? `<button class="btn-action btn-batal" data-id="${p.id_booking}">Batalkan</button>` : ''}
+                                ${canCancel ? `<button class="btn-action btn-batal" data-id="${p.id_booking}">Batalkan</button>` : ""}
                             </div>
                         </div>
                     `;
-                });
+          });
 
-                container.innerHTML = html;
+          container.innerHTML = html;
 
-                container.querySelectorAll('.btn-detail-pesanan').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = this.dataset.id;
-                        const p = data.find(b => b.id_booking == id);
-                        if (p) {
-                            const tanggal = p.tgl_kunjungan ? p.tgl_kunjungan.split('T')[0] : p.tanggal;
-                            alert(
-                                '📋 Detail Pesanan\n\n' +
-                                'Destinasi : ' + p.destinasi + '\n' +
-                                'Lokasi    : ' + p.lokasi + '\n' +
-                                'Tanggal   : ' + tanggal + '\n' +
-                                'Tiket     : ' + p.jumlah_tiket + '\n' +
-                                'Total     : Rp ' + Number(p.total_harga).toLocaleString('id-ID') + '\n' +
-                                'Status    : ' + (p.status.charAt(0).toUpperCase() + p.status.slice(1))
-                            );
-                        }
-                    });
-                });
+          container.querySelectorAll(".btn-detail-pesanan").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const id = this.dataset.id;
+              const p = data.find((b) => b.id_booking == id);
+              if (p) {
+                const tanggal = p.tgl_kunjungan
+                  ? p.tgl_kunjungan.split("T")[0]
+                  : p.tanggal;
+                alert(
+                  "📋 Detail Pesanan\n\n" +
+                    "Destinasi : " +
+                    p.destinasi +
+                    "\n" +
+                    "Lokasi    : " +
+                    p.lokasi +
+                    "\n" +
+                    "Tanggal   : " +
+                    tanggal +
+                    "\n" +
+                    "Tiket     : " +
+                    p.jumlah_tiket +
+                    "\n" +
+                    "Total     : Rp " +
+                    Number(p.total_harga).toLocaleString("id-ID") +
+                    "\n" +
+                    "Status    : " +
+                    (p.status.charAt(0).toUpperCase() + p.status.slice(1)),
+                );
+              }
+            });
+          });
 
-                container.querySelectorAll('.btn-batal').forEach(btn => {
-                    btn.addEventListener('click', async function() {
-                        const id = this.dataset.id;
-                        if (!confirm('Yakin ingin membatalkan pesanan ini?')) return;
+          container.querySelectorAll(".btn-batal").forEach((btn) => {
+            btn.addEventListener("click", async function () {
+              const id = this.dataset.id;
+              if (!confirm("Yakin ingin membatalkan pesanan ini?")) return;
 
-                        const btnEl = this;
-                        btnEl.disabled = true;
-                        btnEl.textContent = 'Membatalkan...';
+              const btnEl = this;
+              btnEl.disabled = true;
+              btnEl.textContent = "Membatalkan...";
 
-                        try {
-                            await apiFetch('/bookings/' + id + '/batal', { method: 'PUT' });
-                            alert('✅ Pesanan berhasil dibatalkan.');
-                            loadPesanan();
-                        } catch (err) {
-                            alert('⚠️ ' + err.message);
-                            btnEl.disabled = false;
-                            btnEl.textContent = 'Batalkan';
-                        }
-                    });
-                });
-            }
+              try {
+                await apiFetch("/bookings/" + id + "/batal", { method: "PUT" });
+                alert("✅ Pesanan berhasil dibatalkan.");
+                loadPesanan();
+              } catch (err) {
+                alert("⚠️ " + err.message);
+                btnEl.disabled = false;
+                btnEl.textContent = "Batalkan";
+              }
+            });
+          });
+        }
 
-            // ---------- LOAD DARI API ----------
-            async function loadPesanan() {
-                if (!isLoggedIn()) {
-                    container.innerHTML = `
+        async function loadPesanan() {
+          if (!isLoggedIn()) {
+            container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-lock"></i>
                             <h3>Silakan Login</h3>
@@ -719,16 +1037,17 @@
                             <a href="../halaman-login-user.html">Login</a>
                         </div>
                     `;
-                    return;
-                }
+            return;
+          }
 
-                container.innerHTML = '<p style="text-align:center;padding:40px;color:#555;">Memuat pesanan...</p>';
+          container.innerHTML =
+            '<p style="text-align:center;padding:40px;color:#555;">Memuat pesanan...</p>';
 
-                try {
-                    const data = await apiFetch('/bookings');
-                    renderPesanan(data);
-                } catch (err) {
-                    container.innerHTML = `
+          try {
+            const data = await apiFetch("/bookings");
+            renderPesanan(data);
+          } catch (err) {
+            container.innerHTML = `
                         <div class="empty-state">
                             <i class="fas fa-exclamation-circle"></i>
                             <h3>Gagal Memuat</h3>
@@ -736,12 +1055,11 @@
                             <a href="dashboard.html">Kembali</a>
                         </div>
                     `;
-                }
-            }
+          }
+        }
 
-            loadPesanan();
-        });
+        loadPesanan();
+      });
     </script>
-
-</body>
+  </body>
 </html>

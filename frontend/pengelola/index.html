@@ -811,6 +811,7 @@
 
             destinasiForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                var submitBtn = destinasiForm.querySelector('button[type="submit"]');
                 var id = document.getElementById('editId').value;
                 var payload = {
                     nama: document.getElementById('nama').value.trim(),
@@ -820,19 +821,67 @@
                     gambar: document.getElementById('gambar').value.trim(),
                     deskripsi: document.getElementById('deskripsi').value.trim()
                 };
+
+                // Validasi di frontend
+                if (!payload.nama) {
+                    alert('Nama destinasi wajib diisi.');
+                    return;
+                }
+
+                console.log('[Create/Update Destination] endpoint:', '/api/pengelola/destinations' + (id ? '/' + id : ''));
+                console.log('[Create/Update Destination] payload keys:', Object.keys(payload));
+                console.log('[Create/Update Destination] has token:', Boolean(getToken()));
+
+                // Disable tombol dan ubah teks
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Menyimpan...';
+
                 try {
                     if (id) {
-                        await apiFetch('/pengelola/destinations/' + id, { method: 'PUT', body: JSON.stringify(payload) });
+                        // UPDATE
+                        console.log('[Update Destination] Updating ID:', id);
+                        var updateResult = await apiFetch('/pengelola/destinations/' + id, {
+                            method: 'PUT',
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!updateResult || updateResult.success !== true) {
+                            throw new Error(updateResult?.message || 'Server tidak mengembalikan respons yang valid.');
+                        }
+
                         alert('Destinasi berhasil diperbarui!');
+                        closeModal();
+                        loadMyDestinations();
+                        loadStats();
                     } else {
-                        await apiFetch('/pengelola/destinations', { method: 'POST', body: JSON.stringify(payload) });
-                        alert('Destinasi berhasil ditambahkan!');
+                        // CREATE
+                        console.log('[Create Destination] Creating new destination');
+                        var createResult = await apiFetch('/pengelola/destinations', {
+                            method: 'POST',
+                            body: JSON.stringify(payload)
+                        });
+
+                        // Validasi ketat: harus ada result.success, result.destination, dan result.destination.id_destinasi
+                        if (!createResult ||
+                            createResult.success !== true ||
+                            !createResult.destination ||
+                            !createResult.destination.id_destinasi) {
+                            throw new Error('Server tidak mengembalikan data destinasi yang valid.');
+                        }
+
+                        console.log('[Create Destination] Success! New destination ID:', createResult.destination.id_destinasi);
+                        alert('Destinasi "' + createResult.destination.nama + '" berhasil ditambahkan! (ID: ' + createResult.destination.id_destinasi + ')');
+                        closeModal();
+                        loadMyDestinations();
+                        loadStats();
                     }
-                    closeModal();
-                    loadMyDestinations();
-                    loadStats();
                 } catch (err) {
+                    console.error('[Destination Save Error]', err);
                     alert('Gagal menyimpan: ' + err.message);
+                } finally {
+                    // Selalu aktifkan tombol kembali
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Simpan';
                 }
             });
 
